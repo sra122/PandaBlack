@@ -1,0 +1,30 @@
+{
+  "version"           : "1.0.0",
+  "name"              : "PandaBlack",
+  "marketplaceName"   : {"de": "PandaBlack","en": "PandaBlack"},
+  "license"           : "AGPL-3.0",
+  "isExternalTool"    : true,
+  "pluginIcon"        : "icon_plugin_md.jpg",
+  "price"             : 0.00,
+  "description"       : "PandaBlack",
+  "shortDescription"  : {"de": "","en": "The Panda brings German Quality Products to China"},
+  "categories"        : ["3521"],
+  "author"            : "I-ways Sales Solution GmbH",
+  "authorIcon"        : "icon_author_xs.png",
+  "email"             : "oliver@panda.black",
+  "phone"             : "+49 561 98 681 100",
+  "keywords"          : ["plentymarkets", "plugins", "layout", "template", "pandablack"],
+  "type"              : "tool",
+
+  "directDownloadLinks" : {"Windows":"download-link", "MacOs":"download-link", "Linux":"download-link"},
+  "forwardLink"         : "http://panda.black/",
+
+  "require"             : [],
+  "namespace"           : "ExternalTool",
+  "serviceProvider"     : "ExternalTool",
+  "javaScriptFiles"     : [],
+  "containers"          : [],
+  "dataProviders"       : [],
+  "dependencies"        : [],
+  "runOnBuild"          : []
+}
