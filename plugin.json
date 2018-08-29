@@ -20,8 +20,8 @@
   "forwardLink"         : "http://panda.black/",
 
   "require"             : [],
-  "namespace"           : "ExternalTool",
-  "serviceProvider"     : "ExternalTool",
+  "namespace"           : "PandaBlack",
+  "serviceProvider"     : "PandaBlack\\Providers\\PandaBlackServiceProvider",
   "javaScriptFiles"     : [],
   "containers"          : [],
   "dataProviders"       : [],

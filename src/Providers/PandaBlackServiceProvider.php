@@ -1,4 +1,3 @@
- 
 <?php // strict
 
 namespace PandaBlack\Providers;
