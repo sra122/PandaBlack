@@ -22,7 +22,7 @@ Chinese Consumers.
 With **PANDA.BLACK B2B** you can connect your procurement system to PANDA.BLACK and source all kind of German products directly. Supported by favourable trade policies in China’s Commerce Free Trade Zones, PANDA.BLACK cooperated with bonded warehouses to ensure a fast customs clearance and delivery. In addition, **PANDA.BLACK SHOWROOM** presents German Quality Products, visible for consumers and corporates. A first showroom is already opened at Wuhan FTZ since April 2018. Nine other cities have been inspired by that and requested a **PANDA.BLACK SHOWROOM** too.
 
 
-###SUMMARY
+### SUMMARY
 
  - eCommerce platform to sell Quality Brands and Products from  Germany to China.
  - end-to-end infrastructure connects most successful German Multichannel Retailers to Chinese consumers via Chinese Marketplaces

@@ -25,6 +25,8 @@
   "javaScriptFiles"     : [],
   "containers"          : [],
   "dataProviders"       : [],
-  "dependencies"        : [],
+  "dependencies"        : {
+    "guzzlehttp/guzzle": "6.2.*"
+  },
   "runOnBuild"          : []
 }
