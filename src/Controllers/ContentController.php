@@ -95,10 +95,13 @@ class ContentController extends Controller
             $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
         }
 
+        $crons = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'property'], 1, 100)->toArray();
+
+
         foreach($resultItems->getResult() as $key => $variation) {
 
             // Update only if products are updated in last 1 hour.
-            if((time() - strtotime($variation['updatedAt'])) < 3600) {
+            if((time() - strtotime($variation['updatedAt'])) < 3600 || !isset($crons['entries']['pbItemCron'])) {
 
                 if(!$variation['isMain'] && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -106,21 +109,10 @@ class ContentController extends Controller
                     $stockData = $variationStock->listStockByWarehouse($variation['id']);
 
                     $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
-                    $manufacturer = $manufacturerRepository->findById(1, ['*'])->toArray();
+                    $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
                     $textArray = $variation['item']->texts;
                     $variation['texts'] = $textArray->toArray();
-
-
-
-                    $warehouseInfo = pluginApp(VariationWarehouseRepositoryContract::class);
-
-
-                    /*$warehouse = $authHelper->processUnguarded(
-                        function () use ($warehouseInfo, $variation) {
-                            return $warehouseInfo->findByVariationId($variation['id']);
-                        }
-                    );*/
 
                     $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
                     $items[$key] = [$variation, $categoryId[$variation['variationCategories'][0]['categoryId']], $manufacturer];
@@ -131,19 +123,20 @@ class ContentController extends Controller
                         'item_id' => $variation['itemId'],
                         'name' => $variation['item']['texts'][0]['name1'],
                         'price' => $variation['variationSalesPrices'][0]['price'],
+                        'currency' => $variation['variationSalesPrices'][0]['price'],
                         'category' => $categoryMappingInfo[0]['vendorCategory'][0]['name'],
                         'short_description' => $variation['item']['texts'][0]['description'],
                         'image_url' => $variation['images'][0]['url'],
                         'color' => '',
                         'size' => '',
-                        'content_supplier' => '',
+                        'content_supplier' => $manufacturer['name'],
                         'product_type' => '',
                         'quantity' => $stockData,
                         'store_name' => '',
                         'status' => '',
                         'brand' => '',
                         'variant_attribute_1' => '',
-                        'last_update_at' => strtotime($variation['updatedAt']),
+                        'last_update_at' => $variation['updatedAt'],
                     );
                 }
             }
@@ -164,7 +157,6 @@ class ContentController extends Controller
      */
     public function sendProductDetails()
     {
-
         $settingRepo = pluginApp(SettingsRepositoryContract::class);
         $libCall = pluginApp(LibraryCallContract::class);
 
@@ -179,6 +171,7 @@ class ContentController extends Controller
 
                 if(isset($property->settings['Token']) && ($property->settings['Token']['expires_in'] > time())) {
 
+                    $this->saveCronTime();
 
                     $response = $libCall->call(
                         'PandaBlack::products_to_pandablack',
@@ -189,6 +182,9 @@ class ContentController extends Controller
                     );
                     return $response;
                 } else if(isset($property->settings['Token']) && ($property->settings['Token']['refresh_token_expires_in'] > time())) {
+
+                    $this->saveCronTime();
+
                     $response = $libCall->call(
                         'PandaBlack::products_to_pandablack',
                         [
@@ -200,5 +196,39 @@ class ContentController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function saveCronTime()
+    {
+        $settingRepo = pluginApp(SettingsRepositoryContract::class);
+
+        $crons = $settingRepo->search(['marketplaceId' => 'PandaBlack', 'type' => 'property'], 1, 100)->toArray();
+
+        foreach($crons as $key => $cron) {
+            if(isset($crons['entries']['pbItemCron'])) {
+                $cronData = [
+                    'pbItemCron' => [
+                        'pastCronTime' => $crons['entries']['pbItemCron']['presentCronTime'],
+                        'presentCronTime' => time()
+                    ]
+                ];
+                $response = $settingRepo->update($cronData, $key);
+                return $response;
+            }
+        }
+
+        $cronData = [
+            'pbItemCron' => [
+                'pastCronTime' => null,
+                'presentCronTime' => time()
+            ]
+        ];
+
+        $response = $settingRepo->create('PandaBlack', 'property', $cronData);
+
+        return $response;
     }
 }
