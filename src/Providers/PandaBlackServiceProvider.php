@@ -5,6 +5,7 @@ namespace PandaBlack\Providers;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
 use Plenty\Plugin\Templates\Twig;
+use Plenty\Modules\Cron\Services\CronContainer;
 
 
 class PandaBlackServiceProvider extends ServiceProvider
@@ -19,10 +20,10 @@ class PandaBlackServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param Twig $twig
-     * @param Dispatcher $eventDispatcher
+     * @param CronContainer $container
      */
-    public function boot(Twig $twig, Dispatcher $eventDispatcher)
+    public function boot(CronContainer $container)
     {
+        $container->add(CronContainer::HOURLY, ItemExportCron::class);
     }
 }
