@@ -39,6 +39,7 @@ class AuthController extends Controller
     public function getAuthentication(Request $request, LibraryCallContract $libCall)
     {
         try {
+            $this->createReferrerId();
             $sessionCheck = $this->sessionCheck();
             if($sessionCheck) {
                 $this->sessionCreation();
@@ -206,5 +207,38 @@ class AuthController extends Controller
         {
             return $tokenDetail;
         }
+    }
+
+    public function createReferrerId()
+    {
+        $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
+        $orderReferrerLists = $orderReferrerRepo->getList(['name']);
+
+        $pandaBlackReferrerID = [];
+
+        foreach($orderReferrerLists as $key => $orderReferrerList)
+        {
+            if(trim($orderReferrerList->name) === 'PandaBlack') {
+                array_push($pandaBlackReferrerID, $orderReferrerList);
+            }
+        }
+
+        if(empty(array_filter($pandaBlackReferrerID))) {
+
+            $orderReferrer = $orderReferrerRepo->create([
+                'isEditable'    => true,
+                'backendName' => 'PandaBlack',
+                'name'        => 'PandaBlack',
+                'origin'      => 'plenty',
+                'isFilterable' => true
+            ])->toArray();
+            $settingsRepository = pluginApp(SettingsRepositoryContract::class);
+            $settingsRepository->create('PandaBlack', 'property', $orderReferrer);
+
+            return $orderReferrer;
+        }
+
+        return $pandaBlackReferrerID;
+
     }
 }
