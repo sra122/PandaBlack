@@ -9,6 +9,7 @@ use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\System\Models\WebstoreConfiguration;
 use Plenty\Modules\Helper\Services\WebstoreHelper;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
+use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 
 /**
  * Class AuthController
