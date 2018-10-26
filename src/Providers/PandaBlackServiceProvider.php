@@ -6,6 +6,7 @@ use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Modules\Cron\Services\CronContainer;
+use PandaBlack\Crons\ItemExportCron;
 
 
 class PandaBlackServiceProvider extends ServiceProvider
