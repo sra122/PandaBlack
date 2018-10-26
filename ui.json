@@ -1,0 +1,18 @@
+{
+  "defaultEntryPoint" : "index.html",
+  "namespace"         : "PandaBlack",
+  "menuEntries"       : [
+    {
+      "label": "Authentication",
+      "menu": "system/markets/PandaBlack",
+      "urlKey": "itools",
+      "entryPoint": "index.html?action=itools"
+    },
+    {
+      "label": "Category-linking",
+      "menu": "system/markets/PandaBlack",
+      "urlKey": "stats-view",
+      "entryPoint": "index.html?action=stats-view"
+    }
+  ]
+}
