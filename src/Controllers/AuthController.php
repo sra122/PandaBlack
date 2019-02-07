@@ -98,7 +98,7 @@ class AuthController extends Controller
         $tokenInformation['Response']['refresh_token_expires_in'] = time() + $tokenInformation['Response']['refresh_token_expires_in'];
 
         $data = [
-            'Token' => $tokenInformation['Response']
+            'pbToken' => $tokenInformation['Response']
         ];
 
         if(count($tokenDetails) === 0) {
