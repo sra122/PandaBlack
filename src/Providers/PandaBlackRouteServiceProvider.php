@@ -40,7 +40,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->post('markets/panda-black/products-data', 'PandaBlack\Controllers\ContentController@sendProductDetails');
 
             //Delete Properties
-            $router->get('markets/panda-black/delete-properties', 'PandaBlack\Controllers\AttributeController@deletePBProperties');
+            $router->post('markets/panda-black/delete-properties', 'PandaBlack\Controllers\AttributeController@deletePBProperties');
         });
     }
 }
