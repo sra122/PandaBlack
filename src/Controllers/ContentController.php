@@ -1,29 +1,12 @@
 <?php
 namespace PandaBlack\Controllers;
+
 use Plenty\Plugin\Controller;
-use Plenty\Plugin\Templates\Twig;
-use Plenty\Modules\Plugin\DataBase\Contracts;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
-use Plenty\Modules\Item\VariationCategory\Contracts\VariationCategoryRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
-use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
-use Plenty\Modules\Item\Property\Contracts\PropertyRepositoryContract;
-use Plenty\Modules\Item\Search\Mutators\KeyMutator;
-use Plenty\Plugin\Application;
-use Plenty\Modules\Item\Variation\Contracts\VariationRepositoryContract;
-use Plenty\Modules\Category\Contracts\CategoryRepositoryContract;
-use Plenty\Modules\System\Contracts\SystemInformationRepositoryContract;
-use Plenty\Modules\System\Contracts\WebstoreRepositoryContract;
-use Plenty\Modules\Market\Settings\Factories\SettingsCorrelationFactory;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
-use Plenty\Modules\Authorization\Services\AuthHelper;
-use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
-use Plenty\Modules\Item\ItemImage\Contracts\ItemImageRepositoryContract;
-use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
 use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
-use Plenty\Modules\Item\VariationWarehouse\Contracts\VariationWarehouseRepositoryContract;
-use Plenty\Modules\Market\Helper\Contracts\MarketAttributeHelperRepositoryContract;
 use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
@@ -42,7 +25,7 @@ class ContentController extends Controller
                 'variationSalesPrices' => true,
                 'variationCategories' => true,
                 'variationClients' => true,
-                'VariationAttributeValues' => true,
+                'variationAttributeValues' => true,
                 'variationSkus' => true,
                 'variationMarkets' => true,
                 'variationSuppliers' => true,
@@ -103,7 +86,7 @@ class ContentController extends Controller
             // Update only if products are updated in last 1 hour.
             if((time() - strtotime($variation['updatedAt'])) < 3600 || !isset($crons['entries']['pbItemCron'])) {
 
-                if(!$variation['isMain'] && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+                if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                     $variationStock = pluginApp(VariationStockRepositoryContract::class);
                     $stockData = $variationStock->listStockByWarehouse($variation['id']);
@@ -123,21 +106,31 @@ class ContentController extends Controller
                         'item_id' => $variation['itemId'],
                         'name' => $variation['item']['texts'][0]['name1'],
                         'price' => $variation['variationSalesPrices'][0]['price'],
-                        'currency' => $variation['variationSalesPrices'][0]['price'],
-                        'category' => $categoryMappingInfo[0]['vendorCategory'][0]['name'],
+                        'currency' => 'Euro',
+                        'category' => $categoryMappingInfo[0]['vendorCategory'][0]['id'],
                         'short_description' => $variation['item']['texts'][0]['description'],
                         'image_url' => $variation['images'][0]['url'],
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
                         'product_type' => '',
-                        'quantity' => $stockData,
+                        'quantity' => $stockData[0]['netStock'],
                         'store_name' => '',
-                        'status' => '',
-                        'brand' => '',
-                        'variant_attribute_1' => '',
+                        'status' => $variation['isActive'],
+                        'brand' => $manufacturer['name'],
                         'last_update_at' => $variation['updatedAt'],
+                        'asin' => 'B07BB7GVK2'
                     );
+
+                    $attributeSets = [];
+                    foreach($variation['variationAttributeValues'] as $attribute) {
+
+                        $attributeId = array_reverse(explode('-', $attribute['attribute']['backendName']))[0];
+                        $attributeValue = array_reverse(explode('-', $attribute['attributeValue']['backendName']))[0];
+                        $attributeSets[(int)$attributeId] = (int)$attributeValue;
+                    }
+
+                    $completeData[$key]['attributes'] = $attributeSets;
                 }
             }
         }
@@ -157,44 +150,11 @@ class ContentController extends Controller
      */
     public function sendProductDetails()
     {
-        $settingRepo = pluginApp(SettingsRepositoryContract::class);
-        $libCall = pluginApp(LibraryCallContract::class);
+        $productDetails = $this->productDetails();
 
-
-        $properties = $settingRepo->find('PandaBlack', 'property');
-
-        foreach($properties as $key => $property) {
-
-            $productDetails = $this->productDetails();
-
-            if(!empty($productDetails['exportData'])) {
-
-                if(isset($property->settings['Token']) && ($property->settings['Token']['expires_in'] > time())) {
-
-                    $this->saveCronTime();
-
-                    $response = $libCall->call(
-                        'PandaBlack::products_to_pandablack',
-                        [
-                            'token' => $property->settings['Token']['token'],
-                            'product_details' => $productDetails
-                        ]
-                    );
-                    return $response;
-                } else if(isset($property->settings['Token']) && ($property->settings['Token']['refresh_token_expires_in'] > time())) {
-
-                    $this->saveCronTime();
-
-                    $response = $libCall->call(
-                        'PandaBlack::products_to_pandablack',
-                        [
-                            'token' => $property->settings['Token']['refresh_token'],
-                            'product_details' => $productDetails
-                        ]
-                    );
-                    return $response;
-                }
-            }
+        if(!empty($productDetails['exportData'])) {
+            $app = new AppController();
+            $app->authenticate('products_to_pandaBlack', null, $productDetails);
         }
     }
 

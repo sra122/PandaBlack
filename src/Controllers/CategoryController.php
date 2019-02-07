@@ -2,12 +2,10 @@
 
 namespace PandaBlack\Controllers;
 
-//use PandaBlack\Contracts\CategoryRepositoryContract;
 use Plenty\Modules\Category\Models\Category;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
-use Plenty\Plugin\Templates\Twig;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Market\Settings\Factories\SettingsCorrelationFactory;
 use Plenty\Modules\Market\Credentials\Contracts\CredentialsRepositoryContract;
@@ -27,7 +25,7 @@ class CategoryController extends Controller
      * @return Category[]
      */
 
-    public function all(Request $request, Twig $twig)
+    public function all(Request $request)
     {
         $with = $request->get('with', []);
 
@@ -46,7 +44,6 @@ class CategoryController extends Controller
                 foreach($categoryInfo as $key => $childCategory) {
                     if($childCategory->parentCategoryId === $category->id) {
                         array_push($child, $childCategory);
-                        //unset($categoryInfo[$key]);
                     }
                 }
                 $category->child = $child;
@@ -85,7 +82,7 @@ class CategoryController extends Controller
         return $response->json($plentyCategory);
     }
 
-    public function getCorrelations(Twig $twig)
+    public function getCorrelations()
     {
         $filters = [
             'marketplaceId' => 'PandaBlack',
@@ -144,12 +141,42 @@ class CategoryController extends Controller
         $settingsCorrelationFactory->delete($id);
     }
 
-    public function getProperties()
+    /** PandaBlack Categories */
+
+    public function getPBCategories()
     {
-        $settingsCorrelationFactory = pluginApp(SettingsRepositoryContract::class);
+        $app = new AppController();
+        $pbCategories = $app->authenticate('pandaBlack_categories');
 
-        $properties = $settingsCorrelationFactory->find('PandaBlack', 'property');
+        if(isset($pbCategories)) {
+            $pbCategoryTree = [];
+            foreach ($pbCategories as $key => $pbCategory) {
+                if ($pbCategory['parent_id'] === null) {
+                    $pbCategoryTree[] = [
+                        'id' => (int)$key,
+                        'name' => $pbCategory['name'],
+                        'parentId' => 0,
+                        'children' => $this->getPBChildCategories($pbCategories, (int)$key),
+                    ];
+                }
+            }
+            return json_encode($pbCategoryTree);
+        }
+    }
 
-        return $properties;
+    private function getPBChildCategories($pbCategories, $parentId)
+    {
+        $pbChildCategoryTree = [];
+        foreach ($pbCategories as $key => $pbCategory) {
+            if ($pbCategory['parent_id'] === $parentId) {
+                $pbChildCategoryTree[] = [
+                    'id' => (int)$key,
+                    'name' => $pbCategory['name'],
+                    'children' => $this->getPBChildCategories($pbCategories, (int)$key)
+                ];
+            }
+        }
+
+        return $pbChildCategoryTree;
     }
 }

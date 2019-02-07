@@ -18,6 +18,17 @@ use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 class AuthController extends Controller
 {
 
+    public $properties;
+
+    public function getProperties()
+    {
+        $settingsCorrelationFactory = pluginApp(SettingsRepositoryContract::class);
+
+        $properties = $settingsCorrelationFactory->find('PandaBlack', 'property');
+
+        $this->properties = $properties;
+    }
+
     /**
      * @param WebstoreHelper $webstoreHelper
      * @return array
@@ -31,12 +42,6 @@ class AuthController extends Controller
         ];
     }
 
-    /**
-     * @param Request $request
-     * @param LibraryCallContract $libCall
-     * @return string
-     * @throws \Exception
-     */
     public function getAuthentication(Request $request, LibraryCallContract $libCall)
     {
         try {
@@ -45,7 +50,7 @@ class AuthController extends Controller
             if($sessionCheck) {
                 $this->sessionCreation();
                 $tokenInformation = $libCall->call(
-                    'PandaBlack::guzzle_connector', ['auth_code' => $request->get('autorize_code')]
+                    'PandaBlack::pandaBlack_authentication', ['auth_code' => $request->get('autorize_code')]
                 );
                 $this->tokenStorage($tokenInformation);
                 return 'Login was successful. This window will close automatically.<script>window.close();</script>';
@@ -66,15 +71,14 @@ class AuthController extends Controller
     public function tokenStorage($tokenInformation)
     {
         $settingsRepo = pluginApp(SettingsRepositoryContract::class);
-
-        $properties = $settingsRepo->find('PandaBlack', 'property');
+        $this->getProperties();
 
         $tokenDetails = [];
 
-        foreach($properties as $key => $property)
+        foreach($this->properties as $key => $property)
         {
-            if(isset($property->settings['Token']) && count($tokenDetails) === 0) {
-                $tokenDetails[$property->id] = $property->settings['Token'];
+            if(isset($property->settings['pbToken']) && count($tokenDetails) === 0) {
+                $tokenDetails[$property->id] = $property->settings['pbToken'];
             }
         }
 
@@ -115,11 +119,11 @@ class AuthController extends Controller
     public function sessionCreation()
     {
         $settingsRepo = pluginApp(SettingsRepositoryContract::class);
-        $properties = $settingsRepo->find('PandaBlack', 'property');
+        $this->getProperties();
 
         $sessionValues = [];
 
-        foreach($properties as $key => $property)
+        foreach($this->properties as $key => $property)
         {
             if(isset($property->settings['sessionTime']) && count($sessionValues) === 0) {
                 $sessionValues[$property->id] = $property->settings['sessionTime'];
@@ -160,12 +164,11 @@ class AuthController extends Controller
      */
     public function sessionCheck()
     {
-        $settingsRepo = pluginApp(SettingsRepositoryContract::class);
-        $properties = $settingsRepo->find('PandaBlack', 'property');
+        $this->getProperties();
 
         $sessionValues = [];
 
-        foreach($properties as $key => $property)
+        foreach($this->properties as $key => $property)
         {
             if(isset($property->settings['sessionTime']) && count($sessionValues) === 0) {
                 $sessionValues[$property->id] = $property->settings['sessionTime'];
@@ -191,16 +194,14 @@ class AuthController extends Controller
      */
     public function tokenExpireTime()
     {
-        $settingsRepo = pluginApp(SettingsRepositoryContract::class);
-
-        $properties = $settingsRepo->find('PandaBlack', 'property');
+        $this->getProperties();
 
         $tokenDetails = [];
 
-        foreach($properties as $key => $property)
+        foreach($this->properties as $key => $property)
         {
-            if(isset($property->settings['Token']) && count($tokenDetails) === 0) {
-                $tokenDetails[$property->id] = $property->settings['Token']['expires_in'];
+            if(isset($property->settings['pbToken']) && count($tokenDetails) === 0) {
+                $tokenDetails[$property->id] = $property->settings['pbToken']['expires_in'];
             }
         }
 
