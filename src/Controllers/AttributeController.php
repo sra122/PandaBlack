@@ -5,6 +5,7 @@ namespace PandaBlack\Controllers;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
+use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 class AttributeController extends Controller
 {
     public function createPBAttributes($categoryId)
@@ -45,5 +46,12 @@ class AttributeController extends Controller
         if(isset($attributeValueSet)) {
             return $attributeValueSet;
         }
+    }
+
+
+    public function deletePBProperties()
+    {
+        $settingRepo = pluginApp(SettingsRepositoryContract::class);
+        $settingRepo->deleteAll('PandaBlack', 'property');
     }
 }
