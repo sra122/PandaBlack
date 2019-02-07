@@ -148,8 +148,9 @@ class ContentController extends Controller
      * @param LibraryCallContract $libCall
      * @return mixed
      */
-    public function sendProductDetails(AppController $app)
+    public function sendProductDetails()
     {
+        $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
         if(!empty($productDetails['exportData'])) {
