@@ -37,7 +37,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->get('markets/panda-black/vendor-attribute/{categoryId}', 'PandaBlack\Controllers\AttributeController@getPBAttributes');
 
             //Sending Content Actions
-            $router->get('markets/panda-black/products-data', 'PandaBlack\Controllers\ContentController@productDetails');
+            $router->post('markets/panda-black/products-data', 'PandaBlack\Controllers\ContentController@sendProductDetails');
         });
     }
 }
