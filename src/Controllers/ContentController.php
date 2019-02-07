@@ -84,7 +84,7 @@ class ContentController extends Controller
         foreach($resultItems->getResult() as $key => $variation) {
 
             // Update only if products are updated in last 1 hour.
-            if((time() - strtotime($variation['updatedAt'])) < 3600 || !isset($crons['entries']['pbItemCron'])) {
+            if((time() - strtotime($variation['updatedAt'])) < 604800 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                 if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
