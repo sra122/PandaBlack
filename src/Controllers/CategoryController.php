@@ -143,8 +143,9 @@ class CategoryController extends Controller
 
     /** PandaBlack Categories */
 
-    public function getPBCategories(AppController $app)
+    public function getPBCategories()
     {
+        $app = pluginApp(AppController::class);
         $pbCategories = $app->authenticate('pandaBlack_categories');
 
         if(isset($pbCategories)) {
