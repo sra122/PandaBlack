@@ -148,12 +148,11 @@ class ContentController extends Controller
      * @param LibraryCallContract $libCall
      * @return mixed
      */
-    public function sendProductDetails()
+    public function sendProductDetails(AppController $app)
     {
         $productDetails = $this->productDetails();
 
         if(!empty($productDetails['exportData'])) {
-            $app = new AppController();
             $app->authenticate('products_to_pandaBlack', null, $productDetails);
         }
     }

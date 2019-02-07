@@ -7,9 +7,8 @@ use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 class AttributeController extends Controller
 {
-    public function createPBAttributes($categoryId)
+    public function createPBAttributes($categoryId, AppController $app)
     {
-        $app = new AppController();
         $attributeValueSets = $app->authenticate('pandaBlack_attributes', $categoryId);
 
         if(!empty($attributeValueSets)) {

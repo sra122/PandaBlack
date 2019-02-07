@@ -106,7 +106,7 @@ class CategoryController extends Controller
         $settingsRepo->update($correlationData, $id);
     }
 
-    public function saveCorrelation(Request $request, Twig $twig)
+    public function saveCorrelation(Request $request)
     {
         $data = $request->get('correlations', []);
 
@@ -143,9 +143,8 @@ class CategoryController extends Controller
 
     /** PandaBlack Categories */
 
-    public function getPBCategories()
+    public function getPBCategories(AppController $app)
     {
-        $app = new AppController();
         $pbCategories = $app->authenticate('pandaBlack_categories');
 
         if(isset($pbCategories)) {
