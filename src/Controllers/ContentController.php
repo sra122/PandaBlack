@@ -31,6 +31,7 @@ class ContentController extends Controller
                 'variationSuppliers' => true,
                 'variationWarehouses' => true,
                 'variationDefaultCategory' => true,
+                'variationImage' => true,
                 'unit' => true,
                 'variationStock' => [
                     'params' => [
