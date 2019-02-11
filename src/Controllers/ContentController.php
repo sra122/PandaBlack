@@ -8,6 +8,7 @@ use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
+use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
@@ -31,7 +32,6 @@ class ContentController extends Controller
                 'variationSuppliers' => true,
                 'variationWarehouses' => true,
                 'variationDefaultCategory' => true,
-                'variationImage' => true,
                 'unit' => true,
                 'variationStock' => [
                     'params' => [
@@ -43,6 +43,7 @@ class ContentController extends Controller
                 ],
                 'stock' => true,
                 'images' => true,
+                'itemImages' => true,
             ]
         ]);
 
@@ -81,6 +82,7 @@ class ContentController extends Controller
 
         $crons = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'property'], 1, 100)->toArray();
 
+        $variationImageTest = [];
 
         foreach($resultItems->getResult() as $key => $variation) {
 
@@ -94,6 +96,11 @@ class ContentController extends Controller
 
                     $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                     $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
+
+                    $variationImageRepository = pluginApp(VariationImageRepositoryContract::class);
+                    $variationImage = $variationImageRepository->findByVariationId($variation['id']);
+
+                    array_push($variationImageTest, $variationImage);
 
                     $textArray = $variation['item']->texts;
                     $variation['texts'] = $textArray->toArray();
@@ -110,7 +117,7 @@ class ContentController extends Controller
                         'currency' => 'Euro',
                         'category' => $categoryMappingInfo[0]['vendorCategory'][0]['id'],
                         'short_description' => $variation['item']['texts'][0]['description'],
-                        'image_url' => $variation['images'][0]['url'],
+                        'image_url' => $variationImage[0]['url'],
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
@@ -138,7 +145,8 @@ class ContentController extends Controller
 
         $templateData = array(
             'exportData' => $completeData,
-            'completeData' => $items
+            'completeData' => $items,
+            'imageData' => $variationImageTest
         );
         return $templateData;
     }
