@@ -48,11 +48,11 @@ class OrderController extends Controller
                     'addressRelations' => [
                         [
                             'typeId' => self::BILLING_ADDRESS,
-                            'addressId' => 1,//$this->createBillingAddress($order['reference_key'])->id
+                            'addressId' => $this->createBillingAddress($order['reference_key'])->id
                         ],
                         [
                             'typeId' => self::DELIVERY_ADDRESS,
-                            'addressId' => 2//$this->createDeliveryAddress($order['reference_key'])->id
+                            'addressId' => $this->createDeliveryAddress($order['reference_key'])->id
                         ]
                     ]
                 ];
@@ -78,8 +78,7 @@ class OrderController extends Controller
                 }
 
                 $data['orderItems'] = $orderItems;
-
-                return $data;
+                $ordersRepo->createOrder($data);
             }
         }
     }
