@@ -10,20 +10,13 @@ use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Market\Settings\Factories\SettingsCorrelationFactory;
 use Plenty\Modules\Market\Credentials\Contracts\CredentialsRepositoryContract;
 use Plenty\Modules\Category\Contracts\CategoryRepositoryContract;
-use Plenty\Plugin\CachingRepository;
 /**
  * Class CategoryController
  * @package PandaBlack\Controllers
  */
 class CategoryController extends Controller
 {
-    /**
-     * Get categories.
-     *
-     * @param Request $request
-     *
-     * @return Category[]
-     */
+
 
     public function all(Request $request)
     {
@@ -140,12 +133,7 @@ class CategoryController extends Controller
 
     public function getPBCategories()
     {
-        $cachingRepo = pluginApp(CachingRepository::class);
         $app = pluginApp(AppController::class);
-
-        if($cachingRepo->has('PbCategories')) {
-            return $app->getCaching('PbCategories');
-        }
 
         $pbCategories = $app->authenticate('pandaBlack_categories');
 
@@ -162,8 +150,6 @@ class CategoryController extends Controller
                 }
             }
 
-
-            $app->createCaching('PbCategories', json_encode($pbCategoryTree));
             return json_encode($pbCategoryTree);
         }
     }

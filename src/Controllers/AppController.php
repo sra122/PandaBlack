@@ -51,19 +51,4 @@ class AppController extends Controller
             return $apiResponse;
         }
     }
-
-
-    public function createCaching($key, $value)
-    {
-        $cachingRepo = pluginApp(CachingRepository::class);
-
-        $cachingRepo->add($key, $value, 1440); // 1 day
-    }
-
-
-    public function getCaching($key)
-    {
-        $cachingRepo = pluginApp(CachingRepository::class);
-        return $cachingRepo->get($key);
-    }
 }
