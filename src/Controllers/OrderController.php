@@ -5,6 +5,7 @@ namespace PandaBlack\Controllers;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Plugin\Application;
+use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 class OrderController extends Controller
 {
     const BILLING_ADDRESS = 1;
