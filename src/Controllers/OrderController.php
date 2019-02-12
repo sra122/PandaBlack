@@ -58,7 +58,7 @@ class OrderController extends Controller
                 ];
 
                 $orderItems = [];
-                foreach($order['products'] as $productDetails)
+                foreach($order['products'][0] as $productDetails)
                 {
                     $orderItems[] = [
                         'typeId' => 1,
