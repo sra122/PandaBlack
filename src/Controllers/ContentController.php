@@ -9,6 +9,7 @@ use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
 use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
+use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
@@ -68,7 +69,7 @@ class ContentController extends Controller
         $resultItems = $itemRepository->search();
 
         $items = [];
-        $completeData = [];
+        $exportData = [];
 
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
         $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
@@ -79,12 +80,10 @@ class ContentController extends Controller
             $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
         }
 
-        $crons = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'property'], 1, 100)->toArray();
-
         foreach($resultItems->getResult() as $key => $variation) {
 
             // Update only if products are updated in last 1 hour.
-            if((time() - strtotime($variation['updatedAt'])) < 604800 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+            if((time() - strtotime($variation['updatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                 if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -94,13 +93,16 @@ class ContentController extends Controller
                     $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                     $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
+                    $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+                    $asin = $variationMarketIdentNumber->findByVariationId($variation['id']);
+
                     $textArray = $variation['item']->texts;
                     $variation['texts'] = $textArray->toArray();
 
                     $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
                     $items[$key] = [$variation, $categoryId[$variation['variationCategories'][0]['categoryId']], $manufacturer];
 
-                    $completeData[$key] = array(
+                    $exportData[$key] = array(
                         'parent_product_id' => $variation['mainVariationId'],
                         'product_id' => $variation['id'],
                         'item_id' => $variation['itemId'],
@@ -119,7 +121,7 @@ class ContentController extends Controller
                         'status' => $variation['isActive'],
                         'brand' => $manufacturer['name'],
                         'last_update_at' => $variation['updatedAt'],
-                        'asin' => 'B07BB7GVK2'
+                        'asin' => $asin
                     );
 
                     $attributeSets = [];
@@ -130,14 +132,13 @@ class ContentController extends Controller
                         $attributeSets[(int)$attributeId] = (int)$attributeValue;
                     }
 
-                    $completeData[$key]['attributes'] = $attributeSets;
+                    $exportData[$key]['attributes'] = $attributeSets;
                 }
             }
         }
 
         $templateData = array(
-            'exportData' => $completeData,
-            'completeData' => $items
+            'exportData' => $exportData
         );
         return $templateData;
     }
@@ -156,39 +157,5 @@ class ContentController extends Controller
         if(!empty($productDetails['exportData'])) {
             $app->authenticate('products_to_pandaBlack', null, $productDetails);
         }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function saveCronTime()
-    {
-        $settingRepo = pluginApp(SettingsRepositoryContract::class);
-
-        $crons = $settingRepo->search(['marketplaceId' => 'PandaBlack', 'type' => 'property'], 1, 100)->toArray();
-
-        foreach($crons as $key => $cron) {
-            if(isset($crons['entries']['pbItemCron'])) {
-                $cronData = [
-                    'pbItemCron' => [
-                        'pastCronTime' => $crons['entries']['pbItemCron']['presentCronTime'],
-                        'presentCronTime' => time()
-                    ]
-                ];
-                $response = $settingRepo->update($cronData, $key);
-                return $response;
-            }
-        }
-
-        $cronData = [
-            'pbItemCron' => [
-                'pastCronTime' => null,
-                'presentCronTime' => time()
-            ]
-        ];
-
-        $response = $settingRepo->create('PandaBlack', 'property', $cronData);
-
-        return $response;
     }
 }

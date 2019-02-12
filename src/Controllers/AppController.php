@@ -5,6 +5,7 @@ namespace PandaBlack\Controllers;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
+use Plenty\Plugin\CachingRepository;
 class AppController extends Controller
 {
     public function authenticate($apiCall, $params = null, $productDetails = null)
@@ -49,5 +50,20 @@ class AppController extends Controller
         if(isset($apiResponse)) {
             return $apiResponse;
         }
+    }
+
+
+    public function createCaching($key, $value)
+    {
+        $cachingRepo = pluginApp(CachingRepository::class);
+
+        $cachingRepo->add($key, $value, 1440); // 1 day
+    }
+
+
+    public function getCaching($key)
+    {
+        $cachingRepo = pluginApp(CachingRepository::class);
+        return $cachingRepo->get($key);
     }
 }

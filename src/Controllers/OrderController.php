@@ -13,22 +13,8 @@ class OrderController extends Controller
 
     public function createOrder()
     {
-        /*$app = pluginApp(AppController::class);
-        $orders = $app->authenticate('pandaBlack_orders');*/
-
-        $orders = [
-            0 => [
-                'reference_key' => 'iecw12deo',
-                'products' => [
-                    0 => [
-                        'itemVariationId' => 1081,
-                        'quantity' => 1,
-                        'price' => 749,
-                        'productTitle' => 'Sofa Creme Classicline'
-                    ]
-                ]
-            ]
-        ];
+        $app = pluginApp(AppController::class);
+        $orders = $app->authenticate('pandaBlack_orders');
 
         if(!empty($orders)) {
 
@@ -42,7 +28,7 @@ class OrderController extends Controller
                     'shippingProfileId' => 1,
                     'paymentStatus' => 1,
                     'statusId' => 1,
-                    'statusName' => $order['reference_key'],
+                    'statusName' => '',
                     'ownerId' => '',
                     'plentyId' => $this->getPlentyPluginInfo(),
                     'addressRelations' => [
@@ -100,7 +86,7 @@ class OrderController extends Controller
             'name1' => 'PANDA.BLACK GmbH',
             'address1' => 'Friedrichstraße',
             'address2' => '123',
-            'address3' => 'Order Id ' . $referenceKey,
+            'address3' => 'Ref Id ' . $referenceKey,
             'postalCode' => '10711',
             'town' => 'Berlin',
             'countryId' => 1
@@ -117,7 +103,7 @@ class OrderController extends Controller
             'name1' => 'PANDA.BLACK GmbH',
             'address1' => 'Friedrichstraße',
             'address2' => '123',
-            'address3' => 'Bestellung Id ' . $referenceKey,
+            'address3' => 'Ref Id ' . $referenceKey,
             'postalCode' => '10711',
             'town' => 'Berlin',
             'countryId' => 1
