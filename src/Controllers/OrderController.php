@@ -60,12 +60,10 @@ class OrderController extends Controller
                 $orderItems = [];
                 foreach($order['products'] as $productDetails)
                 {
-                    return $productDetails;
-
-                    /*$orderItems[] = [
+                    $orderItems[] = [
                         'typeId' => 1,
                         'itemVariationId' => $productDetails['itemVariationId'],
-                        'quantity' => 1,
+                        'quantity' => $productDetails['quantity'],
                         'orderItemName' => $productDetails['productTitle'],
                         'amounts' => [
                             0 => [
@@ -76,12 +74,12 @@ class OrderController extends Controller
                                 'priceOriginalGross' => $productDetails['price']
                             ]
                         ]
-                    ];*/
+                    ];
                 }
 
-                //$data['orderItems'] = $orderItems;
+                $data['orderItems'] = $orderItems;
 
-                //return $orders;
+                return $orders;
             }
         }
     }
