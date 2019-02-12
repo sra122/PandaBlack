@@ -32,11 +32,9 @@ class OrderController extends Controller
 
         if(!empty($orders)) {
 
-            foreach($orders[0] as $order)
+            foreach($orders as $order)
             {
-
-                return $order;
-                /*$ordersRepo = pluginApp(OrderRepositoryContract::class);
+                $ordersRepo = pluginApp(OrderRepositoryContract::class);
 
                 $data = [
                     'typeId' => 1, // sales order
@@ -44,7 +42,7 @@ class OrderController extends Controller
                     'shippingProfileId' => 1,
                     'paymentStatus' => 1,
                     'statusId' => 1,
-                    'statusName' => '',
+                    'statusName' => $order['reference_key'],
                     'ownerId' => '',
                     'plentyId' => $this->getPlentyPluginInfo(),
                     'addressRelations' => [
@@ -60,9 +58,11 @@ class OrderController extends Controller
                 ];
 
                 $orderItems = [];
-                foreach($order['products'][0] as $productDetails)
+                foreach($order['products'] as $productDetails)
                 {
-                    $orderItems[] = [
+                    return $productDetails;
+
+                    /*$orderItems[] = [
                         'typeId' => 1,
                         'itemVariationId' => $productDetails['itemVariationId'],
                         'quantity' => 1,
@@ -76,12 +76,12 @@ class OrderController extends Controller
                                 'priceOriginalGross' => $productDetails['price']
                             ]
                         ]
-                    ];
+                    ];*/
                 }
 
-                $data['orderItems'] = $orderItems;
+                //$data['orderItems'] = $orderItems;
 
-                return $orders;*/
+                //return $orders;
             }
         }
     }
