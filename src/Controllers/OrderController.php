@@ -79,7 +79,7 @@ class OrderController extends Controller
 
                 $data['orderItems'] = $orderItems;
 
-                return $data;
+                return $orders;
 
                 //$ordersRepo->createOrder($data);
             }
