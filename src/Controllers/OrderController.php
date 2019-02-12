@@ -34,7 +34,9 @@ class OrderController extends Controller
 
             foreach($orders[0] as $order)
             {
-                $ordersRepo = pluginApp(OrderRepositoryContract::class);
+
+                return $order;
+                /*$ordersRepo = pluginApp(OrderRepositoryContract::class);
 
                 $data = [
                     'typeId' => 1, // sales order
@@ -79,9 +81,7 @@ class OrderController extends Controller
 
                 $data['orderItems'] = $orderItems;
 
-                return $orders;
-
-                //$ordersRepo->createOrder($data);
+                return $orders;*/
             }
         }
     }
