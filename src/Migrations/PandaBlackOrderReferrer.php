@@ -6,6 +6,9 @@ use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 
 class PandaBlackOrderReferrer
 {
+    /** @var SettingsHelper */
+    protected $Settings;
+
     public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->Settings = $SettingsHelper;
