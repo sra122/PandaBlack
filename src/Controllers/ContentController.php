@@ -23,33 +23,48 @@ class ContentController extends Controller
 
         /** @var SettingsRepositoryContract $settingsRepositoryContract */
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
+        /** @var OrderReferrerRepositoryContract $orderReferrerRepositoryContract */
+        $orderReferrerRepositoryContract = pluginApp(OrderReferrerRepositoryContract::class);
 
         /** @var Settings[] $properties */
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
-        if (empty($properties)) {
-            $propertyId = null;
-            $settings = [];
-        } else {
-            $propertyId = $properties[0]->id;
-            $settings = $properties[0]->settings;
+        $propertyId = null;
+        $settings = [];
+
+        foreach ($properties as $key => $property) {
+            if ($key === 0) {
+                $settings = $property->settings;
+                $propertyId = $property->id;
+            } else {
+                $settings = array_merge($settings, $property->settings);
+            }
         }
 
+        return $settings;
+
         if (empty($settings['orderReferrerId'])) {
-            /** @var OrderReferrerRepositoryContract $orderReferrerRepo */
-            $orderReferrerRepository = pluginApp(OrderReferrerRepositoryContract::class);
             /** @var array[] $orderReferrers */
-            $orderReferrers = $orderReferrerRepository->getList(['id', 'name', 'backendName']);
+            $orderReferrers = $orderReferrerRepositoryContract->getList(['id', 'name', 'backendName']);
 
             foreach ($orderReferrers as $orderReferrer) {
                 if ($orderReferrer['name'] === 'PandaBlack' && $orderReferrer['backendName'] === 'PandaBlack') {
                     $settings['orderReferrerId'] = $orderReferrer['id'];
+
+                    if ($propertyId === null) {
+                        $settingsRepositoryContract->create('PandaBlack', 'property', $settings);
+                    } else {
+                        $settingsRepositoryContract->update($settings, $propertyId);
+                    }
+
                     break;
                 }
             }
         }
 
-        return $settings;
+        $orderReferrer = $orderReferrerRepositoryContract->getReferrerById($settings['orderReferrerId']);
+
+        return $orderReferrer;
 
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
