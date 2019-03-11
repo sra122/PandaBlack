@@ -39,7 +39,7 @@ class ContentController extends Controller
         /** @var Settings[] $properties */
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
-        return [$this->Settings->get('test')];
+        return $properties;
 
         /*$settings = [];
 
