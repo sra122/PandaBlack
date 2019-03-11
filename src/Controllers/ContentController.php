@@ -26,7 +26,7 @@ class ContentController extends Controller
         /** @var Settings $properties */
         $properties = $settingsCorrelationFactory->find('PandaBlack', 'property');
 
-        return $properties->toArray();
+        return $properties;
 
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
