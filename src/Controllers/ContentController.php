@@ -2,6 +2,7 @@
 namespace PandaBlack\Controllers;
 
 use Plenty\Modules\Market\Settings\Models\Settings;
+use Plenty\Modules\Order\Referrer\Models\OrderReferrer;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
@@ -30,6 +31,15 @@ class ContentController extends Controller
             $settings = [];
         } else {
             $settings = $properties[0]->settings;
+        }
+
+        if (empty($settings['orderReferrerId'])) {
+            /** @var OrderReferrerRepositoryContract $orderReferrerRepo */
+            $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
+            /** @var OrderReferrer[] $orderReferrerLists */
+            $orderReferrerLists = $orderReferrerRepo->getList(['name']);
+
+            return $orderReferrerLists;
         }
 
         return $settings;
