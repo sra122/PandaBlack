@@ -16,12 +16,12 @@ use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIden
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
-    /** @var SettingsHelper $SettingsHelper */
-    protected $SettingsHelper;
+    /** @var SettingsHelper */
+    protected $Settings;
 
     public function __construct(SettingsHelper $SettingsHelper)
     {
-        $this->SettingsHelper = $SettingsHelper;
+        $this->Settings = $SettingsHelper;
     }
 
     /**
@@ -29,7 +29,7 @@ class ContentController extends Controller
      */
     public function productDetails()
     {
-        $this->SettingsHelper->set('test', 123);
+        $this->Settings->set('test', 123);
 
         /** @var SettingsRepositoryContract $settingsRepositoryContract */
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
@@ -39,7 +39,7 @@ class ContentController extends Controller
         /** @var Settings[] $properties */
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
-        return $properties;
+        return [$this->Settings->get('test')];
 
         /*$settings = [];
 
