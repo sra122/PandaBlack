@@ -2,6 +2,7 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
@@ -17,16 +18,12 @@ use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
  */
 class AuthController extends Controller
 {
+    /** @var SettingsHelper */
+    protected $Settings;
 
-    public $properties;
-
-    public function getProperties()
+    public function __construct(SettingsHelper $SettingsHelper)
     {
-        $settingsCorrelationFactory = pluginApp(SettingsRepositoryContract::class);
-
-        $properties = $settingsCorrelationFactory->find('PandaBlack', 'property');
-
-        $this->properties = $properties;
+        $this->Settings = $SettingsHelper;
     }
 
     /**
@@ -70,93 +67,15 @@ class AuthController extends Controller
      */
     public function tokenStorage($tokenInformation)
     {
-        $settingsRepo = pluginApp(SettingsRepositoryContract::class);
-        $this->getProperties();
-
-        $tokenDetails = [];
-
-        foreach($this->properties as $key => $property)
-        {
-            if(isset($property->settings['pbToken']) && count($tokenDetails) === 0) {
-                $tokenDetails[$property->id] = $property->settings['pbToken'];
-            }
-        }
-
-        // Removing if any Extra Session Properties are created
-        if(count($tokenDetails) > 1) {
-            $tokenCount = 0;
-            foreach($tokenDetails as $key => $tokenDetail)
-            {
-                $tokenCount++;
-                if($tokenCount > 1) {
-                    $settingsRepo->delete($key);
-                }
-            }
-        }
-
         $tokenInformation['Response']['expires_in'] = time() + $tokenInformation['Response']['expires_in'];
         $tokenInformation['Response']['refresh_token_expires_in'] = time() + $tokenInformation['Response']['refresh_token_expires_in'];
 
-        $data = [
-            'pbToken' => $tokenInformation['Response']
-        ];
-
-        if(count($tokenDetails) === 0) {
-            $settingsRepo->create('PandaBlack', 'property', $data);
-        } else {
-            foreach($tokenDetails as $key => $tokenDetail)
-            {
-                $settingsRepo->update($data, $key);
-            }
-        }
+        $this->Settings->set('pbToken', $tokenInformation['Response']);
     }
 
-    /**
-     * @param SettingsRepositoryContract $settingsRepo
-     * @return mixed
-     *
-     */
     public function sessionCreation()
     {
-        $settingsRepo = pluginApp(SettingsRepositoryContract::class);
-        $this->getProperties();
-
-        $sessionValues = [];
-
-        foreach($this->properties as $key => $property)
-        {
-            if(isset($property->settings['sessionTime']) && count($sessionValues) === 0) {
-                $sessionValues[$property->id] = $property->settings['sessionTime'];
-            }
-        }
-
-        $time = [
-            'sessionTime' => time()
-        ];
-
-        // Removing if any Extra Session Properties are created
-        if(count($sessionValues) > 1) {
-            $sessionCount = 0;
-            foreach($sessionValues as $key => $sessionValue)
-            {
-                $sessionCount++;
-                if($sessionCount > 1) {
-                    $settingsRepo->delete($key);
-                }
-            }
-        }
-
-        if(count($sessionValues) === 0) {
-            $response = $settingsRepo->create('PandaBlack', 'property', $time);
-            return $response;
-        } else {
-            foreach($sessionValues as $key => $sessionValue)
-            {
-                if((time() - $sessionValue) > 600) {
-                    $settingsRepo->update($time, $key);
-                }
-            }
-        }
+        $this->Settings->set('sessionTime', time());
     }
 
     /**
@@ -164,51 +83,23 @@ class AuthController extends Controller
      */
     public function sessionCheck()
     {
-        $this->getProperties();
+        $sessionTime = $this->Settings->get('sessionTime');
 
-        $sessionValues = [];
-
-        foreach($this->properties as $key => $property)
-        {
-            if(isset($property->settings['sessionTime']) && count($sessionValues) === 0) {
-                $sessionValues[$property->id] = $property->settings['sessionTime'];
-            }
-        }
-
-        if(count($sessionValues) === 1) {
-            foreach($sessionValues as $key => $sessionValue)
-            {
-                if((time() - $sessionValue) < 600) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-        return false;
-
+        return $sessionTime !== null && (time() - $sessionTime) < 600;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function tokenExpireTime()
     {
-        $this->getProperties();
+        $tokenData = $this->Settings->get('pbToken');
 
-        $tokenDetails = [];
-
-        foreach($this->properties as $key => $property)
-        {
-            if(isset($property->settings['pbToken']) && count($tokenDetails) === 0) {
-                $tokenDetails[$property->id] = $property->settings['pbToken']['expires_in'];
-            }
+        if ($tokenData === null || !isset($tokenData['expires_in'])) {
+            return null;
         }
 
-        foreach($tokenDetails as $key => $tokenDetail)
-        {
-            return $tokenDetail;
-        }
+        return $tokenData['expires_in'];
     }
 
     public function createReferrerId()
