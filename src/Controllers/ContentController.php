@@ -42,8 +42,7 @@ class ContentController extends Controller
             $orderReferrers = $orderReferrerRepository->getList(['id', 'name', 'backendName']);
 
             foreach ($orderReferrers as $orderReferrer) {
-                if ($orderReferrer['name'] === 'PandaBlack' && $orderReferrer['backEndName'] === 'PandaBlack') {
-                    return $orderReferrer;
+                if ($orderReferrer['name'] === 'PandaBlack' && $orderReferrer['backendName'] === 'PandaBlack') {
                     $settings['orderReferrerId'] = $orderReferrer['id'];
                     break;
                 }
