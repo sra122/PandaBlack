@@ -38,6 +38,7 @@ class SettingsHelper
     public function get($key)
     {
         $settingProperty = $this->getSettingProperty();
+        return $settingProperty->toArray();
         if ($settingProperty === null || !isset($settingProperty->settings[$key])) {
             return null;
         }
