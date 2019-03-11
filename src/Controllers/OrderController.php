@@ -22,6 +22,7 @@ class OrderController extends Controller
             {
                 $ordersRepo = pluginApp(OrderRepositoryContract::class);
 
+
                 $data = [
                     'typeId' => 1, // sales order
                     'methodOfPaymentId' => 1,
