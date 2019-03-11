@@ -57,7 +57,6 @@ class SettingsHelper
             $this->hasSettingProperty = null;
             $this->settingProperty = null;
         }
-
     }
 
 }
