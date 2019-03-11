@@ -56,8 +56,6 @@ class ContentController extends Controller
             ]
         ]);
 
-        return [1];
-
         $itemRepository->setFilters([
             'referrerId' => $this->Settings->get('orderReferrerId')
         ]);
