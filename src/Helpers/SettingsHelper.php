@@ -1,5 +1,7 @@
 <?php
 
+namespace PandaBlack\Helpers;
+
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Market\Settings\Models\Settings;
 
