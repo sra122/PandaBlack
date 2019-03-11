@@ -46,7 +46,7 @@ class ContentController extends Controller
 
         $orderReferrer = $orderReferrerRepositoryContract->getReferrerById($this->Settings->get('orderReferrerId'));
 
-        return $orderReferrer;
+        return [$orderReferrer];
 
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
