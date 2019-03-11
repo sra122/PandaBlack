@@ -52,10 +52,10 @@ class ContentController extends Controller
 
         return $properties;
 
-        return $settings;
+        /*return $settings;
 
         if (empty($settings['orderReferrerId'])) {
-            /** @var array[] $orderReferrers */
+            /** @var array[] $orderReferrers *
             $orderReferrers = $orderReferrerRepositoryContract->getList(['id', 'name', 'backendName']);
 
             foreach ($orderReferrers as $orderReferrer) {
@@ -75,7 +75,7 @@ class ContentController extends Controller
 
         $orderReferrer = $orderReferrerRepositoryContract->getReferrerById($settings['orderReferrerId']);
 
-        return $orderReferrer;
+        return $orderReferrer;*/
 
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
