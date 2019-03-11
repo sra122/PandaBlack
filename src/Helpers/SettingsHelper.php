@@ -8,21 +8,21 @@ use Plenty\Modules\Market\Settings\Models\Settings;
 class SettingsHelper
 {
     /** @var SettingsRepositoryContract */
-    protected $settingsRepositoryContract;
+    protected $SettingsRepositoryContract;
     /** @var Settings */
     protected $settingProperty;
     /** @var bool */
     protected $hasSettingProperty;
 
-    public function __construct(SettingsRepositoryContract $settingsRepositoryContract)
+    public function __construct(SettingsRepositoryContract $SettingsRepositoryContract)
     {
-        $this->settingsRepositoryContract = $settingsRepositoryContract;
+        $this->SettingsRepositoryContract = $SettingsRepositoryContract;
     }
     protected function getSettingProperty()
     {
         if ($this->hasSettingProperty === null) {
             /** @var Settings[] $properties */
-            $properties = $this->settingsRepositoryContract->find('PandaBlack', 'property');
+            $properties = $this->SettingsRepositoryContract->find('PandaBlack', 'property');
 
             if (empty($properties)) {
                 $this->hasSettingProperty = false;
@@ -49,11 +49,11 @@ class SettingsHelper
     {
         $settingProperty = $this->getSettingProperty();
         if ($settingProperty === null) {
-            $this->settingProperty = $this->settingsRepositoryContract->create('PandaBlack', 'property', [$key => $value]);
+            $this->settingProperty = $this->SettingsRepositoryContract->create('PandaBlack', 'property', [$key => $value]);
             $this->hasSettingProperty = true;
         } else {
             $this->settingProperty->settings[$key] = $value;
-            $this->settingsRepositoryContract->update($this->settingProperty->settings, $this->settingProperty->id);
+            $this->SettingsRepositoryContract->update($this->settingProperty->settings, $this->settingProperty->id);
         }
 
     }
