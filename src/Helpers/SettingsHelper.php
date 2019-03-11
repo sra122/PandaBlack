@@ -55,6 +55,8 @@ class SettingsHelper
         } else {
             $this->settingProperty->settings[$key] = $value;
             $this->SettingsRepositoryContract->update($this->settingProperty->settings, $this->settingProperty->id);
+
+            return [123];
         }
 
     }
