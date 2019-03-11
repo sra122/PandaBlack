@@ -1,6 +1,7 @@
 <?php
 namespace PandaBlack\Controllers;
 
+use Plenty\Modules\Market\Settings\Models\Settings;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
@@ -19,11 +20,13 @@ class ContentController extends Controller
     public function productDetails()
     {
 
+        /** @var SettingsRepositoryContract $settingsCorrelationFactory */
         $settingsCorrelationFactory = pluginApp(SettingsRepositoryContract::class);
 
+        /** @var Settings $properties */
         $properties = $settingsCorrelationFactory->find('PandaBlack', 'property');
 
-        return $properties;
+        return $properties->toArray();
 
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
