@@ -30,7 +30,7 @@ class OrderController extends Controller
                     'statusId' => 1,
                     'statusName' => '',
                     'ownerId' => '',
-                    'plentyId' => config('plentyId'),
+                    'plentyId' => $this->getPlentyPluginInfo(),
                     'addressRelations' => [
                         [
                             'typeId' => self::BILLING_ADDRESS,
@@ -67,6 +67,14 @@ class OrderController extends Controller
                 $ordersRepo->createOrder($data);
             }
         }
+    }
+
+
+    private function getPlentyPluginInfo()
+    {
+        $plentyId = pluginApp(Application::class);
+
+        return $plentyId->getPlentyId();
     }
 
 
