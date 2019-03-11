@@ -37,7 +37,7 @@ class ContentController extends Controller
             /** @var OrderReferrerRepositoryContract $orderReferrerRepo */
             $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
             /** @var OrderReferrer[] $orderReferrerLists */
-            $orderReferrerLists = $orderReferrerRepo->getList(['id', 'name']);
+            $orderReferrerLists = $orderReferrerRepo->getList(['id', 'name', 'backendName']);
 
             return $orderReferrerLists;
         }
@@ -74,7 +74,7 @@ class ContentController extends Controller
         ]);
 
         $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
-        $orderReferrerLists = $orderReferrerRepo->getList(['name', 'id', 'backendName']);
+        $orderReferrerLists = $orderReferrerRepo->getList(['name', 'id']);
 
         $pandaBlackReferrerID = [];
 
