@@ -24,7 +24,7 @@ class ContentController extends Controller
         /** @var SettingsRepositoryContract $settingsRepositoryContract */
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
 
-        $settingsRepositoryContract->create('PandaBlack', []);
+        $settingsRepositoryContract->create('PandaBlack', 'property', []);
         /** @var Settings[] $properties */
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
