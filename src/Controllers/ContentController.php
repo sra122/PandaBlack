@@ -2,8 +2,6 @@
 namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\SettingsHelper;
-use Plenty\Modules\Market\Settings\Models\Settings;
-use Plenty\Modules\Order\Referrer\Models\OrderReferrer;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
@@ -29,29 +27,6 @@ class ContentController extends Controller
      */
     public function productDetails()
     {
-        /** @var OrderReferrerRepositoryContract $orderReferrerRepositoryContract */
-        $orderReferrerRepositoryContract = pluginApp(OrderReferrerRepositoryContract::class);
-
-        if (empty($settings['orderReferrerId'])) {
-            /** @var array[] $orderReferrers */
-            $orderReferrers = $orderReferrerRepositoryContract->getList(['id', 'name', 'backendName']);
-
-            foreach ($orderReferrers as $orderReferrer) {
-                if ($orderReferrer['name'] === 'PandaBlack' && $orderReferrer['backendName'] === 'PandaBlack') {
-                    $this->Settings->set('orderReferrerId', $orderReferrer['id']);
-                    break;
-                }
-            }
-        }
-
-        try {
-            $orderReferrer = $orderReferrerRepositoryContract->getReferrerById($this->Settings->get('orderReferrerId') + 200);
-        } catch (\Exception $e) {
-            return [$e->getMessage()];
-        }
-
-        return [$orderReferrer];
-
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
         $itemRepository->setSearchParams([
@@ -81,23 +56,9 @@ class ContentController extends Controller
             ]
         ]);
 
-        $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
-        $orderReferrerLists = $orderReferrerRepo->getList(['name', 'id']);
-
-        $pandaBlackReferrerID = [];
-
-        foreach($orderReferrerLists as $key => $orderReferrerList)
-        {
-            if(trim($orderReferrerList->name) === 'PandaBlack' && count($pandaBlackReferrerID) === 0) {
-                array_push($pandaBlackReferrerID, $orderReferrerList);
-            }
-        }
-
-        foreach($pandaBlackReferrerID as $pandaBlackId) {
-            $itemRepository->setFilters([
-                'referrerId' => (int)$pandaBlackId['id']
-            ]);
-        }
+        $itemRepository->setFilters([
+            'referrerId' => $this->Settings->get('orderReferrerId')
+        ]);
 
 
         $resultItems = $itemRepository->search();
@@ -114,7 +75,7 @@ class ContentController extends Controller
             $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
         }
 
-        foreach($resultItems->getResult() as $key => $variation) {
+        foreach($resultItems as $key => $variation) {
 
             // Update only if products are updated in last 1 hour.
             if((time() - strtotime($variation['updatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
