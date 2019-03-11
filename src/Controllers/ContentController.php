@@ -49,6 +49,7 @@ class ContentController extends Controller
 
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
+
         return $properties;
 
         return $settings;
