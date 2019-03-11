@@ -24,17 +24,14 @@ class ContentController extends Controller
         /** @var SettingsRepositoryContract $settingsRepositoryContract */
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
 
-        $settingsRepositoryContract->create('PandaBlack', 'property', []);
         /** @var Settings[] $properties */
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
-
-
-        return $properties;
-
         if (empty($properties)) {
+            $propertyId = null;
             $settings = [];
         } else {
+            $propertyId = $properties[0]->id;
             $settings = $properties[0]->settings;
         }
 
@@ -46,7 +43,7 @@ class ContentController extends Controller
 
             foreach ($orderReferrers as $orderReferrer) {
                 if ($orderReferrer['name'] === 'PandaBlack' && $orderReferrer['backEndName'] === 'PandaBlack') {
-                    return $orderReferrer;
+                    $settings['orderReferrerId'] = $orderReferrer['id'];
                 }
             }
         }
