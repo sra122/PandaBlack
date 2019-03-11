@@ -21,11 +21,16 @@ class ContentController extends Controller
     public function productDetails()
     {
 
-        /** @var SettingsRepositoryContract $settingsCorrelationFactory */
-        $settingsCorrelationFactory = pluginApp(SettingsRepositoryContract::class);
+        /** @var SettingsRepositoryContract $settingsRepositoryContract */
+        $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
 
+        $settingsRepositoryContract->create('PandaBlack', []);
         /** @var Settings[] $properties */
-        $properties = $settingsCorrelationFactory->find('PandaBlack', 'property');
+        $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
+
+
+
+        return $properties;
 
         if (empty($properties)) {
             $settings = [];
@@ -35,11 +40,15 @@ class ContentController extends Controller
 
         if (empty($settings['orderReferrerId'])) {
             /** @var OrderReferrerRepositoryContract $orderReferrerRepo */
-            $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
-            /** @var OrderReferrer[] $orderReferrerLists */
-            $orderReferrerLists = $orderReferrerRepo->getList(['id', 'name', 'backendName']);
+            $orderReferrerRepository = pluginApp(OrderReferrerRepositoryContract::class);
+            /** @var array[] $orderReferrers */
+            $orderReferrers = $orderReferrerRepository->getList(['id', 'name', 'backendName']);
 
-            return $orderReferrerLists;
+            foreach ($orderReferrers as $orderReferrer) {
+                if ($orderReferrer['name'] === 'PandaBlack' && $orderReferrer['backEndName'] === 'PandaBlack') {
+                    return $orderReferrer;
+                }
+            }
         }
 
         return $settings;
