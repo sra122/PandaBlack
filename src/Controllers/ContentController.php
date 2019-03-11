@@ -44,7 +44,11 @@ class ContentController extends Controller
             }
         }
 
-        $orderReferrer = $orderReferrerRepositoryContract->getReferrerById($this->Settings->get('orderReferrerId') + 200);
+        try {
+            $orderReferrer = $orderReferrerRepositoryContract->getReferrerById($this->Settings->get('orderReferrerId') + 200);
+        } catch (\Exception $e) {
+            return [$e->getMessage()];
+        }
 
         return [$orderReferrer];
 
