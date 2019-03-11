@@ -29,17 +29,27 @@ class ContentController extends Controller
         /** @var Settings[] $properties */
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
-        $propertyId = null;
         $settings = [];
 
         foreach ($properties as $key => $property) {
             if ($key === 0) {
                 $settings = $property->settings;
-                $propertyId = $property->id;
             } else {
                 $settings = array_merge($settings, $property->settings);
             }
         }
+
+        foreach ($properties as $key => $property) {
+            if ($key === 0) {
+                $settingsRepositoryContract->update($settings, $property->id);
+            } else {
+                $settingsRepositoryContract->delete($settings, $property->id);
+            }
+        }
+
+        $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
+
+        return $properties;
 
         return $settings;
 
