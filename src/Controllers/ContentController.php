@@ -43,7 +43,9 @@ class ContentController extends Controller
 
             foreach ($orderReferrers as $orderReferrer) {
                 if ($orderReferrer['name'] === 'PandaBlack' && $orderReferrer['backEndName'] === 'PandaBlack') {
+                    return $orderReferrer;
                     $settings['orderReferrerId'] = $orderReferrer['id'];
+                    break;
                 }
             }
         }
