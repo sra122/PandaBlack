@@ -43,7 +43,7 @@ class ContentController extends Controller
             if ($key === 0) {
                 $settingsRepositoryContract->update($settings, $property->id);
             } else {
-                $settingsRepositoryContract->delete($settings, $property->id);
+                $settingsRepositoryContract->delete($property->id);
             }
         }
 
