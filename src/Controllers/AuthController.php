@@ -3,10 +3,8 @@
 namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\SettingsHelper;
-use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
-use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\System\Models\WebstoreConfiguration;
 use Plenty\Modules\Helper\Services\WebstoreHelper;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
@@ -32,6 +30,7 @@ class AuthController extends Controller
      */
     public function getLoginUrl(WebstoreHelper $webstoreHelper)
     {
+        /** @var WebstoreConfiguration $webstore */
         $webstore = $webstoreHelper->getCurrentWebstoreConfiguration();
 
         return [
@@ -41,23 +40,16 @@ class AuthController extends Controller
 
     public function getAuthentication(Request $request, LibraryCallContract $libCall)
     {
-        try {
-            $this->createReferrerId();
-            $sessionCheck = $this->sessionCheck();
-            if($sessionCheck) {
-                $this->sessionCreation();
-                $tokenInformation = $libCall->call(
-                    'PandaBlack::pandaBlack_authentication', ['auth_code' => $request->get('autorize_code')]
-                );
-                $this->tokenStorage($tokenInformation);
-                return 'Login was successful. This window will close automatically.<script>window.close();</script>';
-            } else {
-                return 'Login was successful. This window will close automatically.<script>window.close();</script>';
-            }
+        if($this->sessionCheck()) {
+            $tokenInformation = $libCall->call(
+                'PandaBlack::pandaBlack_authentication', ['auth_code' => $request->get('autorize_code')]
+            );
+            $this->tokenStorage($tokenInformation);
 
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), $e->getCode());
+            return 'Login was successful. This window will close automatically.<script>window.close();</script>';
         }
+
+        return 'Your session expired, please close this window and try again.';
     }
 
     /**
@@ -100,38 +92,5 @@ class AuthController extends Controller
         }
 
         return $tokenData['expires_in'];
-    }
-
-    public function createReferrerId()
-    {
-        $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
-        $orderReferrerLists = $orderReferrerRepo->getList(['name']);
-
-        $pandaBlackReferrerID = [];
-
-        foreach($orderReferrerLists as $key => $orderReferrerList)
-        {
-            if(trim($orderReferrerList->name) === 'PandaBlack') {
-                array_push($pandaBlackReferrerID, $orderReferrerList);
-            }
-        }
-
-        if(empty(array_filter($pandaBlackReferrerID))) {
-
-            $orderReferrer = $orderReferrerRepo->create([
-                'isEditable'    => true,
-                'backendName' => 'PandaBlack',
-                'name'        => 'PandaBlack',
-                'origin'      => 'plugin',
-                'isFilterable' => true
-            ])->toArray();
-            $settingsRepository = pluginApp(SettingsRepositoryContract::class);
-            $settingsRepository->create('PandaBlack', 'property', $orderReferrer);
-
-            return $orderReferrer;
-        }
-
-        return $pandaBlackReferrerID;
-
     }
 }
