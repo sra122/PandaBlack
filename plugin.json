@@ -3,28 +3,23 @@
   "name"              : "PandaBlack",
   "marketplaceName"   : {"de": "PandaBlack","en": "PandaBlack"},
   "license"           : "AGPL-3.0",
-  "isExternalTool"    : true,
   "pluginIcon"        : "icon_plugin_md.png",
   "price"             : 0.00,
   "description"       : "PandaBlack",
-  "shortDescription"  : {"de": "","en": "The Panda brings German Quality Products to China"},
+  "shortDescription"  : {
+    "de": "PANDA.BLACK bringt Ihre deutschen Produkte auf chinesische Marktplätze.",
+    "en": "PANDA.BLACK brings your german products to chinese marketplaces."
+  },
   "categories"        : ["3521"],
   "author"            : "I-ways Sales Solution GmbH",
   "authorIcon"        : "icon_author_xs.png",
   "email"             : "oliver@panda.black",
   "phone"             : "+49 30 4987 6660",
   "keywords"          : ["plentymarkets", "plugins", "layout", "template", "pandablack"],
-  "type"              : "tool",
-
-  "directDownloadLinks" : {"Windows":"download-link", "MacOs":"download-link", "Linux":"download-link"},
+  "type"              : "general",
   "forwardLink"         : "http://panda.black/",
-
-  "require"             : [],
   "namespace"           : "PandaBlack",
   "serviceProvider"     : "PandaBlack\\Providers\\PandaBlackServiceProvider",
-  "javaScriptFiles"     : [],
-  "containers"          : [],
-  "dataProviders"       : [],
   "dependencies"        : {
     "guzzlehttp/guzzle": "6.2.*"
   },
