@@ -29,7 +29,7 @@ class ContentController extends Controller
      */
     public function productDetails()
     {
-        return $this->Settings->set('test', 123);
+        $this->Settings->set('test', 123);
 
         /** @var SettingsRepositoryContract $settingsRepositoryContract */
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
