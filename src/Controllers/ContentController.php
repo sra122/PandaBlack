@@ -29,7 +29,7 @@ class ContentController extends Controller
      */
     public function productDetails()
     {
-        return $this->SettingsHelper->get('orderReferrerId');
+        $this->SettingsHelper->set('test', 123);
 
         /** @var SettingsRepositoryContract $settingsRepositoryContract */
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
@@ -38,6 +38,8 @@ class ContentController extends Controller
 
         /** @var Settings[] $properties */
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
+
+        return $properties;
 
         $settings = [];
 
