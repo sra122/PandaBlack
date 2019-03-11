@@ -24,6 +24,6 @@
     "guzzlehttp/guzzle": "6.2.*"
   },
   "runOnBuild"          : [
-    "PandaBlack\\Migrations\\GetOrderReferrer"
+    "PandaBlack\\Migrations\\MergePandaBlackSettings"
   ]
 }
