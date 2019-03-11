@@ -1,6 +1,7 @@
 <?php
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Market\Settings\Models\Settings;
 use Plenty\Modules\Order\Referrer\Models\OrderReferrer;
 use Plenty\Plugin\Controller;
@@ -15,11 +16,20 @@ use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIden
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
+    /** @var SettingsHelper $SettingsHelper */
+    protected $SettingsHelper;
+
+    public function __construct(SettingsHelper $SettingsHelper)
+    {
+        $this->SettingsHelper = $SettingsHelper;
+    }
+
     /**
      * @return array
      */
     public function productDetails()
     {
+        return $this->SettingsHelper->get('orderReferrerId');
 
         /** @var SettingsRepositoryContract $settingsRepositoryContract */
         $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
