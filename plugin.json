@@ -28,5 +28,7 @@
   "dependencies"        : {
     "guzzlehttp/guzzle": "6.2.*"
   },
-  "runOnBuild"          : []
+  "runOnBuild"          : [
+    "PandaBlack\\Migrations\\GetOrderReferrer"
+  ]
 }
