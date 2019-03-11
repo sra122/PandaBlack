@@ -1,6 +1,7 @@
 <?php
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
@@ -13,6 +14,14 @@ use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIden
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
+    /** @var SettingsHelper */
+    protected $Settings;
+
+    public function __construct(SettingsHelper $SettingsHelper)
+    {
+        $this->Settings = $SettingsHelper;
+    }
+
     /**
      * @return array
      */
@@ -47,23 +56,9 @@ class ContentController extends Controller
             ]
         ]);
 
-        $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
-        $orderReferrerLists = $orderReferrerRepo->getList(['name', 'id']);
-
-        $pandaBlackReferrerID = [];
-
-        foreach($orderReferrerLists as $key => $orderReferrerList)
-        {
-            if(trim($orderReferrerList->name) === 'PandaBlack' && count($pandaBlackReferrerID) === 0) {
-                array_push($pandaBlackReferrerID, $orderReferrerList);
-            }
-        }
-
-        foreach($pandaBlackReferrerID as $pandaBlackId) {
-            $itemRepository->setFilters([
-                'referrerId' => (int)$pandaBlackId['id']
-            ]);
-        }
+        $itemRepository->setFilters([
+            'referrerId' => $this->Settings->get('orderReferrerId')
+        ]);
 
 
         $resultItems = $itemRepository->search();
