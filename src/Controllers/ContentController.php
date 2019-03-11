@@ -41,7 +41,7 @@ class ContentController extends Controller
 
         return $properties;
 
-        $settings = [];
+        /*$settings = [];
 
         foreach ($properties as $key => $property) {
             if ($key === 0) {
@@ -62,7 +62,7 @@ class ContentController extends Controller
         $properties = $settingsRepositoryContract->find('PandaBlack', 'property');
 
 
-        return $properties;
+        return $properties;*/
 
         /*return $settings;
 
