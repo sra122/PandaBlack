@@ -18,6 +18,7 @@ class SettingsHelper
     {
         $this->SettingsRepositoryContract = $SettingsRepositoryContract;
     }
+
     protected function getSettingProperty()
     {
         if ($this->hasSettingProperty === null) {
