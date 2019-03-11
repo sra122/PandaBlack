@@ -53,10 +53,10 @@ class SettingsHelper
             $this->settingProperty = $this->SettingsRepositoryContract->create('PandaBlack', 'property', [$key => $value]);
             $this->hasSettingProperty = true;
         } else {
-            $this->settingProperty->settings[$key] = $value;
-            $this->SettingsRepositoryContract->update($this->settingProperty->settings, $this->settingProperty->id);
+            $this->SettingsRepositoryContract->update(array_merge($this->settingProperty->settings, [$key => $value]), $this->settingProperty->id);
+            $this->hasSettingProperty = null;
+            $this->settingProperty = null;
         }
-
     }
 
 }
