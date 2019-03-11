@@ -24,6 +24,7 @@ class GetOrderReferrer
      */
     public function run()
     {
+        /** @var OrderReferrerRepositoryContract $orderReferrerRepo */
         $orderReferrerRepo = pluginApp(OrderReferrerRepositoryContract::class);
         $orderReferrerLists = $orderReferrerRepo->getList(['name']);
 
@@ -42,7 +43,7 @@ class GetOrderReferrer
                 'isEditable'    => true,
                 'backendName' => 'PandaBlack',
                 'name'        => 'PandaBlack',
-                'origin'      => 'plenty',
+                'origin'      => 'plugin',
                 'isFilterable' => true
             ])->toArray();
             $settingsRepository = pluginApp(SettingsRepositoryContract::class);

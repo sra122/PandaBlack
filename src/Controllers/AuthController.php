@@ -231,7 +231,7 @@ class AuthController extends Controller
                 'isEditable'    => true,
                 'backendName' => 'PandaBlack',
                 'name'        => 'PandaBlack',
-                'origin'      => 'plenty',
+                'origin'      => 'plugin',
                 'isFilterable' => true
             ])->toArray();
             $settingsRepository = pluginApp(SettingsRepositoryContract::class);
