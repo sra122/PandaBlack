@@ -91,6 +91,6 @@ class AuthController extends Controller
             return null;
         }
 
-        return $tokenData['expires_in'];
+        return [$tokenData['expires_in']];
     }
 }
