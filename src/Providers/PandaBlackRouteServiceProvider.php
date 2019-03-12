@@ -14,7 +14,6 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
      */
     public function map(Router $router, ApiRouter $api)
     {
-        $router->get('hello', 'PandaBlack\Controllers\ContentController@productDetails');
         //Authentication route
         $router->get('markets/panda-black/auth/authentication', 'PandaBlack\Controllers\AuthController@getAuthentication');
 
