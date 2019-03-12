@@ -17,10 +17,10 @@ class OrderController extends Controller
         $orders = $app->authenticate('pandaBlack_orders');
 
         if(!empty($orders)) {
+            $ordersRepo = pluginApp(OrderRepositoryContract::class);
 
             foreach($orders as $order)
             {
-                $ordersRepo = pluginApp(OrderRepositoryContract::class);
 
 
                 $data = [
