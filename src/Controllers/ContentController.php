@@ -18,7 +18,6 @@ class ContentController extends Controller
      */
     public function productDetails()
     {
-        return ["hi"];
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
         $itemRepository->setSearchParams([
@@ -80,6 +79,7 @@ class ContentController extends Controller
         foreach($categoryMapping['entries'] as $category) {
             $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
         }
+        return ["hi"];
 
         foreach($resultItems->getResult() as $key => $variation) {
 
