@@ -17,10 +17,10 @@ class OrderController extends Controller
         $orders = $app->authenticate('pandaBlack_orders');
 
         if(!empty($orders)) {
+            $ordersRepo = pluginApp(OrderRepositoryContract::class);
 
             foreach($orders as $order)
             {
-                $ordersRepo = pluginApp(OrderRepositoryContract::class);
 
 
                 $data = [
@@ -28,9 +28,7 @@ class OrderController extends Controller
                     'methodOfPaymentId' => 1,
                     'shippingProfileId' => 1,
                     'paymentStatus' => 1,
-                    'statusId' => 1,
-                    'statusName' => '',
-                    'ownerId' => '',
+                    'statusId' => 5,
                     'plentyId' => $this->getPlentyPluginInfo(),
                     'addressRelations' => [
                         [
