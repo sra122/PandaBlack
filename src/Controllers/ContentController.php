@@ -90,10 +90,10 @@ class ContentController extends Controller
                     $variationStock = pluginApp(VariationStockRepositoryContract::class);
                     $stockData = $variationStock->listStockByWarehouse($variation['id']);
 
-                    return ["hi"];
                     $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                     $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
+                    return ["hi"];
                     $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
                     $asin = $variationMarketIdentNumber->findByVariationId($variation['id']);
 
