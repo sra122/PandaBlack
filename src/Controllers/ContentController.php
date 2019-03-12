@@ -93,10 +93,13 @@ class ContentController extends Controller
                     $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                     $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
-                    $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
-                    $asin = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                    try {
+                        $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+                        $asin = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                    } catch (\Exception $e) {
+                        $asin = '';
+                    }
 
-                    return ["hi"];
                     $textArray = $variation['item']->texts;
                     $variation['texts'] = $textArray->toArray();
 
