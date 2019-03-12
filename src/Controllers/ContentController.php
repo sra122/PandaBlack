@@ -79,7 +79,6 @@ class ContentController extends Controller
         foreach($categoryMapping['entries'] as $category) {
             $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
         }
-        return ["hi"];
 
         foreach($resultItems->getResult() as $key => $variation) {
 
@@ -103,6 +102,7 @@ class ContentController extends Controller
                     $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
                     $items[$key] = [$variation, $categoryId[$variation['variationCategories'][0]['categoryId']], $manufacturer];
 
+                    return ["hi"];
                     $exportData[$key] = array(
                         'parent_product_id' => $variation['mainVariationId'],
                         'product_id' => $variation['id'],
