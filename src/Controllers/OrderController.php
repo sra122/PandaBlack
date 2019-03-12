@@ -2,14 +2,28 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Plugin\Application;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 class OrderController extends Controller
 {
+    /** @var OrderRepositoryContract */
+    protected $OrderRepository;
+    /** @var AddressRepositoryContract */
+    protected $AddressRepository;
+
     const BILLING_ADDRESS = 1;
     const DELIVERY_ADDRESS = 2;
+
+    /** @var SettingsHelper */
+    protected $Settings;
+
+    public function __construct(SettingsHelper $SettingsHelper)
+    {
+        $this->Settings = $SettingsHelper;
+    }
 
     public function createOrder()
     {
@@ -17,7 +31,10 @@ class OrderController extends Controller
         $orders = $app->authenticate('pandaBlack_orders');
 
         if(!empty($orders)) {
-            $ordersRepo = pluginApp(OrderRepositoryContract::class);
+            $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
+            $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
+            $plentyId = $this->getPlentyPluginInfo();
+            $billingAddressId = $this->Settings->get('pb_billing_address_id');
 
             foreach($orders as $order)
             {
@@ -29,11 +46,11 @@ class OrderController extends Controller
                     'shippingProfileId' => 1,
                     'paymentStatus' => 1,
                     'statusId' => 5,
-                    'plentyId' => $this->getPlentyPluginInfo(),
+                    'plentyId' => $plentyId,
                     'addressRelations' => [
                         [
                             'typeId' => self::BILLING_ADDRESS,
-                            'addressId' => $this->createBillingAddress($order['reference_key'])->id
+                            'addressId' => $billingAddressId
                         ],
                         [
                             'typeId' => self::DELIVERY_ADDRESS,
@@ -63,7 +80,7 @@ class OrderController extends Controller
                 }
 
                 $data['orderItems'] = $orderItems;
-                $ordersRepo->createOrder($data);
+                $this->OrderRepository->createOrder($data);
             }
         }
     }
@@ -71,6 +88,7 @@ class OrderController extends Controller
 
     private function getPlentyPluginInfo()
     {
+        /** @var Application $plentyId */
         $plentyId = pluginApp(Application::class);
 
         return $plentyId->getPlentyId();
@@ -79,35 +97,16 @@ class OrderController extends Controller
 
     private function createDeliveryAddress($referenceKey)
     {
-        $addressRepo = pluginApp(AddressRepositoryContract::class);
         $deliveryAddress = [
             'gender' => 'male',
             'name1' => 'PANDA.BLACK GmbH',
-            'address1' => 'Friedrichstraße',
-            'address2' => '123',
-            'address3' => 'Ref Id ' . $referenceKey,
+            'address1' => 'Friedrichstraße 123',
+            'address2' => 'Ref Id ' . $referenceKey,
             'postalCode' => '10711',
             'town' => 'Berlin',
             'countryId' => 1
         ];
 
-        return $addressRepo->createAddress($deliveryAddress);
-    }
-
-    public function createBillingAddress($referenceKey)
-    {
-        $addressRepo = pluginApp(AddressRepositoryContract::class);
-        $billingAddress = [
-            'gender' => 'male',
-            'name1' => 'PANDA.BLACK GmbH',
-            'address1' => 'Friedrichstraße',
-            'address2' => '123',
-            'address3' => 'Ref Id ' . $referenceKey,
-            'postalCode' => '10711',
-            'town' => 'Berlin',
-            'countryId' => 1
-        ];
-
-        return $addressRepo->createAddress($billingAddress);
+        return $this->AddressRepository->createAddress($deliveryAddress);
     }
 }
