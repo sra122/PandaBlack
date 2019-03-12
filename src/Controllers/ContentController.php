@@ -18,6 +18,7 @@ class ContentController extends Controller
      */
     public function productDetails()
     {
+        return ["hi"];
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
         $itemRepository->setSearchParams([
