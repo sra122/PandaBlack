@@ -62,12 +62,12 @@ class AuthController extends Controller
         $tokenInformation['Response']['expires_in'] = time() + $tokenInformation['Response']['expires_in'];
         $tokenInformation['Response']['refresh_token_expires_in'] = time() + $tokenInformation['Response']['refresh_token_expires_in'];
 
-        $this->Settings->setCredential('pbToken', $tokenInformation['Response']);
+        $this->Settings->set('pbToken', $tokenInformation['Response']);
     }
 
     public function sessionCreation()
     {
-        $this->Settings->setCredential('sessionTime', time());
+        $this->Settings->set('sessionTime', time());
     }
 
     /**
@@ -75,7 +75,7 @@ class AuthController extends Controller
      */
     public function sessionCheck()
     {
-        $sessionTime = $this->Settings->getCredential('sessionTime');
+        $sessionTime = $this->Settings->get('sessionTime');
 
         return $sessionTime !== null && (time() - $sessionTime) < 600;
     }
@@ -85,7 +85,7 @@ class AuthController extends Controller
      */
     public function tokenExpireTime()
     {
-        $tokenData = $this->Settings->getCredential('pbToken');
+        $tokenData = $this->Settings->get('pbToken');
 
         if ($tokenData === null || !isset($tokenData['expires_in'])) {
             return null;

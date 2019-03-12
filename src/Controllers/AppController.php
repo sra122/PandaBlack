@@ -20,7 +20,7 @@ class AppController extends Controller
     public function authenticate($apiCall, $params = null, $productDetails = null)
     {
         $libCall = pluginApp(LibraryCallContract::class);
-        $token = $this->Settings->getCredential('pbToken');
+        $token = $this->Settings->get('pbToken');
 
         if ($token !== null) {
             if ($token['expires_in'] > time()) {
