@@ -75,6 +75,11 @@ class ContentController extends Controller
             $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
         }
 
+
+        $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
+        $variationStock = pluginApp(VariationStockRepositoryContract::class);
+        $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+
         foreach($resultItems as $key => $variation) {
 
             // Update only if products are updated in last 1 hour.
@@ -82,14 +87,15 @@ class ContentController extends Controller
 
                 if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
-                    $variationStock = pluginApp(VariationStockRepositoryContract::class);
                     $stockData = $variationStock->listStockByWarehouse($variation['id']);
 
-                    $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                     $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
-                    $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
-                    $asin = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                    try {
+                        $asin = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                    } catch (\Exception $e) {
+                        $asin = null;
+                    }
 
                     $textArray = $variation['item']->texts;
                     $variation['texts'] = $textArray->toArray();
