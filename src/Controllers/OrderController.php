@@ -29,8 +29,6 @@ class OrderController extends Controller
                     'shippingProfileId' => 1,
                     'paymentStatus' => 1,
                     'statusId' => 5,
-                    'statusName' => '',
-                    'ownerId' => '',
                     'plentyId' => $this->getPlentyPluginInfo(),
                     'addressRelations' => [
                         [
