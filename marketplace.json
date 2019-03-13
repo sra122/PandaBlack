@@ -1,0 +1,11 @@
+{
+  "marketplaceName"   : {"de": "PandaBlack","en": "PandaBlack"},
+  "license"           : "AGPL-3.0",
+  "price"             : 0.00,
+  "shortDescription"  : {
+    "de": "PANDA.BLACK bringt Ihre deutschen Produkte auf chinesische Marktplätze.",
+    "en": "PANDA.BLACK brings your german products to chinese marketplaces."
+  },
+  "categories"        : ["3521"],
+  "keywords"          : ["plentymarkets", "plugins", "layout", "template", "pandablack"]
+}
