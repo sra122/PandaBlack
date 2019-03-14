@@ -1,5 +1,9 @@
 # Release notes for PANDA.BLACK
 
+## v1.0.3
+
+Added german user guide and expanded english guide.
+
 ## v1.0.2
 
 Bugfixes.
