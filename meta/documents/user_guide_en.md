@@ -1,34 +1,32 @@
-# The Panda brings German Quality Products to China
+PANDA.BLACK is the direct route from plentymarkets to Chinese online marketplaces like JD.COM, Kaola, Tmall,
+Suning, WeChat etc.
 
-Germany   is   famous   for its   products   and   services   of   highest   standards   and   innovation.PANDA.BLACK brings these products and services to China by using a most modern infrastructure.
+### PANDA.BLACK works in two ways
+* NO-RISK: At the moment, PANDA.BLACK lists and sells the articles in China which you have transfered from plentymarkets
+  to PANDA.BLACK on our own calculation (pricing, translation, shipping to China, customer support, returns etc.
+  are undertaken by PANDA.BLACK).
+* CHINA DIRECT: In Q3 2019 follows the version that allows you as seller to sell in your own name via PANDA.BLACK on the
+  Chinese marketplaces.
 
-The **PANDA.BLACK PLATFORM** connects German brand owners and retailers straight with Chinese B2C  marketplaces like JD, Kaola, Suning, TMall, WeChat.Customers are  invited  to enjoy  an excellent choice of German products with guaranteed authenticity, excellent prices and
-high-level customer service.
+### Set up PANDA.BLACK in plentymarkets
+After registering for PANDA.BLACK, you can download the PANDA.BLACK plugin from plentymarkets Marketplace and install it
+using the Plugins and Plugin overview menu.
 
-PANDA.BLACK offers  two sales channels to China:
+PANDA.BLACK will come up to you after registration to clarify the contractual basis.
 
-1. **SELLING-TO-PANDA.BLACK**
+After being unlocked by PANDA.BLACK you can match your categories and hand over articles to PANDA.BLACK.
 
-    Suppliers offer and sell products on demand to PANDA.BLACK. PANDA.BLACK will offer and sell  those  items  on  the  Chinese  marketplaces  themselves. Suppliers ship parcels  via PANDA.BLACK logistics to the 
-Chinese Consumers.
+Orders from China are handed over directly to plentymarkets. The delivery address is always an address in Germany.
+All other formalities and services are provided by PANDA.BLACK.
 
-2. **SELLING-ON-YOUR-OWN**
+### Requirements for using PANDA.BLACK
+* Registration at PANDA.BLACK <a href="https://pb.i-ways-network.org/register" target="_blank">via following linkk</a>
+* Installation PANDA.BLACK plugin
+* Signing contract
+* Payment of the "Connection Fee" of € 2,500 (introductory offer until July 31, 2019 = € 1,750)
+* Membership of Bundesverband Onlinehandel e.V. (BVOH)
 
-    Suppliers are invited to use the infrastructure and services of PANDA.BLACK in order to sell on the Chinese marketplaces on  their  own name and  account. Using  PANDA.BLACK
-    logistics will be an option.
-    
-    
-
-With **PANDA.BLACK B2B** you can connect your procurement system to PANDA.BLACK and source all kind of German products directly. Supported by favourable trade policies in China’s Commerce Free Trade Zones, PANDA.BLACK cooperated with bonded warehouses to ensure a fast customs clearance and delivery. In addition, **PANDA.BLACK SHOWROOM** presents German Quality Products, visible for consumers and corporates. A first showroom is already opened at Wuhan FTZ since April 2018. Nine other cities have been inspired by that and requested a **PANDA.BLACK SHOWROOM** too.
-
-
-### SUMMARY
-
- - eCommerce platform to sell Quality Brands and Products from  Germany to China.
- - end-to-end infrastructure connects most successful German Multichannel Retailers to Chinese consumers via Chinese Marketplaces
- - Integration in your procurement system to get High Quality Products directly
- - PANDA.BLACK offers a professional multi-channel tool to sell adorable German and European Level Brands on the Chinese Market
-
+---  
 
 ## USER'S GUIDE PANDA.BLACK
 
@@ -38,42 +36,40 @@ Using the PANDA.BLACK plugin in plentymarkets requires the following steps:
 
 1. Registration on PANDA.BLACK
 
-    To sell products through PANDA.BLACK, you need a PANDA.BLACK account. You can use the following link to create one:
+	<div class="alert alert-warning">
+        To sell products through PANDA.BLACK, you need a PANDA.BLACK account.
+        <a href="https://pb.i-ways-network.org/register" target="_blank">Jetzt registrieren</a>
+    </div>
     
-    https://pb.i-ways-network.org/register
-    
-    ![Description 1](https://cdnmp.plentymarkets.com/8430/meta/images/description_1.png?raw=true)
+    ![Description 1](https://cdnmp.plentymarkets.com/9470/meta/images/description_1.png?raw=true)
 
 2. After completing the registration, you will be unlocked by a PANDA.BLACK employee and can now use the plentymarkets
     module.
 
-
 3. Please log in to your plentymarkets account.
 
-4. Go to plentymarkets Marketplace and download the PANDA.BLACK module. You can do this here:
-
-    https://marketplace.plentymarkets.com/plugins/channels/marktplaetze/pandablack_5889
+4. After you bought the plugin, install it how it is describe above in the "First steps and requirements".
   
 5.  Click on the menu item "System".
 
-    ![Description 2](https://cdnmp.plentymarkets.com/8430/meta/images/description_2.png?raw=true)
+    ![Description 2](https://cdnmp.plentymarkets.com/9470/meta/images/description_2.png?raw=true)
     
 6.  Click on the menu item "Markets"
 
-    ![Description 3](https://cdnmp.plentymarkets.com/8430/meta/images/description_3.png?raw=true)
+    ![Description 3](https://cdnmp.plentymarkets.com/9470/meta/images/description_3.png?raw=true)
     
 7.  Click on the sub-item "PANDA.BLACK"
 
-    ![Description 4](https://cdnmp.plentymarkets.com/8430/meta/images/description_4.png?raw=true)
+    ![Description 4](https://cdnmp.plentymarkets.com/9470/meta/images/description_4.png?raw=true)
 
 8.  Click on „Authentication“
 
-    ![Description 5](https://cdnmp.plentymarkets.com/8430/meta/images/description_5.png?raw=true)
+    ![Description 5](https://cdnmp.plentymarkets.com/9470/meta/images/description_5.png?raw=true)
 
 9.  Now click on the "Authenticate" button. After clicking a login page will open where you enter the login data created
     in step # 1.
 
-    ![Description 6](https://cdnmp.plentymarkets.com/8430/meta/images/description_6.png?raw=true)
+    ![Description 6](https://cdnmp.plentymarkets.com/9470/meta/images/description_6.png?raw=true)
     
 10. After successful login, please click on "Authorize". Hereby you confirm that products of
     plentymarkets may be handed over to PANDA.BLACK.
@@ -82,11 +78,11 @@ Using the PANDA.BLACK plugin in plentymarkets requires the following steps:
     categories. To do this, select on the left side the PANDA.BLACK category in which you have products want to sell.
     On the right side, you select your own category, where the product is currently located.
 
-    ![Description 7](https://cdnmp.plentymarkets.com/8430/meta/images/description_7.png?raw=true)
+    ![Description 7](https://cdnmp.plentymarkets.com/9470/meta/images/description_7.png?raw=true)
     
 12. Now click on "Create PANDA.BLACK mapping" to complete the assignment of this category.
 
-    ![Description 8](https://cdnmp.plentymarkets.com/8430/meta/images/description_8.png?raw=true)
+    ![Description 8](https://cdnmp.plentymarkets.com/9470/meta/images/description_8.png?raw=true)
     
 13. After the successful allocation of the categories, you can now go to the Products section to select products to
     transfer to PANDA.BLACK.
@@ -94,9 +90,9 @@ Using the PANDA.BLACK plugin in plentymarkets requires the following steps:
 14. In the "Articles" section, you can now select the products that are in an assigned category to create them on
     PANDA.BLACK. To do this, click on "Create Variation".
 
-    ![Description 9](https://cdnmp.plentymarkets.com/8430/meta/images/description_9.png?raw=true)
+    ![Description 9](https://cdnmp.plentymarkets.com/9470/meta/images/description_9.png?raw=true)
 
-    ![Description 10](https://cdnmp.plentymarkets.com/8430/meta/images/description_10.png?raw=true)
+    ![Description 10](https://cdnmp.plentymarkets.com/9470/meta/images/description_10.png?raw=true)
     
 15. The created variations are then processed by plentymarkets and sent to PANDA.BLACK. When you sell a product, you
     will receive a corresponding order confirmation in your order overview.
