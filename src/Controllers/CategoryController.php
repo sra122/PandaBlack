@@ -28,9 +28,24 @@ class CategoryController extends Controller
         $completeCategoryRepo = [];
         $pageNumber = 1;
         $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, ['lang' => $request->get('lang', 'de')]);
+
+        $this->categoryChildMapping($categoryInfo);
+
+        while(!$categoryInfo->isLastPage()) {
+
+            $this->categoryChildMapping($categoryInfo);
+
+            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['lang' => $request->get('lang', 'de')]);
+        }
+
+        return $completeCategoryRepo;
+    }
+
+    private function categoryChildMapping($categoryInfo)
+    {
         foreach($categoryInfo->getResult() as $category)
         {
-            if($category->parentCategoryId === null) {
+            if($category->parentCategoryId === null || $category->hasChildren) {
                 $child = [];
                 foreach($categoryInfo->getResult() as $key => $childCategory) {
                     if($childCategory->parentCategoryId === $category->id) {
@@ -41,23 +56,6 @@ class CategoryController extends Controller
             }
             array_push($completeCategoryRepo, $category);
         }
-        while(!$categoryInfo->isLastPage()) {
-            foreach($categoryInfo->getResult() as $category)
-            {
-                if($category->parentCategoryId === null) {
-                    $child = [];
-                    foreach($categoryInfo->getResult() as $key => $childCategory) {
-                        if($childCategory->parentCategoryId === $category->id) {
-                            array_push($child, $childCategory);
-                        }
-                    }
-                    $category->child = $child;
-                }
-                array_push($completeCategoryRepo, $category);
-            }
-            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['lang' => $request->get('lang', 'de')]);
-        }
-        return $completeCategoryRepo;
     }
 
 
