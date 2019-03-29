@@ -41,7 +41,6 @@ class CategoryController extends Controller
                 }
                 $category->child = $child;
             }
-            array_push($completeCategoryRepo, $category);
         }
 
         return $categoryInfo;
