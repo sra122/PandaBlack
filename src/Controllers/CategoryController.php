@@ -21,29 +21,43 @@ class CategoryController extends Controller
     public function all(Request $request)
     {
         $with = $request->get('with', []);
-
         if (!is_array($with) && strlen($with)) {
             $with = explode(',', $with);
         }
-
         $categoryRepo = pluginApp(CategoryRepositoryContract::class);
-
-        $categoryInfo = $categoryRepo->search($categoryId = null, 1, 50, $with, ['lang' => $request->get('lang', 'de')])->getResult();
-
-        foreach($categoryInfo as $category)
+        $completeCategoryRepo = [];
+        $pageNumber = 1;
+        $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, ['lang' => $request->get('lang', 'de')]);
+        foreach($categoryInfo->getResult() as $category)
         {
             if($category->parentCategoryId === null) {
                 $child = [];
-                foreach($categoryInfo as $key => $childCategory) {
+                foreach($categoryInfo->getResult() as $key => $childCategory) {
                     if($childCategory->parentCategoryId === $category->id) {
                         array_push($child, $childCategory);
                     }
                 }
                 $category->child = $child;
             }
+            array_push($completeCategoryRepo, $category);
         }
-
-        return $categoryInfo;
+        while(!$categoryInfo->isLastPage()) {
+            foreach($categoryInfo->getResult() as $category)
+            {
+                if($category->parentCategoryId === null) {
+                    $child = [];
+                    foreach($categoryInfo->getResult() as $key => $childCategory) {
+                        if($childCategory->parentCategoryId === $category->id) {
+                            array_push($child, $childCategory);
+                        }
+                    }
+                    $category->child = $child;
+                }
+                array_push($completeCategoryRepo, $category);
+            }
+            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['lang' => $request->get('lang', 'de')]);
+        }
+        return $completeCategoryRepo;
     }
 
 
