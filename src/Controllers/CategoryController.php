@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, ['lang' => $request->get('lang', 'de')]);
 
-        foreach($categoryInfo as $category)
+        foreach($categoryInfo->getResult() as $category)
         {
             if($category->parentCategoryId === null) {
                 $child = [];
@@ -51,7 +51,7 @@ class CategoryController extends Controller
 
         while(!$categoryInfo->isLastPage()) {
 
-            foreach($categoryInfo as $category)
+            foreach($categoryInfo->getResult() as $category)
             {
                 if($category->parentCategoryId === null) {
                     $child = [];
