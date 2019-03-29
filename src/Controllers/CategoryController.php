@@ -26,7 +26,7 @@ class CategoryController extends Controller
         }
         $categoryRepo = pluginApp(CategoryRepositoryContract::class);
         $pageNumber = 1;
-        $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, ['type' => 'item']);
+        $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, []);
 
         $this->categoryChildMapping($categoryInfo);
 
@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
             $this->categoryChildMapping($categoryInfo);
 
-            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['type' => 'item']);
+            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, []);
         }
 
         return $this->completeCategoryRepo;
