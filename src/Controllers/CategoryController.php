@@ -44,7 +44,7 @@ class CategoryController extends Controller
     {
         foreach($categoryInfo->getResult() as $category)
         {
-            if($category->parentCategoryId === null || ($category->hasChildren && array_key_exists($category->parentCategoryId, $this->completeCategoryRepo))) {
+            if($category->parentCategoryId === null || $category->hasChildren) {
                 $child = [];
                 foreach($categoryInfo->getResult() as $key => $childCategory) {
                     if($childCategory->parentCategoryId === $category->id) {
@@ -53,7 +53,7 @@ class CategoryController extends Controller
                 }
                 $category->child = $child;
             }
-            $this->completeCategoryRepo[$category->id] = $categoryInfo;
+            array_push($this->completeCategoryRepo, $categoryInfo);
         }
     }
 
