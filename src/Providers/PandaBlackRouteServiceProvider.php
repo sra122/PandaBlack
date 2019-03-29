@@ -38,6 +38,10 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
 
             //Sending Content Actions
             $router->post('markets/panda-black/products-data', 'PandaBlack\Controllers\ContentController@sendProductDetails');
+
+
+            //test
+            $router->post('test/category', 'PandaBlack\Controllers\CategoryController@all');
         });
     }
 }
