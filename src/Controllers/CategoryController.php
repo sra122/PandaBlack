@@ -16,7 +16,7 @@ use Plenty\Modules\Category\Contracts\CategoryRepositoryContract;
  */
 class CategoryController extends Controller
 {
-
+    public $completeCategoryRepo = [];
 
     public function all(Request $request)
     {
@@ -25,7 +25,6 @@ class CategoryController extends Controller
             $with = explode(',', $with);
         }
         $categoryRepo = pluginApp(CategoryRepositoryContract::class);
-        $completeCategoryRepo = [];
         $pageNumber = 1;
         $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, ['lang' => $request->get('lang', 'de')]);
 
@@ -38,7 +37,7 @@ class CategoryController extends Controller
             $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['lang' => $request->get('lang', 'de')]);
         }
 
-        return $completeCategoryRepo;
+        return $this->completeCategoryRepo;
     }
 
     private function categoryChildMapping($categoryInfo)
@@ -54,7 +53,7 @@ class CategoryController extends Controller
                 }
                 $category->child = $child;
             }
-            array_push($completeCategoryRepo, $category);
+            array_push($this->completeCategoryRepo, $category);
         }
     }
 
