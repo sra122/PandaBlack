@@ -16,8 +16,6 @@ use Plenty\Modules\Category\Contracts\CategoryRepositoryContract;
  */
 class CategoryController extends Controller
 {
-    public $completeCategoryRepo = [];
-
     public function all(Request $request)
     {
         $with = $request->get('with', []);
@@ -25,36 +23,20 @@ class CategoryController extends Controller
             $with = explode(',', $with);
         }
         $categoryRepo = pluginApp(CategoryRepositoryContract::class);
-        $pageNumber = 1;
-        $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, ['lang' => $request->get('lang', 'de')]);
-
-        $this->categoryChildMapping($categoryInfo);
-
-        while(!$categoryInfo->isLastPage()) {
-
-            $this->categoryChildMapping($categoryInfo);
-
-            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber+=1, 50, $with, ['lang' => $request->get('lang', 'de')]);
-        }
-
-        return $this->completeCategoryRepo;
-    }
-
-    private function categoryChildMapping($categoryInfo)
-    {
-        foreach($categoryInfo->getResult() as $category)
+        $categoryInfo = $categoryRepo->search($categoryId = null, 1, 50, $with, ['lang' => $request->get('lang', 'de')])->getResult();
+        foreach($categoryInfo as $category)
         {
             if($category->parentCategoryId === null) {
                 $child = [];
-                foreach($categoryInfo->getResult() as $key => $childCategory) {
+                foreach($categoryInfo as $key => $childCategory) {
                     if($childCategory->parentCategoryId === $category->id) {
                         array_push($child, $childCategory);
                     }
                 }
                 $category->child = $child;
             }
-            array_push($this->completeCategoryRepo, $categoryInfo);
         }
+        return $categoryInfo;
     }
 
 
