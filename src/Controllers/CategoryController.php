@@ -49,11 +49,12 @@ class CategoryController extends Controller
                 $child = [];
                 foreach($categoryInfo as $childCategory) {
                     if($childCategory->parentCategoryId === $category->id) {
-                        array_push($child, $childCategory);
-                    }
-
-                    if($childCategory->level === 2 && $childCategory->hasChildren) {
-                        array_push($child, $childCategory);
+                        if($childCategory->level === 2 && $childCategory->hasChildren) {
+                            $childCategory->child = 'test';
+                            array_push($child, $childCategory);
+                        } else {
+                            array_push($child, $childCategory);
+                        }
                     }
                 }
                 $category->child = $child;
