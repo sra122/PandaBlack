@@ -33,8 +33,8 @@ class CategoryController extends Controller
         $this->categoryChildMapping($categoryInfo->getResult());
 
         while(!$categoryInfo->isLastPage()) {
+            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['type' => 'item']);
             $this->categoryChildMapping($categoryInfo->getResult());
-            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber+=1, 50, $with, ['type' => 'item']);
         }
 
         return $this->completeCategoryRepo;
