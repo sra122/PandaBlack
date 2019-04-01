@@ -28,13 +28,13 @@ class CategoryController extends Controller
 
         $pageNumber = 1;
 
-        $categoryInfo = $categoryRepo->search($categoryId = null, 1, 50, $with, ['lang' => $request->get('lang', 'de')]);
+        $categoryInfo = $categoryRepo->search($categoryId = null, 1, 50, $with, ['type' => 'item']);
 
         $this->categoryChildMapping($categoryInfo->getResult());
 
         while(!$categoryInfo->isLastPage()) {
             $this->categoryChildMapping($categoryInfo->getResult());
-            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['lang' => $request->get('lang', 'de')]);
+            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber+=1, 50, $with, ['type' => 'item']);
         }
 
         return $this->completeCategoryRepo;
