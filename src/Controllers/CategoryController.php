@@ -26,7 +26,7 @@ class CategoryController extends Controller
         }
         $categoryRepo = pluginApp(CategoryRepositoryContract::class);
         $pageNumber = 1;
-        $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, []);
+        $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber, 50, $with, ['lang' => $request->get('lang', 'de')]);
 
         $this->categoryChildMapping($categoryInfo);
 
@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
             $this->categoryChildMapping($categoryInfo);
 
-            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, []);
+            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber+=1, 50, $with, ['lang' => $request->get('lang', 'de')]);
         }
 
         return $this->completeCategoryRepo;
@@ -44,7 +44,7 @@ class CategoryController extends Controller
     {
         foreach($categoryInfo->getResult() as $category)
         {
-            if($category->parentCategoryId === null || $category->hasChildren) {
+            if($category->parentCategoryId === null) {
                 $child = [];
                 foreach($categoryInfo->getResult() as $key => $childCategory) {
                     if($childCategory->parentCategoryId === $category->id) {
