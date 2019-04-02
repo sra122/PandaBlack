@@ -28,12 +28,12 @@ class CategoryController extends Controller
 
         $pageNumber = 1;
 
-        $categoryInfo = $categoryRepo->search($categoryId = null, 1, 50, $with, ['type' => 'item']);
+        $categoryInfo = $categoryRepo->search($categoryId = null, 1, 50, $with, ['type' => 'item', 'level' => 1]);
 
         $this->categoryChildMapping($categoryInfo->getResult());
 
         while(!$categoryInfo->isLastPage()) {
-            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['type' => 'item']);
+            $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['type' => 'item', 'level' => 1]);
             $this->categoryChildMapping($categoryInfo->getResult());
         }
 
@@ -84,6 +84,16 @@ class CategoryController extends Controller
         $plentyCategory->details[0]->name = $parentCategoryPath;
 
         return $response->json($plentyCategory);
+    }
+
+
+    public function getChild(Request $request, Response $response, $id)
+    {
+        $categoryRepo = pluginApp(CategoryRepositoryContract::class);
+
+        $childCategory = $categoryRepo->getChildren($id, $request->get('lang', 'de'));
+
+        return $childCategory;
     }
 
     public function getCorrelations()

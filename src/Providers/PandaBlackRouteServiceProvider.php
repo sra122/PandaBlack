@@ -25,6 +25,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             //Category Actions
             $router->get('markets/panda-black/parent-categories', 'PandaBlack\Controllers\CategoryController@all');
             $router->get('markets/panda-black/parent-categories/{id}', 'PandaBlack\Controllers\CategoryController@get');
+            $router->get('markets/panda-black/child-categories/{id}', 'PandaBlack\Controllers\CategoryController@getChild');
             $router->get('markets/panda-black/vendor-categories', 'PandaBlack\Controllers\CategoryController@getPBCategories');
             $router->get('markets/panda-black/correlations', 'PandaBlack\Controllers\CategoryController@getCorrelations');
             $router->post('markets/panda-black/edit-correlations', 'PandaBlack\Controllers\CategoryController@updateCorrelation');
