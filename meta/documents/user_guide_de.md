@@ -24,7 +24,6 @@ Alle weiteren Formalitäten und Services übernimmt PANDA.BLACK.
 * Registrierung bei PANDA.BLACK <a href="https://pb.i-ways-network.org/register" target="_blank">über folgenden Link</a>
 * Installation PANDA.BLACK Plugin
 * Unterzeichnung Vertrag
-* Zahlung der „Aufschaltgebühr“ von 2.500€ (Einführungsangebot bis 31. Juli 2019 = 1.750€)
 * Mitgliedschaft im Bundesverband Onlinehandel e.V. (BVOH)
 
 ___

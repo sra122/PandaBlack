@@ -23,7 +23,6 @@ All other formalities and services are provided by PANDA.BLACK.
 * Registration at PANDA.BLACK <a href="https://pb.i-ways-network.org/register" target="_blank">via following linkk</a>
 * Installation PANDA.BLACK plugin
 * Signing contract
-* Payment of the "Connection Fee" of € 2,500 (introductory offer until July 31, 2019 = € 1,750)
 * Membership of Bundesverband Onlinehandel e.V. (BVOH)
 
 ---  
