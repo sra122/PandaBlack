@@ -187,7 +187,7 @@ class ContentController extends Controller
 
         $unfulfilledProducts = [];
 
-        foreach($productDetails['exportData'] as $key => $productDetail)
+        /*foreach($productDetails['exportData'] as $key => $productDetail)
         {
             $emptyAttributes = [];
             $missingAttributes = [];
@@ -211,10 +211,10 @@ class ContentController extends Controller
         }
 
         $productStatus = [
-            'validProductDetails' => $productDetails,
+            'validProductDetails' => $productDetails['exportData'],
             'unfulfilledProducts' => $unfulfilledProducts
-        ];
+        ];*/
 
-        return $productStatus;
+        return $productDetails;
     }
 }
