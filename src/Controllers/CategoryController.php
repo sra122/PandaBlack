@@ -206,11 +206,11 @@ class CategoryController extends Controller
 
         $data = [
             'variationId' => 1088,
+            'countryId' => 0,
             'type' => 'ASIN',
+            'position' => 0,
             'value' => 'B2100321'
         ];
         $variationMarketIdentNumber->create($data);
-
-        return 'test';
     }
 }
