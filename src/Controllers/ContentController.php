@@ -173,9 +173,13 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        if(!empty($productDetails['exportData'])) {
+        $productStatus = $this->productStatus($productDetails);
+
+        return $productStatus;
+
+        /*if(!empty($productDetails['exportData'])) {
             $app->authenticate('products_to_pandaBlack', null, $productDetails);
-        }
+        }*/
     }
 
 
