@@ -193,7 +193,7 @@ class ContentController extends Controller
         {
             $emptyAttributes = [];
             $missingAttributes = [];
-            if(empty($productDetail['attribute'])) {
+            if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributes, $productDetail['product_id']);
                 //unset($productDetails['exportData'][$key]);
             } else {
