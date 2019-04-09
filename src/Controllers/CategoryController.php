@@ -37,6 +37,8 @@ class CategoryController extends Controller
             $this->categoryChildMapping($categoryInfo->getResult());
         }
 
+        $this->createASINInformation();
+
         return $this->completeCategoryRepo;
     }
 
@@ -194,5 +196,20 @@ class CategoryController extends Controller
         }
 
         return $pbChildCategoryTree;
+    }
+
+
+    public function createASINInformation()
+    {
+        $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+
+        $data = [
+            'variationId' => 1088,
+            'type' => 'ASIN',
+            'value' => 'B2100321'
+        ];
+        $variationMarketIdentNumber->create($data);
+
+        return 'test';
     }
 }
