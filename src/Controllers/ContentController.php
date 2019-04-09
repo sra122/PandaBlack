@@ -172,12 +172,10 @@ class ContentController extends Controller
     {
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
-        //$productStatus = $this->productStatus($productDetails);
 
-        return $productDetails;
-        /*if(!empty($productDetails['exportData'])) {
+        if(!empty($productDetails['exportData'])) {
             $app->authenticate('products_to_pandaBlack', null, $productDetails);
-        }*/
+        }
     }
 
 
@@ -187,7 +185,7 @@ class ContentController extends Controller
 
         $unfulfilledProducts = [];
 
-        /*foreach($productDetails['exportData'] as $key => $productDetail)
+        foreach($productDetails['exportData'] as $key => $productDetail)
         {
             $emptyAttributes = [];
             $missingAttributes = [];
@@ -213,8 +211,8 @@ class ContentController extends Controller
         $productStatus = [
             'validProductDetails' => $productDetails['exportData'],
             'unfulfilledProducts' => $unfulfilledProducts
-        ];*/
+        ];
 
-        return $productDetails;
+        return $productStatus;
     }
 }
