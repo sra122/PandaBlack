@@ -92,7 +92,16 @@ class ContentController extends Controller
                     $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
                     try {
-                        $asin = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                        $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
+
+                        foreach($identNumbers as $identNumber)
+                        {
+                            if($identNumber->type === 'ASIN' && $identNumber->variationId === $variation['itemId']) {
+                                $asin = $identNumber->value;
+                            } else {
+                                $asin = null;
+                            }
+                        }
                     } catch (\Exception $e) {
                         $asin = null;
                     }
