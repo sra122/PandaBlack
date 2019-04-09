@@ -96,7 +96,7 @@ class ContentController extends Controller
 
                         foreach($identNumbers as $identNumber)
                         {
-                            if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['itemId']) {
+                            if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
                                 $asin = $identNumber['value'];
                             }
                         }
