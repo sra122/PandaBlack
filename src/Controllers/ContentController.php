@@ -11,6 +11,7 @@ use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
 use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
 use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
+use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
@@ -79,6 +80,7 @@ class ContentController extends Controller
         $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
         $variationStock = pluginApp(VariationStockRepositoryContract::class);
         $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+        $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
 
         foreach($resultItems->getResult()  as $key => $variation) {
 
@@ -91,6 +93,7 @@ class ContentController extends Controller
 
                     $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
+                    //ASIN
                     try {
                         $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
 
@@ -102,6 +105,13 @@ class ContentController extends Controller
                         }
                     } catch (\Exception $e) {
                         $asin = null;
+                    }
+
+                    //SKU
+                    try {
+                        $sku = $variationSKURepository->findByVariationId($variation['id']);
+                    } catch (\Exception $e) {
+                        $sku = null;
                     }
 
                     $textArray = $variation['item']->texts;
@@ -129,7 +139,8 @@ class ContentController extends Controller
                         'status' => $variation['isActive'],
                         'brand' => $manufacturer['name'],
                         'last_update_at' => $variation['updatedAt'],
-                        'asin' => $asin
+                        'asin' => $asin,
+                        'sku' => $sku
                     );
 
                     $attributeSets = [];
