@@ -195,7 +195,7 @@ class ContentController extends Controller
             $missingAttributes = [];
             if(empty($productDetail['attribute'])) {
                 array_push($emptyAttributes, $productDetail['product_id']);
-                unset($productDetails['exportData'][$key]);
+                //unset($productDetails['exportData'][$key]);
             } else {
                 $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
 
