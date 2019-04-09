@@ -172,9 +172,49 @@ class ContentController extends Controller
     {
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
+        $productStatus = $this->productStatus($productDetails);
 
-        if(!empty($productDetails['exportData'])) {
+        return $productStatus;
+        /*if(!empty($productDetails['exportData'])) {
             $app->authenticate('products_to_pandaBlack', null, $productDetails);
+        }*/
+    }
+
+
+    private function productStatus($productDetails)
+    {
+        $app = pluginApp(AppController::class);
+
+        $unfulfilledProducts = [];
+
+        foreach($productDetails['exportData'] as $key => $productDetail)
+        {
+            $emptyAttributes = [];
+            $missingAttributes = [];
+            if(empty($productDetail['attribute'])) {
+                array_push($emptyAttributes, $productDetail['product_id']);
+                unset($productDetails['exportData'][$key]);
+            } else {
+                $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
+
+                foreach($attributes as $attributeKey => $attribute) {
+                    if(!array_key_exists($attributeKey, $productDetail['attributes'])) {
+                        $missingAttributes[$key][$attributeKey] = $attribute['name'];
+                    }
+                }
+            }
+
+            $unfulfilledProducts = [
+                'emptyAttributeProducts' => $emptyAttributes,
+                'missingAttributeProducts' => $missingAttributes
+            ];
         }
+
+        $productStatus = [
+            'validProductDetails' => $productDetails,
+            'unfulfilledProducts' => $unfulfilledProducts
+        ];
+
+        return $productStatus;
     }
 }
