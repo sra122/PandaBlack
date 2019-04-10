@@ -82,10 +82,14 @@ class ContentController extends Controller
         $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
         $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
 
+        $variationItems = [];
+
         foreach($resultItems->getResult()  as $key => $variation) {
 
+            array_push($variationItems, $variation);
+
             // Update only if products are updated in last 1 hour.
-            //if((time() - strtotime($variation['updatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+            /*if((time() - strtotime($variation['updatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                 if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -153,11 +157,11 @@ class ContentController extends Controller
 
                     $exportData[$key]['attributes'] = $attributeSets;
                 }
-            //}
+            }*/
         }
 
         $templateData = array(
-            'exportData' => $exportData
+            'exportData' => $variationItems
         );
         return $templateData;
     }
@@ -173,10 +177,10 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        $productStatus = $this->productStatus($productDetails);
+        //$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
-            $app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
+            //$app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
         }
 
         return $productDetails;
