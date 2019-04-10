@@ -161,7 +161,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $variationItems
+            'exportData' => $exportData
         );
         return $templateData;
     }
