@@ -191,25 +191,28 @@ class ContentController extends Controller
 
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
-            $emptyAttributes = [];
-            $missingAttributes = [];
+            $emptyAttributeProducts = [];
+            $missingAttributeProducts = [];
             if(empty($productDetail['attributes'])) {
-                array_push($emptyAttributes, $productDetail['product_id']);
-                //unset($productDetails['exportData'][$key]);
+                array_push($emptyAttributeProducts, $productDetail['product_id']);
+                unset($productDetails['exportData'][$key]);
             } else {
                 $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
 
                 foreach($attributes as $attributeKey => $attribute) {
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         //$missingAttributes[$productDetail['product_id']][$attributeKey] = $attribute['name'] . '-PB-' . $attributeKey;
-                        array_push($missingAttributes, $productDetail['product_id']);
+                        if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
+                            array_push($missingAttributeProducts, $productDetail['product_id']);
+                            unset($productDetails['exportData'][$key]);
+                        }
                     }
                 }
             }
 
             $unfulfilledProducts = [
-                'emptyAttributeProducts' => $emptyAttributes,
-                'missingAttributeProducts' => $missingAttributes
+                'emptyAttributeProducts' => $emptyAttributeProducts,
+                'missingAttributeProducts' => $missingAttributeProducts
             ];
         }
 
