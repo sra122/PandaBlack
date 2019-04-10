@@ -200,7 +200,7 @@ class ContentController extends Controller
                 $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
 
                 foreach($attributes as $attributeKey => $attribute) {
-                    if(!array_key_exists($attributeKey, $productDetail['attributes'])) {
+                    if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         $missingAttributes[$key][$attributeKey] = $attribute['name'];
                     }
                 }
