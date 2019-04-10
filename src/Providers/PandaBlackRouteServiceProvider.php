@@ -16,7 +16,6 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
     {
         //Authentication route
         $router->get('markets/panda-black/auth/authentication', 'PandaBlack\Controllers\AuthController@getAuthentication');
-        $router->get('test', 'PandaBlack\Controllers\ContentController@sendProductDetails');
 
         $api->version(['v1'], ['middleware' => ['oauth']], function ($router) {
             $router->get('markets/panda-black/login-url', 'PandaBlack\Controllers\AuthController@getLoginUrl');

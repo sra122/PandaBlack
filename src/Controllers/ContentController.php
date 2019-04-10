@@ -175,11 +175,11 @@ class ContentController extends Controller
 
         $productStatus = $this->productStatus($productDetails);
 
-        return $productStatus;
+        if(!empty($productStatus['validProductDetails'])) {
+            $app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
+        }
 
-        /*if(!empty($productDetails['exportData'])) {
-            $app->authenticate('products_to_pandaBlack', null, $productDetails);
-        }*/
+        return $productStatus['unfulfilledProducts'];
     }
 
 
@@ -201,7 +201,7 @@ class ContentController extends Controller
 
                 foreach($attributes as $attributeKey => $attribute) {
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
-                        $missingAttributes[$key][$attributeKey] = $attribute['name'];
+                        $missingAttributes[$key][$attributeKey] = $attribute['name'] . '-' . $attributeKey;
                     }
                 }
             }
