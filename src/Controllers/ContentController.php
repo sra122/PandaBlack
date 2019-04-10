@@ -89,7 +89,7 @@ class ContentController extends Controller
             array_push($variationItems, $variation);
 
             // Update only if products are updated in last 1 hour.
-            /*if((time() - strtotime($variation['updatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+            if((time() - strtotime($variation['updatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                 if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -142,7 +142,7 @@ class ContentController extends Controller
                         'store_name' => '',
                         'status' => $variation['isActive'],
                         'brand' => $manufacturer['name'],
-                        'last_update_at' => $variation['updatedAt'],
+                        'last_update_at' => $variation['relatedUpdatedAt'],
                         'asin' => $asin,
                         'sku' => $sku
                     );
@@ -157,7 +157,7 @@ class ContentController extends Controller
 
                     $exportData[$key]['attributes'] = $attributeSets;
                 }
-            }*/
+            }
         }
 
         $templateData = array(
@@ -177,13 +177,13 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        //$productStatus = $this->productStatus($productDetails);
+        $productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
-            //$app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
+            $app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
         }
 
-        return $productDetails;
+        return $productStatus;
     }
 
 
