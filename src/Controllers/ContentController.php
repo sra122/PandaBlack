@@ -188,12 +188,11 @@ class ContentController extends Controller
     {
         $app = pluginApp(AppController::class);
 
-        $unfulfilledProducts = [];
+        $emptyAttributeProducts = [];
+        $missingAttributeProducts = [];
 
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
-            $emptyAttributeProducts = [];
-            $missingAttributeProducts = [];
             if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
                 //unset($productDetails['exportData'][$key]);
@@ -204,17 +203,18 @@ class ContentController extends Controller
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
                             array_push($missingAttributeProducts, $productDetail['product_id']);
+                            break;
                             //unset($productDetails['exportData'][$key]);
                         }
                     }
                 }
             }
-
-            $unfulfilledProducts = [
-                'emptyAttributeProducts' => $emptyAttributeProducts,
-                'missingAttributeProducts' => $missingAttributeProducts
-            ];
         }
+
+        $unfulfilledProducts = [
+            'emptyAttributeProducts' => $emptyAttributeProducts,
+            'missingAttributeProducts' => $missingAttributeProducts
+        ];
 
         $productStatus = [
             'validProductDetails' => $productDetails['exportData'],
