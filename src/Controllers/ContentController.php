@@ -176,11 +176,10 @@ class ContentController extends Controller
         $productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
-            //$app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
+            $app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
         }
 
-        return $productStatus;
-        //return $productDetails;
+        return $productStatus['unfulfilledProducts'];
     }
 
 
@@ -195,7 +194,7 @@ class ContentController extends Controller
         {
             if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
-                //unset($productDetails['exportData'][$key]);
+                unset($productDetails['exportData'][$key]);
             } else {
                 $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
 
@@ -203,8 +202,8 @@ class ContentController extends Controller
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
                             array_push($missingAttributeProducts, $productDetail['product_id']);
+                            unset($productDetails['exportData'][$key]);
                             break;
-                            //unset($productDetails['exportData'][$key]);
                         }
                     }
                 }
