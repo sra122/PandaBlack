@@ -189,9 +189,12 @@ class ContentController extends Controller
 
         $emptyAttributeProducts = [];
         $missingAttributeProducts = [];
+        $noStockProducts = [];
+        $noASINProducts = [];
 
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
+            // Attributes Check
             if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
                 unset($productDetails['exportData'][$key]);
@@ -208,11 +211,27 @@ class ContentController extends Controller
                     }
                 }
             }
+
+
+            // Stock Check
+            if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
+                array_push($noStockProducts, $productDetail['product_id']);
+                unset($productDetails['exportData'][$key]);
+            }
+
+
+            //ASIN Check
+            if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
+                array_push($noASINProducts, $productDetail['product_id']);
+                unset($productDetails['exportData'][$key]);
+            }
         }
 
         $unfulfilledProducts = [
             'emptyAttributeProducts' => $emptyAttributeProducts,
-            'missingAttributeProducts' => $missingAttributeProducts
+            'missingAttributeProducts' => $missingAttributeProducts,
+            'noStockProducts' => $noStockProducts,
+            'noAsinProducts' => $noASINProducts
         ];
 
         $productStatus = [
