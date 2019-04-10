@@ -173,14 +173,14 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        //$productStatus = $this->productStatus($productDetails);
+        $productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
             //$app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
         }
 
-        //return $productStatus['unfulfilledProducts'];
-        return $productDetails;
+        return $productStatus['unfulfilledProducts'];
+        //return $productDetails;
     }
 
 
