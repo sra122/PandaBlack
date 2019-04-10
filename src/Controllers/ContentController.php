@@ -179,8 +179,8 @@ class ContentController extends Controller
             //$app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
         }
 
-        //return $productStatus['unfulfilledProducts'];
-        return $productDetails;
+        return $productStatus;
+        //return $productDetails;
     }
 
 
@@ -196,7 +196,7 @@ class ContentController extends Controller
             $missingAttributeProducts = [];
             if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
-                unset($productDetails['exportData'][$key]);
+                //unset($productDetails['exportData'][$key]);
             } else {
                 $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
 
@@ -204,7 +204,7 @@ class ContentController extends Controller
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
                             array_push($missingAttributeProducts, $productDetail['product_id']);
-                            unset($productDetails['exportData'][$key]);
+                            //unset($productDetails['exportData'][$key]);
                         }
                     }
                 }
