@@ -82,14 +82,10 @@ class ContentController extends Controller
         $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
         $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
 
-        $variationItems = [];
-
         foreach($resultItems->getResult()  as $key => $variation) {
 
-            array_push($variationItems, $variation);
-
             // Update only if products are updated in last 1 hour.
-            if((time() - strtotime($variation['updatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+            if((time() - strtotime($variation['relatedUpdatedAt'])) < 3600 && isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                 if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
