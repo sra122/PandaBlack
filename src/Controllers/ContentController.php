@@ -179,8 +179,8 @@ class ContentController extends Controller
             //$app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
         }
 
-        return $productStatus['unfulfilledProducts'];
-        //return $productDetails;
+        //return $productStatus['unfulfilledProducts'];
+        return $productDetails;
     }
 
 
