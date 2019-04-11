@@ -107,6 +107,7 @@ class ContentController extends Controller
                         $asin = null;
                     }
 
+
                     //SKU
                     try {
                         $sku = $variationSKURepository->findByVariationId($variation['id']);
@@ -176,7 +177,8 @@ class ContentController extends Controller
         $productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
-            $app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
+            $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
+            $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
         return $productStatus;
@@ -240,5 +242,27 @@ class ContentController extends Controller
         ];
 
         return $productStatus;
+    }
+
+
+    private function generateSKU($validProducts)
+    {
+        foreach($validProducts as $key => $validProduct)
+        {
+            $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
+            $skuRepo = $variationSKURepository->create([
+                    'variationId' => $validProduct['product_id'],
+                    'marketId' => 0,
+                    'accountId' => 0,
+                    'sku' => (isset($validProduct['sku']) && !empty($validProduct['sku'])) ? $validProduct['sku'] : ''
+                ]);
+
+            if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
+                $validProducts[$key]['sku'] = $skuRepo['sku'];
+            }
+        }
+
+        return $validProducts;
+
     }
 }
