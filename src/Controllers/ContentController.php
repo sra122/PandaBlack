@@ -261,20 +261,14 @@ class ContentController extends Controller
             $skuCheck = $variationSKURepository->findByVariationId($validProduct['product_id']);
 
             if(count($skuCheck) <= 0) {
-                $skuInfo = $variationSKURepository->create([
-                    'variationId' => (isset($validProduct['product_id']) && !empty($validProduct['product_id'])) ? $validProduct['product_id'] : '',
-                    'marketId' => 0,
-                    'accountId' => 0,
-                    'sku' => (isset($validProduct['sku']) && !empty($validProduct['sku'])) ? $validProduct['sku'] : ''
-                ])->toArray();
+                $variationSKURepository->generateSku($validProduct['product_id'], 0, 0, null, true, false);
 
                 if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
-                    $validProducts[$key]['sku'] = $skuInfo;
+                    $validProducts[$key]['sku'] = $variationSKURepository->findByVariationId($validProduct['product_id']);
                 }
             }
         }
 
         return $validProducts;
-
     }
 }
