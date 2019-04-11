@@ -263,7 +263,7 @@ class ContentController extends Controller
             if(count($skuCheck) <= 0) {
                 $skuInfo = $variationSKURepository->create([
                     'variationId' => $validProduct['product_id'],
-                    'marketId' => 0,
+                    'marketId' => $this->Settings->get('orderReferrerId'),
                     'accountId' => 0,
                     'sku' => null
                 ])->toArray();
