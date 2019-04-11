@@ -175,7 +175,7 @@ class ContentController extends Controller
         $productDetails = $this->productDetails();
 
         //$productStatus = $this->productStatus($productDetails);
-        $validProductsWithSKU = $this->generateSKU($productDetails['exportData']);
+        //$validProductsWithSKU = $this->generateSKU($productDetails['exportData']);
 
         /*if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
@@ -184,8 +184,8 @@ class ContentController extends Controller
 
 
         $test = [
-            'withSKU' => $validProductsWithSKU,
-            'products' => $productDetails['exportData']
+            'products' => $productDetails['exportData'],
+            'referrerId' => $this->Settings->get('orderReferrerId')
         ];
 
         return $test;
