@@ -251,15 +251,20 @@ class ContentController extends Controller
         foreach($validProducts as $key => $validProduct)
         {
             $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
-            $skuInfo = $variationSKURepository->create([
-                'variationId' => (isset($validProduct['product_id']) && !empty($validProduct['product_id'])) ? $validProduct['product_id'] : '',
-                'marketId' => 0,
-                'accountId' => 0,
-                'sku' => (isset($validProduct['sku']) && !empty($validProduct['sku'])) ? $validProduct['sku'] : ''
-            ])->toArray();
 
-            if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
-                $validProducts[$key]['sku'] = $skuInfo;
+            $skuCheck = $variationSKURepository->findByVariationId($validProduct['product_id']);
+
+            if(count($skuCheck) <= 0) {
+                $skuInfo = $variationSKURepository->create([
+                    'variationId' => (isset($validProduct['product_id']) && !empty($validProduct['product_id'])) ? $validProduct['product_id'] : '',
+                    'marketId' => 0,
+                    'accountId' => 0,
+                    'sku' => (isset($validProduct['sku']) && !empty($validProduct['sku'])) ? $validProduct['sku'] : ''
+                ])->toArray();
+
+                if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
+                    $validProducts[$key]['sku'] = $skuInfo;
+                }
             }
         }
 
