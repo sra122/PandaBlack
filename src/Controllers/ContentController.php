@@ -175,7 +175,7 @@ class ContentController extends Controller
         $productDetails = $this->productDetails();
 
         $productStatus = $this->productStatus($productDetails);
-        $validProductsWithSKU = $this->generateSKU($productDetails);
+        $validProductsWithSKU = $this->generateSKU($productDetails['exportData']);
 
         /*if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
@@ -251,9 +251,9 @@ class ContentController extends Controller
         foreach($validProducts as $key => $validProduct)
         {
             $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
-            $variationSKURepository->generateSku(1101, 0, 0, null, true, false);
+            $variationSKURepository->generateSku($validProduct['product_id'], 0, 0, null, true, false);
 
-            $SKUInfo = $variationSKURepository->findByVariationId(1101);
+            $SKUInfo = $variationSKURepository->findByVariationId($validProduct['product_id']);
 
             if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
                 $validProducts[$key]['sku'] = $SKUInfo;
