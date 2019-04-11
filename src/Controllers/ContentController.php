@@ -251,9 +251,9 @@ class ContentController extends Controller
         foreach($validProducts as $key => $validProduct)
         {
             $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
-            $variationSKURepository->generateSku(1011, 0, 0, null, true, false);
+            $variationSKURepository->generateSku(1101, 0, 0, null, true, false);
 
-            $SKUInfo = $variationSKURepository->findByVariationId(1011);
+            $SKUInfo = $variationSKURepository->findByVariationId(1101);
 
             if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
                 $validProducts[$key]['sku'] = $SKUInfo;
