@@ -175,7 +175,7 @@ class ContentController extends Controller
         $productDetails = $this->productDetails();
 
         $productStatus = $this->productStatus($productDetails);
-        $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
+        $validProductsWithSKU = $this->generateSKU($productDetails);
 
         /*if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
