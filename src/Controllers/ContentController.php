@@ -252,14 +252,14 @@ class ContentController extends Controller
         {
             $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
             $skuRepo = $variationSKURepository->create([
-                    'variationId' => $validProduct['product_id'],
+                    'variationId' => 1011,
                     'marketId' => 0,
                     'accountId' => 0,
                     'sku' => (isset($validProduct['sku']) && !empty($validProduct['sku'])) ? $validProduct['sku'] : ''
                 ]);
 
             if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
-                $validProducts[$key]['sku'] = $skuRepo->toArray()['sku'];
+                $validProducts[$key]['sku'] = $skuRepo->toArray();
             }
         }
 
