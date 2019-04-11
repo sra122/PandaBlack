@@ -175,13 +175,14 @@ class ContentController extends Controller
         $productDetails = $this->productDetails();
 
         $productStatus = $this->productStatus($productDetails);
+        $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
 
-        if(!empty($productStatus['validProductDetails'])) {
+        /*if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
-        }
+        }*/
 
-        return $productStatus;
+        return $validProductsWithSKU;
     }
 
 
@@ -258,7 +259,7 @@ class ContentController extends Controller
                 ]);
 
             if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
-                $validProducts[$key]['sku'] = $skuRepo['sku'];
+                $validProducts[$key]['sku'] = $skuRepo->toArray()['sku'];
             }
         }
 
