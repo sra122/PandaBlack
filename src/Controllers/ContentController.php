@@ -174,15 +174,15 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        $productStatus = $this->productStatus($productDetails);
-        $validProductsWithSKU = $this->generateSKU($productDetails['exportData']);
+        //$productStatus = $this->productStatus($productDetails);
+        //$validProductsWithSKU = $this->generateSKU($productDetails['exportData']);
 
         /*if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }*/
 
-        return $validProductsWithSKU;
+        return $productDetails['exportData'];
     }
 
 
