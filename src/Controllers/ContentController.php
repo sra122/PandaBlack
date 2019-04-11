@@ -265,7 +265,7 @@ class ContentController extends Controller
                     'variationId' => $validProduct['product_id'],
                     'marketId' => $this->Settings->get('orderReferrerId'),
                     'accountId' => 0,
-                    'sku' => null
+                    'sku' => (string)$validProduct['product_id']
                 ])->toArray();
 
                 if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
