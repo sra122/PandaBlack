@@ -264,7 +264,8 @@ class ContentController extends Controller
                 $skuInfo = $variationSKURepository->create([
                     'variationId' => $validProduct['product_id'],
                     'marketId' => 0,
-                    'accountId' => 0
+                    'accountId' => 0,
+                    'sku' => null
                 ])->toArray();
 
                 if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
