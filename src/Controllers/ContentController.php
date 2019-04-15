@@ -58,8 +58,7 @@ class ContentController extends Controller
         ]);
 
         $itemRepository->setFilters([
-            'referrerId' => $this->Settings->get('orderReferrerId'),
-            'relatedUpdatedBetween' => time()-3600
+            'referrerId' => $this->Settings->get('orderReferrerId')
         ]);
 
 
@@ -171,7 +170,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $exportData
+            'exportData' => $resultItems->getResult()
         );
         return $templateData;
     }
