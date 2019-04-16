@@ -31,7 +31,7 @@ class ContentController extends Controller
         $exportData = [];
         $test = [];
 
-        $filterVariations = ['updatedAt', 'relatedUpdatedAt'];
+        $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
 
         foreach($filterVariations as $filterVariation)
         {
