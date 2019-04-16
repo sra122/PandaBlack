@@ -28,149 +28,157 @@ class ContentController extends Controller
      */
     public function productDetails()
     {
-        $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
-
-        $itemRepository->setSearchParams([
-            'with' => [
-                'item' => null,
-                'lang' => 'de',
-                'variationSalesPrices' => true,
-                'variationCategories' => true,
-                'variationClients' => true,
-                'variationAttributeValues' => true,
-                'variationSkus' => true,
-                'variationMarkets' => true,
-                'variationSuppliers' => true,
-                'variationWarehouses' => true,
-                'variationDefaultCategory' => true,
-                'unit' => true,
-                'variationStock' => [
-                    'params' => [
-                        'type' => 'virtual'
-                    ],
-                    'fields' => [
-                        'stockNet'
-                    ]
-                ],
-                'stock' => true,
-                'images' => true,
-            ]
-        ]);
-
-        $itemRepository->setFilters([
-            'referrerId' => $this->Settings->get('orderReferrerId')
-        ]);
-
-
-        $resultItems = $itemRepository->search();
-
         $exportData = [];
 
-        while(!$resultItems->isLastPage()) {
+        $filterVariations = ['updatedAt', 'relatedUpdatedAt'];
 
-            $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
-            $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
+        foreach($filterVariations as $filterVariation)
+        {
+            $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
 
-            $categoryId = [];
+            $itemRepository->setSearchParams([
+                'with' => [
+                    'item' => null,
+                    'lang' => 'de',
+                    'variationSalesPrices' => true,
+                    'variationCategories' => true,
+                    'variationClients' => true,
+                    'variationAttributeValues' => true,
+                    'variationSkus' => true,
+                    'variationMarkets' => true,
+                    'variationSuppliers' => true,
+                    'variationWarehouses' => true,
+                    'variationDefaultCategory' => true,
+                    'variationBarcodes' => true,
+                    'unit' => true,
+                    'variationStock' => [
+                        'params' => [
+                            'type' => 'virtual'
+                        ],
+                        'fields' => [
+                            'stockNet'
+                        ]
+                    ],
+                    'stock' => true,
+                    'images' => true,
+                ]
+            ]);
 
-            foreach($categoryMapping['entries'] as $category) {
-                $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
-            }
+            $itemRepository->setFilters([
+                'referrerId' => $this->Settings->get('orderReferrerId'),
+                $filterVariation => time()-3600
+            ]);
 
 
-            $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
-            $variationStock = pluginApp(VariationStockRepositoryContract::class);
-            $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
-            $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
+            $resultItems = $itemRepository->search();
 
-            foreach($resultItems->getResult()  as $key => $variation) {
 
-                if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+
+            while(!$resultItems->isLastPage()) {
+
+                $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
+                $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
+
+                $categoryId = [];
+
+                foreach($categoryMapping['entries'] as $category) {
+                    $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
+                }
+
+                $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
+                $variationStock = pluginApp(VariationStockRepositoryContract::class);
+                $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+                $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
+
+                foreach($resultItems->getResult()  as $key => $variation) {
 
                     if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
-                        $stockData = $variationStock->listStockByWarehouse($variation['id']);
+                        if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
-                        $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
+                            $stockData = $variationStock->listStockByWarehouse($variation['id']);
 
-                        //ASIN
-                        try {
-                            $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                            $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
-                            foreach($identNumbers as $identNumber)
-                            {
-                                if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
-                                    $asin = $identNumber['value'];
-                                }
-                            }
-                        } catch (\Exception $e) {
-                            $asin = null;
-                        }
+                            //ASIN
+                            try {
+                                $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
 
-
-                        //SKU
-                        try {
-                            $stockUnits = $variationSKURepository->findByVariationId($variation['id']);
-
-                            $sku = null;
-
-                            if(count($sku) > 0) {
-                                foreach($stockUnits as $stockUnit)
+                                foreach($identNumbers as $identNumber)
                                 {
-                                    if($stockUnit->marketId === $this->Settings->get('orderReferrerId')) {
-                                        $sku = $stockUnit->sku;
+                                    if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
+                                        $asin = $identNumber['value'];
                                     }
                                 }
+                            } catch (\Exception $e) {
+                                $asin = null;
                             }
-                        } catch (\Exception $e) {
-                            $sku = null;
+
+
+                            //SKU
+                            try {
+                                $stockUnits = $variationSKURepository->findByVariationId($variation['id']);
+
+                                $sku = null;
+
+                                if(count($sku) > 0) {
+                                    foreach($stockUnits as $stockUnit)
+                                    {
+                                        if($stockUnit->marketId === $this->Settings->get('orderReferrerId')) {
+                                            $sku = $stockUnit->sku;
+                                        }
+                                    }
+                                }
+                            } catch (\Exception $e) {
+                                $sku = null;
+                            }
+
+                            $textArray = $variation['item']->texts;
+                            $variation['texts'] = $textArray->toArray();
+
+                            $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
+
+                            $exportData[$key] = array(
+                                'parent_product_id' => $variation['mainVariationId'],
+                                'product_id' => $variation['id'],
+                                'item_id' => $variation['itemId'],
+                                'name' => $variation['item']['texts'][0]['name1'],
+                                'price' => $variation['variationSalesPrices'][0]['price'],
+                                'currency' => 'Euro',
+                                'category' => $categoryMappingInfo[0]['vendorCategory'][0]['id'],
+                                'short_description' => $variation['item']['texts'][0]['description'],
+                                'image_url' => $variation['images'][0]['url'],
+                                'color' => '',
+                                'size' => '',
+                                'content_supplier' => $manufacturer['name'],
+                                'product_type' => '',
+                                'quantity' => $stockData[0]['netStock'],
+                                'store_name' => '',
+                                'status' => $variation['isActive'],
+                                'brand' => $manufacturer['name'],
+                                'last_update_at' => $variation['relatedUpdatedAt'],
+                                'asin' => $asin,
+                                'sku' => $sku
+                            );
+
+                            $attributeSets = [];
+                            foreach($variation['variationAttributeValues'] as $attribute) {
+
+                                $attributeId = array_reverse(explode('-', $attribute['attribute']['backendName']))[0];
+                                $attributeValue = array_reverse(explode('-', $attribute['attributeValue']['backendName']))[0];
+                                $attributeSets[(int)$attributeId] = (int)$attributeValue;
+                            }
+
+                            $exportData[$key]['attributes'] = $attributeSets;
                         }
-
-                        $textArray = $variation['item']->texts;
-                        $variation['texts'] = $textArray->toArray();
-
-                        $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
-
-                        $exportData[$key] = array(
-                            'parent_product_id' => $variation['mainVariationId'],
-                            'product_id' => $variation['id'],
-                            'item_id' => $variation['itemId'],
-                            'name' => $variation['item']['texts'][0]['name1'],
-                            'price' => $variation['variationSalesPrices'][0]['price'],
-                            'currency' => 'Euro',
-                            'category' => $categoryMappingInfo[0]['vendorCategory'][0]['id'],
-                            'short_description' => $variation['item']['texts'][0]['description'],
-                            'image_url' => $variation['images'][0]['url'],
-                            'color' => '',
-                            'size' => '',
-                            'content_supplier' => $manufacturer['name'],
-                            'product_type' => '',
-                            'quantity' => $stockData[0]['netStock'],
-                            'store_name' => '',
-                            'status' => $variation['isActive'],
-                            'brand' => $manufacturer['name'],
-                            'last_update_at' => $variation['relatedUpdatedAt'],
-                            'asin' => $asin,
-                            'sku' => $sku
-                        );
-
-                        $attributeSets = [];
-                        foreach($variation['variationAttributeValues'] as $attribute) {
-
-                            $attributeId = array_reverse(explode('-', $attribute['attribute']['backendName']))[0];
-                            $attributeValue = array_reverse(explode('-', $attribute['attributeValue']['backendName']))[0];
-                            $attributeSets[(int)$attributeId] = (int)$attributeValue;
-                        }
-
-                        $exportData[$key]['attributes'] = $attributeSets;
                     }
                 }
-            }
 
+            }
         }
 
         $templateData = array(
-            'exportData' => $resultItems->getResult()
+            'exportData' => $exportData
         );
         return $templateData;
     }
