@@ -29,7 +29,6 @@ class ContentController extends Controller
     public function productDetails()
     {
         $exportData = [];
-        $test = [];
 
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
 
@@ -73,10 +72,6 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
-            array_push($test, $resultItems);
-
-
-
             while(!$resultItems->isLastPage()) {
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
@@ -119,21 +114,28 @@ class ContentController extends Controller
 
 
                             //SKU
+                            $sku = null;
                             try {
-                                $stockUnits = $variationSKURepository->findByVariationId($variation['id']);
-
-                                $sku = null;
-
-                                if(count($sku) > 0) {
-                                    foreach($stockUnits as $stockUnit)
+                                if(count($variation['variationSkus']) > 0) {
+                                    foreach($variation['variationSkus'] as $skuInformation)
                                     {
-                                        if($stockUnit->marketId === $this->Settings->get('orderReferrerId')) {
-                                            $sku = $stockUnit->sku;
+                                        if($skuInformation->marketId === $this->Settings->get('orderReferrerId')) {
+                                            $sku = $skuInformation->sku;
                                         }
                                     }
                                 }
                             } catch (\Exception $e) {
                                 $sku = null;
+                            }
+
+                            //EAN
+                            $ean = [];
+
+                            if(count($variation['variationBarcodes']) > 0) {
+                                foreach($variation['variationBarcodes'] as $variationBarcode)
+                                {
+                                    array_push($ean, $variationBarcode->code);
+                                }
                             }
 
                             $textArray = $variation['item']->texts;
@@ -161,7 +163,8 @@ class ContentController extends Controller
                                 'brand' => $manufacturer['name'],
                                 'last_update_at' => $variation['relatedUpdatedAt'],
                                 'asin' => $asin,
-                                'sku' => $sku
+                                'sku' => $sku,
+                                'ean' => implode(',', $ean)
                             );
 
                             $attributeSets = [];
@@ -181,16 +184,14 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $test
+            'exportData' => $exportData
         );
         return $templateData;
     }
 
 
     /**
-     * @param SettingsRepositoryContract $settingRepo
-     * @param LibraryCallContract $libCall
-     * @return mixed
+     * @return array
      */
     public function sendProductDetails()
     {
