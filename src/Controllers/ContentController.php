@@ -29,7 +29,6 @@ class ContentController extends Controller
     public function productDetails()
     {
         $exportData = [];
-        $test = [];
 
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
 
@@ -73,8 +72,6 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
-            array_push($test, $resultItems);
-
             while(!$resultItems->isLastPage()) {
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
@@ -90,7 +87,7 @@ class ContentController extends Controller
                 $variationStock = pluginApp(VariationStockRepositoryContract::class);
                 $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
 
-                foreach($resultItems->getResult()  as $key => $variation) {
+                foreach($resultItems->getResult()  as $variation) {
 
                     if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -145,7 +142,7 @@ class ContentController extends Controller
 
                             $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
 
-                            $exportData[$key] = array(
+                            $exportData[$variation['id']] = array(
                                 'parent_product_id' => $variation['mainVariationId'],
                                 'product_id' => $variation['id'],
                                 'item_id' => $variation['itemId'],
@@ -177,7 +174,7 @@ class ContentController extends Controller
                                 $attributeSets[(int)$attributeId] = (int)$attributeValue;
                             }
 
-                            $exportData[$key]['attributes'] = $attributeSets;
+                            $exportData[$variation['id']]['attributes'] = $attributeSets;
                         }
                     }
                 }
@@ -186,7 +183,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $test
+            'exportData' => $exportData
         );
         return $templateData;
     }
