@@ -29,6 +29,7 @@ class ContentController extends Controller
     public function productDetails()
     {
         $exportData = [];
+        $test = [];
 
         $filterVariations = ['updatedAt', 'relatedUpdatedAt'];
 
@@ -71,6 +72,8 @@ class ContentController extends Controller
 
 
             $resultItems = $itemRepository->search();
+
+            array_push($test, $resultItems);
 
 
 
@@ -178,7 +181,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $exportData
+            'exportData' => $test
         );
         return $templateData;
     }
