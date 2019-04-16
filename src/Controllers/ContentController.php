@@ -29,6 +29,7 @@ class ContentController extends Controller
     public function productDetails()
     {
         $exportData = [];
+        $test = [];
 
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
 
@@ -72,6 +73,8 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
+            array_push($test, $resultItems);
+
             while(!$resultItems->isLastPage()) {
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
@@ -86,7 +89,6 @@ class ContentController extends Controller
                 $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                 $variationStock = pluginApp(VariationStockRepositoryContract::class);
                 $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
-                $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
 
                 foreach($resultItems->getResult()  as $key => $variation) {
 
@@ -184,7 +186,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $exportData
+            'exportData' => $test
         );
         return $templateData;
     }
