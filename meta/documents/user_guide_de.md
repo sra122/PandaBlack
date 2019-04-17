@@ -102,7 +102,7 @@ Für die Verwendung des PANDA.BLACK Plugins in plentymarkets sind die folgenden 
      
      Hierfür klicken Sie auf "Send Products to PANDA.BLACK". Wenn es Probleme bei der Zuordnung gibt, dann erhalten Sie entsprechende Hinweise auf die Fehlerquelle.    
     
-     ![Beschreibung 11](https://cdnmp.plentymarkets.com/9470/meta/images/description_11.png?raw=true)
+     ![Beschreibung 12](https://cdnmp.plentymarkets.com/9470/meta/images/description_12.png?raw=true)
     
 17. Die erstellten Variationen werden dann von plentymarkets verarbeitet und an PANDA.BLACK übersandt. Beim Verkauf
     eines Produkt erhalten Sie eine entsprechende Bestellbestätigung in Ihrer Bestellübersicht.
