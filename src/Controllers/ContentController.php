@@ -73,9 +73,7 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
-            while(!$resultItems->isLastPage()) {
-
-                array_push($test, $resultItems);
+            do {
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
                 $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
@@ -183,11 +181,11 @@ class ContentController extends Controller
                     }
                 }
 
-            }
+            } while(!$resultItems->isLastPage());
         }
 
         $templateData = array(
-            'exportData' => $test
+            'exportData' => $exportData
         );
         return $templateData;
     }
