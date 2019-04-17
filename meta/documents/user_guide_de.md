@@ -94,5 +94,15 @@ Für die Verwendung des PANDA.BLACK Plugins in plentymarkets sind die folgenden 
 
     ![Beschreibung 10](https://cdnmp.plentymarkets.com/9470/meta/images/description_10.png?raw=true)
     
-15. Die erstellten Variationen werden dann von plentymarkets verarbeitet und an PANDA.BLACK übersandt. Beim Verkauf
+15. Nachdem Sie die Variation für PANDA.Black erstellt haben, klicken Sie bitte auf "Verfügbarkeit". Hier wählen Sie im Dropdown PANDA.BLACK aus. Dadurch erlauben Sie, dass die Variation an PANDA.BLACK  weitergegeben werden kann.
+
+     ![Beschreibung 11](https://cdnmp.plentymarkets.com/9470/meta/images/description_11.png?raw=true)
+    
+16.  Nachdem Sie alle notwendigen Attribut- bzw. Kategoriezuordnungen durchgeführt haben, können die Produkte an PANDA.BLACK übergeben werden.
+     
+     Hierfür klicken Sie auf "Send Products to PANDA.BLACK". Wenn es Probleme bei der Zuordnung gibt, dann erhalten Sie entsprechende Hinweise auf die Fehlerquelle.    
+    
+     ![Beschreibung 11](https://cdnmp.plentymarkets.com/9470/meta/images/description_11.png?raw=true)
+    
+17. Die erstellten Variationen werden dann von plentymarkets verarbeitet und an PANDA.BLACK übersandt. Beim Verkauf
     eines Produkt erhalten Sie eine entsprechende Bestellbestätigung in Ihrer Bestellübersicht.

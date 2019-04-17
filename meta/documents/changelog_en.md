@@ -1,10 +1,28 @@
 # Release notes for PANDA.BLACK
 
+## v1.0.8
+
+Adaption of the documentation
+
+Enhancement of the plugin - Addittion of EAN and SKU extracation
+
 ## v1.0.7
 
 Addition to documentation regarding the need to select availability to transfer products to PANDA.BLACK
 
 Edition of module description on the marketplace
+
+## v1.0.6
+
+Enhancement of the plugin
+
+## v1.0.5
+
+Enhancement of the plugin
+
+## v1.0.4
+
+Enhancement of the plugin
 
 ## v1.0.3
 

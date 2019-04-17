@@ -92,6 +92,14 @@ Using the PANDA.BLACK plugin in plentymarkets requires the following steps:
     ![Description 9](https://cdnmp.plentymarkets.com/9470/meta/images/description_9.png?raw=true)
 
     ![Description 10](https://cdnmp.plentymarkets.com/9470/meta/images/description_10.png?raw=true)
+
+15. After creating the variation for PANDA.BLACK, you will have to add the appropiate availability. Please choose "PANDA.BLACK" inside the availability dropdown.
     
-15. The created variations are then processed by plentymarkets and sent to PANDA.BLACK. When you sell a product, you
+    ![Description 11](https://cdnmp.plentymarkets.com/9470/meta/images/description_11.png?raw=true)
+    
+16. After completing the attribut- and categorymapping, you are able to transfer the products to PANDA.BLACK. By clicking on "Send products to PANDA.BLACK" you can check the status of your items. If we notice any issues with the mapping, you will be notified immediately.
+
+    ![Description 12](https://cdnmp.plentymarkets.com/9470/meta/images/description_12.png?raw=true)     
+    
+17. The created variations are then processed by plentymarkets and sent to PANDA.BLACK. When you sell a product, you
     will receive a corresponding order confirmation in your order overview.

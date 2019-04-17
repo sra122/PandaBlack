@@ -1,10 +1,27 @@
 # Release Notes für PANDA.BLACK
 
+## v1.0.8
+Anpassung der Dokumentation
+
+Modifzierung Plugin - Extrahieren von SKU und EAN
+
 ## v1.0.7
 
 Anpassung der Dokumentation in Bezug auf die Notwendigkeit die Verfügbarkeit zu setzen
 
 Änderung der Modulbeschreibung auf dem Marketplace
+
+## v1.0.6
+
+Modifzierung Plugin
+
+## v1.0.5
+
+Modifzierung Plugin
+
+## v1.0.4
+
+Modifzierung Plugin
 
 ## v1.0.3
 
