@@ -30,6 +30,8 @@ class ContentController extends Controller
     {
         $exportData = [];
 
+        $test = [];
+
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
 
         foreach($filterVariations as $filterVariation)
@@ -69,10 +71,11 @@ class ContentController extends Controller
                 $filterVariation => time()-3600
             ]);
 
-
             $resultItems = $itemRepository->search();
 
             while(!$resultItems->isLastPage()) {
+
+                array_push($test, $resultItems);
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
                 $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
@@ -98,6 +101,7 @@ class ContentController extends Controller
                             $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
                             //ASIN
+                            $asin = null;
                             try {
                                 $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
 
@@ -183,7 +187,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $exportData
+            'exportData' => $test
         );
         return $templateData;
     }
