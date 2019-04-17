@@ -32,10 +32,10 @@ class CategoryController extends Controller
 
         $this->categoryChildMapping($categoryInfo->getResult());
 
-        while(!$categoryInfo->isLastPage()) {
+        do {
             $categoryInfo = $categoryRepo->search($categoryId = null, $pageNumber++, 50, $with, ['type' => 'item', 'level' => 1]);
             $this->categoryChildMapping($categoryInfo->getResult());
-        }
+        } while(!$categoryInfo->isLastPage());
 
         return $this->completeCategoryRepo;
     }
@@ -87,7 +87,7 @@ class CategoryController extends Controller
     }
 
 
-    public function getChild(Request $request, Response $response, $id)
+    public function getChild(Request $request, $id)
     {
         $categoryRepo = pluginApp(CategoryRepositoryContract::class);
 

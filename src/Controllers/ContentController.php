@@ -30,8 +30,6 @@ class ContentController extends Controller
     {
         $exportData = [];
 
-        $test = [];
-
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
 
         foreach($filterVariations as $filterVariation)
@@ -165,7 +163,7 @@ class ContentController extends Controller
                                 'last_update_at' => $variation['relatedUpdatedAt'],
                                 'asin' => $asin,
                                 'sku' => $sku,
-                                'ean' => implode(',', $ean)
+                                'ean' => (count($ean) > 0) ? implode(',', $ean) : null
                             );
 
                             $attributeSets = [];
@@ -199,12 +197,12 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        /*$productStatus = $this->productStatus($productDetails);
+        $productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
-        }*/
+        }
 
         return $productDetails;
     }
