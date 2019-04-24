@@ -237,13 +237,11 @@ class ContentController extends Controller
                 }
             }
 
-
             // Stock Check
             if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
                 array_push($noStockProducts, $productDetail['product_id']);
                 unset($productDetails['exportData'][$key]);
             }
-
 
             //ASIN Check
             if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
