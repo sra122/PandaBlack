@@ -1,2 +1,5 @@
 {
+  "stats-view": {
+    "deleteMapping":  "Delete all Mappings"
+  }
 }
