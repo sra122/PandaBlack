@@ -1,5 +1,6 @@
 {
   "stats-view": {
-    "deleteMapping":  "Alle Zuordnungen entfernen"
+    "deleteMapping":  "Alle Zuordnungen entfernen",
+    "selectPandaBlackMessage": "PANDA.BLACK Kategorie auswählen"
   }
 }

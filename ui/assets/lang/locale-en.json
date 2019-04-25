@@ -1,5 +1,6 @@
 {
   "stats-view": {
-    "deleteMapping":  "Delete all Mappings"
+    "deleteMapping":  "Delete all Mappings",
+    "selectPandaBlackMessage": "Please select a Panda Black category"
   }
 }
