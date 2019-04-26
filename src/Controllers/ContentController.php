@@ -12,6 +12,7 @@ use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
 use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
 use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
 use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
+use Plenty\Modules\Item\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
@@ -194,7 +195,7 @@ class ContentController extends Controller
      */
     public function sendProductDetails()
     {
-        $app = pluginApp(AppController::class);
+        /*$app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
         $productStatus = $this->productStatus($productDetails);
@@ -204,7 +205,13 @@ class ContentController extends Controller
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
-        return $productStatus;
+        return $productStatus;*/
+
+        $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
+
+        $properties = $propertiesRepo->all();
+
+        return $properties;
     }
 
 
