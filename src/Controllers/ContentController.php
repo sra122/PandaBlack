@@ -12,7 +12,7 @@ use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
 use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
 use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
 use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
@@ -207,9 +207,9 @@ class ContentController extends Controller
 
         return $productStatus;*/
 
-        $propertiesRepo = pluginApp(PropertySelectionRepositoryContract::class);
+        $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
 
-        $properties = $propertiesRepo->listPropertySelections();
+        $properties = $propertiesRepo->listProperties();
 
         return $properties;
     }
