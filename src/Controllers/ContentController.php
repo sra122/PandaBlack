@@ -207,9 +207,9 @@ class ContentController extends Controller
 
         return $productStatus;*/
 
-        $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
+        $propertiesRepo = pluginApp(PropertySelectionRepositoryContract::class);
 
-        $properties = $propertiesRepo->listProperties(1);
+        $properties = $propertiesRepo->getPropertySelection(3);
 
         return $properties;
     }
