@@ -1,6 +1,18 @@
 {
   "stats-view": {
     "deleteMapping":  "Delete all Mappings",
-    "selectPandaBlackMessage": "Please select a Panda Black category"
+    "deleteMappingToolTip": "Deletes all category mappings between PlentyMarkets and PANDA.BLACK",
+    "refresh": "Refresh",
+    "refreshToolTip": "Load / Refresh available Panda Black Categories",
+    "sendProductsToPandaBlack": "Send Products to PandaBlack",
+    "pandaBlackCategoryTitle": "PANDA.BLACK Category",
+    "plentyMarketCategoryTitle": "PlentyMarkets category",
+    "requiredAttributesTitle": "Required product variation attributes for this category",
+    "selectPandaBlackMessage": "Please select a PANDA.BLACK category",
+    "selectPlentyMarketMessage": "Map to this PlentyMarkets category",
+    "attributeMapping": "Category Mapping",
+    "attributeMappingButton": "Save",
+    "deleteCategoryMapping": "Delete Category Mapping",
+    "productsNotSentMessage": "Products are not sent to PANDA.BLACK"
   }
 }

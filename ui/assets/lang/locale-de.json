@@ -1,6 +1,18 @@
 {
   "stats-view": {
     "deleteMapping":  "Alle Zuordnungen entfernen",
-    "selectPandaBlackMessage": "PANDA.BLACK Kategorie auswählen"
+    "deleteMappingToolTip": "Löscht alle Kategorienzuordnungen zwischen Plentymarkets und PANDA.BLACK",
+    "refresh": "Aktualisieren",
+    "refreshToolTip": "Laden / Aktualisieren verfügbarer Panda Black-Kategorien",
+    "sendProductsToPandaBlack": "Artikel an PANDA.BLACK übergeben",
+    "pandaBlackCategoryTitle": "PANDA.BLACK Kategorieauswahl",
+    "plentyMarketCategoryTitle": "Plentymarkets Kategorieauswahl",
+    "requiredAttributesTitle": "Pflichtattribute für die ausgewählte Kategorie",
+    "selectPandaBlackMessage": "PANDA.BLACK Kategorie auswählen",
+    "selectPlentyMarketMessage": "Ordnen Sie die entsprechende plentymarkets Kategorie hinzu",
+    "attributeMapping": "Kategoriezuordnung",
+    "attributeMappingButton": "Speichern",
+    "deleteCategoryMapping": "Kategorienzuordnung löschen",
+    "productsNotSentMessage": "Produkte werden nicht an PANDA.BLACK gesendet"
   }
 }
