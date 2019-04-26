@@ -209,7 +209,7 @@ class ContentController extends Controller
 
         $propertiesRepo = pluginApp(PropertySelectionRepositoryContract::class);
 
-        $properties = $propertiesRepo->getPropertySelection(3);
+        $properties = $propertiesRepo->listPropertySelections();
 
         return $properties;
     }
