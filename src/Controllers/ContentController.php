@@ -12,7 +12,7 @@ use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
 use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
 use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
 use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
