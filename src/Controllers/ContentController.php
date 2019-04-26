@@ -13,6 +13,8 @@ use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContrac
 use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
 use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyRelationValueRepositoryContract;
 use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
@@ -208,8 +210,44 @@ class ContentController extends Controller
         return $productStatus;*/
 
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
+        $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
+        $propertyRelationValueRepo = pluginApp(PropertyRelationValueRepositoryContract::class);
 
-        $properties = $propertiesRepo->listProperties();
+        $data = [
+            'cast' => 'selection',
+            'position' => 1,
+            'createdAt' => date('m/d/Y h:i:s a', time()),
+            'updatedAt' => date('m/d/Y h:i:s a', time()),
+            'names' => [
+                0 => [
+                    'lang' => 'de',
+                    'name' => 'Weight',
+                    'createdAt' => date('m/d/Y h:i:s a', time()),
+                    'updatedAt' => date('m/d/Y h:i:s a', time())
+                ]
+            ]
+        ];
+
+        $properties = $propertiesRepo->createProperty($data)->toArray();
+
+        $relation = [
+            'propertyId' => $properties['id'],
+            'createdAt' => date('m/d/Y h:i:s a', time()),
+            'updatedAt' => date('m/d/Y h:i:s a', time())
+        ];
+
+        $propertyRelation = $propertyRelationRepo->createRelation($relation)->toArray();
+
+        $values = [
+            'propertyRelationId' => $propertyRelation['id'],
+            'lang' => 'de',
+            'value' => 'Kg',
+            'createdAt' => date('m/d/Y h:i:s a', time()),
+            'updatedAt' => date('m/d/Y h:i:s a', time())
+        ];
+
+        $propertyValues = $propertyRelationValueRepo->createPropertyRelationValue($values);
+
 
         return $properties;
     }
