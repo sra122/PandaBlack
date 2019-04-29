@@ -215,10 +215,11 @@ class ContentController extends Controller
 
         $data = [
             'cast' => 'selection',
+            'typeIdentifier' => 'Items',
             'position' => 1,
             'names' => [
                 0 => [
-                    'lang' => 'de',
+                    'lang' => 'DE',
                     'name' => 'Color'
                 ]
             ]
