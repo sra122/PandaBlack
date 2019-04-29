@@ -213,16 +213,16 @@ class ContentController extends Controller
         $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
         $propertyRelationValueRepo = pluginApp(PropertyRelationValueRepositoryContract::class);
 
-        $properties = $propertiesRepo->getProperty(18);
+        //$properties = $propertiesRepo->getProperty(18);
 
-        /*$data = [
+        $data = [
             'cast' => 'selection',
             'typeIdentifier' => 'item',
             'position' => 1,
             'names' => [
                 0 => [
                     'lang' => 'de',
-                    'name' => 'Color'
+                    'name' => 'Color1'
                 ]
             ],
             'selections' => [
