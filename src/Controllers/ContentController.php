@@ -216,14 +216,10 @@ class ContentController extends Controller
         $data = [
             'cast' => 'selection',
             'position' => 1,
-            'createdAt' => date('m/d/Y h:i:s a', time()),
-            'updatedAt' => date('m/d/Y h:i:s a', time()),
             'names' => [
                 0 => [
                     'lang' => 'de',
-                    'name' => 'Color',
-                    'createdAt' => date('m/d/Y h:i:s a', time()),
-                    'updatedAt' => date('m/d/Y h:i:s a', time())
+                    'name' => 'Color'
                 ]
             ]
         ];
