@@ -215,12 +215,44 @@ class ContentController extends Controller
 
         $data = [
             'cast' => 'selection',
-            'typeIdentifier' => 'Items',
+            'typeIdentifier' => 'item',
             'position' => 1,
             'names' => [
                 0 => [
-                    'lang' => 'DE',
+                    'lang' => 'de',
                     'name' => 'Color'
+                ]
+            ],
+            'selections' => [
+                0 => [
+                    'position' => 0,
+                    'relation' => [
+                        'relation' => [
+                            'relationTypeIdentifier' => null,
+                            'relationTargetId' => null,
+                            'relationValues' => [
+                                0 => [
+                                    'lang' => 'DE',
+                                    'value' => 'Red'
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                1 => [
+                    'position' => 0,
+                    'relation' => [
+                        'relation' => [
+                            'relationTypeIdentifier' => null,
+                            'relationTargetId' => null,
+                            'relationValues' => [
+                                0 => [
+                                    'lang' => 'DE',
+                                    'value' => 'Black'
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ];
@@ -229,8 +261,6 @@ class ContentController extends Controller
 
         /*$relation = [
             'propertyId' => $properties['id'],
-            'createdAt' => date('m/d/Y h:i:s a', time()),
-            'updatedAt' => date('m/d/Y h:i:s a', time())
         ];
 
         $propertyRelation = $propertyRelationRepo->createRelation($relation)->toArray();
@@ -239,8 +269,6 @@ class ContentController extends Controller
             'propertyRelationId' => $propertyRelation['id'],
             'lang' => 'de',
             'value' => 'Kg',
-            'createdAt' => date('m/d/Y h:i:s a', time()),
-            'updatedAt' => date('m/d/Y h:i:s a', time())
         ];
 
         $propertyValues = $propertyRelationValueRepo->createPropertyRelationValue($values);*/
