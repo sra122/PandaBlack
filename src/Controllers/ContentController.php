@@ -215,7 +215,7 @@ class ContentController extends Controller
 
         //$properties = $propertiesRepo->getProperty(18);
 
-        $data = [
+        /*$data = [
             'cast' => 'selection',
             'typeIdentifier' => 'item',
             'position' => 1,
@@ -257,6 +257,18 @@ class ContentController extends Controller
                     ]
                 ]
             ]
+        ];*/
+
+        $data = [
+            'cast' => 'selection',
+            'typeIdentifier' => 'item',
+            'position' => 1,
+            'names' => [
+                [
+                    'lang' => 'de',
+                    'name' => 'Color2'
+                ]
+            ],
         ];
 
         $properties = $propertiesRepo->createProperty($data)->toArray();
