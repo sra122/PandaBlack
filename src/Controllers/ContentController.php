@@ -221,7 +221,7 @@ class ContentController extends Controller
             'names' => [
                 0 => [
                     'lang' => 'de',
-                    'name' => 'Weight',
+                    'name' => 'Color',
                     'createdAt' => date('m/d/Y h:i:s a', time()),
                     'updatedAt' => date('m/d/Y h:i:s a', time())
                 ]
@@ -230,7 +230,7 @@ class ContentController extends Controller
 
         $properties = $propertiesRepo->createProperty($data)->toArray();
 
-        $relation = [
+        /*$relation = [
             'propertyId' => $properties['id'],
             'createdAt' => date('m/d/Y h:i:s a', time()),
             'updatedAt' => date('m/d/Y h:i:s a', time())
@@ -246,7 +246,7 @@ class ContentController extends Controller
             'updatedAt' => date('m/d/Y h:i:s a', time())
         ];
 
-        $propertyValues = $propertyRelationValueRepo->createPropertyRelationValue($values);
+        $propertyValues = $propertyRelationValueRepo->createPropertyRelationValue($values);*/
 
 
         return $properties;
