@@ -259,7 +259,7 @@ class ContentController extends Controller
             ]
         ];*/
 
-        $data = [
+        /*$data = [
             'cast' => 'selection',
             'typeIdentifier' => 'item',
             'position' => 1,
@@ -269,9 +269,9 @@ class ContentController extends Controller
                     'name' => 'Color2'
                 ]
             ],
-        ];
+        ];*/
 
-        $properties = $propertiesRepo->createProperty($data)->toArray();
+        $properties = $propertiesRepo->listProperties()->toArray();
 
         /*$relation = [
             'propertyId' => $properties['id'],
