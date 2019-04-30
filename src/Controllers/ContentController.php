@@ -257,7 +257,7 @@ class ContentController extends Controller
                     ]
                 ]
             ]
-        ];*/
+        ];
 
         /*$data = [
             'cast' => 'selection',
