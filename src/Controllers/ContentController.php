@@ -43,6 +43,7 @@ class ContentController extends Controller
                 'with' => [
                     'item' => null,
                     'lang' => 'de',
+                    'properties' => true,
                     'variationSalesPrices' => true,
                     'variationCategories' => true,
                     'variationClients' => true,
