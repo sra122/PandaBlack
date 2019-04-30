@@ -271,7 +271,7 @@ class ContentController extends Controller
             ],
         ];*/
 
-        $properties = $propertiesRepo->listProperties(2);
+        $properties = $propertiesRepo->getProperty(8)->toArray();
 
         /*$relation = [
             'propertyId' => $properties['id'],
