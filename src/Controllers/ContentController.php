@@ -53,6 +53,7 @@ class ContentController extends Controller
                     'variationWarehouses' => true,
                     'variationDefaultCategory' => true,
                     'variationBarcodes' => true,
+                    'variationProperties' => true,
                     'unit' => true,
                     'variationStock' => [
                         'params' => [
@@ -73,6 +74,7 @@ class ContentController extends Controller
             ]);
 
             $resultItems = $itemRepository->search();
+            $test = [];
 
             do {
 
@@ -90,6 +92,8 @@ class ContentController extends Controller
                 $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
 
                 foreach($resultItems->getResult()  as $variation) {
+
+                    array_push($test, $variation);
 
                     if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -186,7 +190,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $exportData
+            'exportData' => $test
         );
         return $templateData;
     }
@@ -197,19 +201,19 @@ class ContentController extends Controller
      */
     public function sendProductDetails()
     {
-        /*$app = pluginApp(AppController::class);
+        $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        $productStatus = $this->productStatus($productDetails);
+        /*$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
-        }
+        }*/
 
-        return $productStatus;*/
+        return $productDetails;
 
-        $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
+        /*$propertiesRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
         $propertyRelationValueRepo = pluginApp(PropertyRelationValueRepositoryContract::class);
 
@@ -271,7 +275,7 @@ class ContentController extends Controller
             ],
         ];*/
 
-        $properties = $propertiesRepo->getProperty(8)->toArray();
+        //$properties = $propertiesRepo->getProperty(8)->toArray();
 
         /*$relation = [
             'propertyId' => $properties['id'],
@@ -288,7 +292,7 @@ class ContentController extends Controller
         $propertyValues = $propertyRelationValueRepo->createPropertyRelationValue($values);*/
 
 
-        return $properties;
+        //return $properties;
     }
 
 
