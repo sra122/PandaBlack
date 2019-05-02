@@ -13,6 +13,12 @@
       "menu": "system/markets/PANDA.BLACK",
       "urlKey": "stats-view",
       "entryPoint": "index.html?action=stats-view"
+    },
+    {
+      "label": "Produkt-Status",
+      "menu": "system/markets/PANDA.BLACK",
+      "urlKey": "status",
+      "entryPoint": "index.html?action=status"
     }
   ]
 }
