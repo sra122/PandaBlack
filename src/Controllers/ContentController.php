@@ -319,18 +319,12 @@ class ContentController extends Controller
                 foreach($attributes as $attributeKey => $attribute) {
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
-                            $missingAttributeProducts['product_id'][$attributeKey] = $attribute['name'];
+                            $missingAttributeProducts[$productDetail['product_id']][$attributeKey] = $attribute['name'];
                             $unfulfilledData = true;
                             /*array_push($missingAttributeProducts, $productDetail['product_id']);
                             unset($productDetails['exportData'][$key]);
                             break;*/
                         }
-                    } elseif(!array_key_exists($productDetail['attributes'][$attribute[$attributeKey]], $attribute['values'])){
-                        $wrongAttributeMapping[$productDetail['product_id']][$attributeKey] = $attribute['name'];
-                    }
-
-                    if(count($test) <= 0 && $attribute['values'] !== null) {
-                        array_push($test, $attribute['values']);
                     }
                 }
             }
