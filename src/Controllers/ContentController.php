@@ -300,6 +300,7 @@ class ContentController extends Controller
 
         $emptyAttributeProducts = [];
         $missingAttributeProducts = [];
+        $wrongAttributeMapping = [];
         $noStockProducts = [];
         $noASINProducts = [];
 
@@ -319,10 +320,12 @@ class ContentController extends Controller
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
                             $missingAttributeProducts['product_id'][$attributeKey] = $attribute['name'];
                             $unfulfilledData = true;
-                            //array_push($missingAttributeProducts, $productDetail['product_id']);
-                            //unset($productDetails['exportData'][$key]);
-                            //break;
+                            /*array_push($missingAttributeProducts, $productDetail['product_id']);
+                            unset($productDetails['exportData'][$key]);
+                            break;*/
                         }
+                    } elseif(!array_key_exists($productDetail['attributes'][$attribute[$attributeKey]], $attribute['values'])){
+                        $wrongAttributeMapping['product_id'] = $attribute['name'];
                     }
                 }
             }
@@ -349,6 +352,7 @@ class ContentController extends Controller
         $unfulfilledProducts = [
             'emptyAttributeProducts' => $emptyAttributeProducts,
             'missingAttributeProducts' => $missingAttributeProducts,
+            'wrongAttributeMapping' => $wrongAttributeMapping,
             'noStockProducts' => $noStockProducts,
             'noAsinProducts' => $noASINProducts
         ];
