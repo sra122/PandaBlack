@@ -325,7 +325,7 @@ class ContentController extends Controller
                             unset($productDetails['exportData'][$key]);
                             break;*/
                         }
-                    } elseif(!array_key_exists($productDetail['attributes'][$attribute[$attributeKey]], $attribute['values']) && $attribute['required']){
+                    } elseif(!array_key_exists($productDetail['attributes'][$attribute[$attributeKey]], $attribute['values'])){
                         $wrongAttributeMapping[$productDetail['product_id']][$attributeKey] = $attribute['name'];
                     }
 
