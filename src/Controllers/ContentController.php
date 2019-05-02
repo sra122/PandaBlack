@@ -93,8 +93,6 @@ class ContentController extends Controller
 
                 foreach($resultItems->getResult()  as $variation) {
 
-                    array_push($test, $variation);
-
                     if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                         if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
