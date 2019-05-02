@@ -331,7 +331,7 @@ class ContentController extends Controller
                 }
 
 
-                if(count($test) > 0) {
+                if(count($test) <= 0) {
                     array_push($test, $attribute['values']);
                 }
             }
