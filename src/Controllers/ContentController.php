@@ -75,7 +75,6 @@ class ContentController extends Controller
             ]);
 
             $resultItems = $itemRepository->search();
-            $test = [];
 
             do {
 
@@ -191,7 +190,7 @@ class ContentController extends Controller
         }
 
         $templateData = array(
-            'exportData' => $test
+            'exportData' => $exportData
         );
         return $templateData;
     }
@@ -212,7 +211,7 @@ class ContentController extends Controller
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
-        return $productDetails;
+        return $productStatus;
 
         /*$propertiesRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
