@@ -328,11 +328,10 @@ class ContentController extends Controller
                     } elseif(!array_key_exists($productDetail['attributes'][$attribute[$attributeKey]], $attribute['values']) && $attribute['required']){
                         $wrongAttributeMapping[$productDetail['product_id']][$attributeKey] = $attribute['name'];
                     }
-                }
 
-
-                if(count($test) <= 0) {
-                    array_push($test, $attribute['values']);
+                    if(count($test) <= 0 && $attribute['values'] !== null) {
+                        array_push($test, $attribute['values']);
+                    }
                 }
             }
 
