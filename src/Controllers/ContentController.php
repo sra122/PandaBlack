@@ -308,10 +308,12 @@ class ContentController extends Controller
 
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
+            $unfulfilledData = false;
             // Attributes Check
             if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
-                unset($productDetails['exportData'][$key]);
+                //unset($productDetails['exportData'][$key]);
+                $unfulfilledData = true;
             } else {
                 $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
 
@@ -319,6 +321,7 @@ class ContentController extends Controller
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
                             $missingAttributeProducts['product_id'][$attributeKey] = $attribute['category_name'];
+                            $unfulfilledData = true;
                             //array_push($missingAttributeProducts, $productDetail['product_id']);
                             //unset($productDetails['exportData'][$key]);
                             //break;
@@ -330,12 +333,18 @@ class ContentController extends Controller
             // Stock Check
             if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
                 array_push($noStockProducts, $productDetail['product_id']);
-                unset($productDetails['exportData'][$key]);
+                $unfulfilledData = true;
+                //unset($productDetails['exportData'][$key]);
             }
 
             //ASIN Check
             if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
                 array_push($noASINProducts, $productDetail['product_id']);
+                $unfulfilledData = true;
+                //unset($productDetails['exportData'][$key]);
+            }
+
+            if($unfulfilledData) {
                 unset($productDetails['exportData'][$key]);
             }
         }
