@@ -303,6 +303,7 @@ class ContentController extends Controller
         $wrongAttributeMapping = [];
         $noStockProducts = [];
         $noASINProducts = [];
+        $test = [];
 
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
@@ -327,6 +328,11 @@ class ContentController extends Controller
                     } elseif(!array_key_exists($productDetail['attributes'][$attribute[$attributeKey]], $attribute['values']) && $attribute['required']){
                         $wrongAttributeMapping[$productDetail['product_id']][$attributeKey] = $attribute['name'];
                     }
+                }
+
+
+                if(count($test) > 0) {
+                    array_push($test, $attribute['values']);
                 }
             }
 
@@ -354,7 +360,8 @@ class ContentController extends Controller
             'missingAttributeProducts' => $missingAttributeProducts,
             'wrongAttributeMapping' => $wrongAttributeMapping,
             'noStockProducts' => $noStockProducts,
-            'noAsinProducts' => $noASINProducts
+            'noAsinProducts' => $noASINProducts,
+            'test' => $test
         ];
 
         $productStatus = [
