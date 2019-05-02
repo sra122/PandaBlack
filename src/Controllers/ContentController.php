@@ -209,7 +209,7 @@ class ContentController extends Controller
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
-        return $productDetails;
+        return $productStatus;
 
         /*$propertiesRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
