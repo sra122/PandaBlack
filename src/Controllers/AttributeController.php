@@ -10,6 +10,7 @@ use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
 class AttributeController extends Controller
 {
     public function createPBAttributes($categoryId = null)
@@ -42,6 +43,7 @@ class AttributeController extends Controller
 
                     $propertyRepository = pluginApp(PropertyRepositoryContract::class);
                     $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+                    $propertyRelationRepository = pluginApp(PropertyRelationRepositoryContract::class);
                     $propertyNameMatched = false;
                     $propertyId = '';
 
@@ -82,8 +84,6 @@ class AttributeController extends Controller
 
                         }
                     }
-
-                    $propertyRelationRepository = pluginApp(PropertyRelationRepositoryContract::class);
 
                     $propertyRelationRepository->createRelation([
                         'propertyId' => $propertyId,
