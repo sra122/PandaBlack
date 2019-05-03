@@ -6,17 +6,21 @@ use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
+
+
+use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 class AttributeController extends Controller
 {
-    public function createPBAttributes($categoryId)
+    public function createPBAttributes($categoryId = null)
     {
         $app = pluginApp(AppController::class);
-        $attributeValueSets = $app->authenticate('pandaBlack_attributes', $categoryId);
+        $attributeValueSets = $app->authenticate('pandaBlack_attributes', 65);
 
         if(!empty($attributeValueSets)) {
             foreach($attributeValueSets as $key => $attributeValueSet)
             {
-                $attributeRepo = pluginApp(AttributeRepositoryContract::class);
+                /*$attributeRepo = pluginApp(AttributeRepositoryContract::class);
                 $attributeValueRepository = pluginApp(AttributeValueRepositoryContract::class);
 
                 $attributeCheck = $attributeRepo->findByBackendName($attributeValueSet['name'] . '-PB-' . $key);
@@ -32,7 +36,38 @@ class AttributeController extends Controller
                     foreach($attributeValueSet['values'] as $attributeKey => $attributeValue) {
                         $attributeValueRepository->create(['backendName' => trim($attributeValue . '-PB-' . $attributeKey)], $attributeInfo['id']);
                     }
-                }
+                }*/
+
+                $propertyRepository = pluginApp(PropertyRepositoryContract::class);
+                $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+
+                $attributeData = [
+                    'cast' => 'selection',
+                    'typeIdentifier' => 'item',
+                    'position' => 0,
+                    'names' => [
+                        [
+                            'lang' => 'de',
+                            'name' => $attributeValueSet['name'] . '-PB-' . $key
+                        ]
+                    ]
+                ];
+
+                $propertyNames = $propertyNameRepository->listNames();
+
+                return $propertyNames;
+
+                /*$property = $propertyRepository->createProperty($attributeData);
+
+                try {
+                    foreach($attributeData['names'] as $name) {
+                        $name['propertyId'] = $property->id;
+                        $propertyName = $propertyNameRepository->createName($name);
+                    }
+
+                } catch(\Exception $e) {
+
+                }*/
             }
         }
     }
