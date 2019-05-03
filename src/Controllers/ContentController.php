@@ -303,7 +303,6 @@ class ContentController extends Controller
         $wrongAttributeMapping = [];
         $noStockProducts = [];
         $noASINProducts = [];
-        $test = [];
 
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
@@ -355,8 +354,7 @@ class ContentController extends Controller
             'missingAttributeProducts' => $missingAttributeProducts,
             'wrongAttributeMapping' => $wrongAttributeMapping,
             'noStockProducts' => $noStockProducts,
-            'noAsinProducts' => $noASINProducts,
-            'test' => $test
+            'noAsinProducts' => $noASINProducts
         ];
 
         $productStatus = [
