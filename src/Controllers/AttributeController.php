@@ -87,6 +87,7 @@ class AttributeController extends Controller
 
                     $propertyRelationRepository->createRelation([
                         'propertyId' => $propertyId,
+                        'relationTargetId' => null,
                         'relationTypeIdentifier' => 'item',
                         'relationValues' => $this->propertyValues($attributeValueSet['values'])
                     ]);
