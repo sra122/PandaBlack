@@ -38,60 +38,59 @@ class AttributeController extends Controller
                     }
                 }*/
 
-                $propertyRepository = pluginApp(PropertyRepositoryContract::class);
-                $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
-                $propertyNameMatched = false;
-                $propertyId = '';
+                if(empty($attributeCheck) && !empty($attributeValueSet['values']) && $attributeValueSet['required']) {
 
-                $attributeData = [
-                    'cast' => 'selection',
-                    'typeIdentifier' => 'item',
-                    'position' => 0,
-                    'names' => [
-                        [
-                            'lang' => 'de',
-                            'name' => $attributeValueSet['name'] . '-PB-' . $key
+                    $propertyRepository = pluginApp(PropertyRepositoryContract::class);
+                    $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+                    $propertyNameMatched = false;
+                    $propertyId = '';
+
+                    $attributeData = [
+                        'cast' => 'selection',
+                        'typeIdentifier' => 'item',
+                        'position' => 0,
+                        'names' => [
+                            [
+                                'lang' => 'de',
+                                'name' => $attributeValueSet['name'] . '-PB-' . $key
+                            ]
                         ]
-                    ]
-                ];
+                    ];
 
-                $propertyNames = $propertyNameRepository->listNames();
+                    $propertyNames = $propertyNameRepository->listNames();
 
-                if(!empty($propertyNames)) {
-                    foreach($propertyNames as $propertyName) {
-                        if($propertyName->name === $attributeValueSet['name'] . '-PB-' . $key) {
-                            $propertyNameMatched = true;
-                            $propertyId = $propertyName->propertyId;
+                    if(!empty($propertyNames)) {
+                        foreach($propertyNames as $propertyName) {
+                            if($propertyName->name === $attributeValueSet['name'] . '-PB-' . $key) {
+                                $propertyNameMatched = true;
+                                $propertyId = $propertyName->propertyId;
+                            }
                         }
                     }
-                }
 
-                if(!$propertyNameMatched) {
-                    //$property = $propertyRepository->createProperty($attributeData);
-                    //$propertyId = $property->id;
+                    if(!$propertyNameMatched) {
+                        $property = $propertyRepository->createProperty($attributeData);
+                        $propertyId = $property->id;
 
-                    try {
-                        foreach($attributeData['names'] as $name) {
-                            $name['propertyId'] = $propertyId;
-                            $propertyName = $propertyNameRepository->createName($name);
+                        try {
+                            foreach($attributeData['names'] as $name) {
+                                $name['propertyId'] = $propertyId;
+                                $propertyName = $propertyNameRepository->createName($name);
+                            }
+
+                        } catch(\Exception $e) {
+
                         }
-
-                    } catch(\Exception $e) {
-
                     }
+
+                    $propertyRelationRepository = pluginApp(PropertyRelationRepositoryContract::class);
+
+                    $propertyRelationRepository->createRelation([
+                        'propertyId' => $propertyId,
+                        'relationTypeIdentifier' => 'item',
+                        'relationValues' => $this->propertyValues($attributeValueSet['values'])
+                    ]);
                 }
-
-                $data = $this->propertyValues($attributeValueSet['values']);
-
-                return $data;
-
-                /*$propertyRelationRepository = pluginApp(PropertyRelationRepositoryContract::class);
-
-                $propertyRelationRepository->createRelation([
-                    'propertyId' => $propertyId,
-                    'relationTypeIdentifier' => 'item',
-                    'relationValues' => $this->propertyValues($attributeValueSet['values'])
-                ]);*/
             }
         }
     }
