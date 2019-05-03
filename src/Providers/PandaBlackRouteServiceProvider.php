@@ -16,12 +16,12 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
     {
         //Authentication route
         $router->get('markets/panda-black/auth/authentication', 'PandaBlack\Controllers\AuthController@getAuthentication');
-        $router->get('test', 'PandaBlack\Controllers\AttributeController@createPBAttributes');
 
         $api->version(['v1'], ['middleware' => ['oauth']], function ($router) {
             $router->get('markets/panda-black/login-url', 'PandaBlack\Controllers\AuthController@getLoginUrl');
             $router->post('markets/panda-black/session', 'PandaBlack\Controllers\AuthController@sessionCreation');
             $router->get('markets/panda-black/expire-time', 'PandaBlack\Controllers\AuthController@tokenExpireTime');
+            $router->get('test', 'PandaBlack\Controllers\AttributeController@createPBAttributes');
 
             //Category Actions
             $router->get('markets/panda-black/parent-categories', 'PandaBlack\Controllers\CategoryController@all');
