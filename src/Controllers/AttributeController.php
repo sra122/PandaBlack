@@ -118,14 +118,19 @@ class AttributeController extends Controller
     }
 
 
-    public function getPBAttributes($categoryId)
+    public function getPBAttributes()
     {
-        $app = pluginApp(AppController::class);
+        /*$app = pluginApp(AppController::class);
         $attributeValueSet = $app->authenticate('pandaBlack_attributes', $categoryId);
 
         if(isset($attributeValueSet)) {
             return $attributeValueSet;
-        }
+        }*/
+
+        $propertyRepo = pluginApp(PropertyRepositoryContract::class);
+        $propertiesList = $propertyRepo->listProperties(1, 50);
+
+        return $propertiesList;
     }
 
 

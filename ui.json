@@ -19,6 +19,12 @@
       "menu": "system/markets/PANDA.BLACK",
       "urlKey": "status",
       "entryPoint": "index.html?action=status"
+    },
+    {
+      "label": "Mappign",
+      "menu": "system/markets/PANDA.BLACK",
+      "urlKey": "mapping",
+      "entryPoint": "index.html?action=mapping"
     }
   ]
 }
