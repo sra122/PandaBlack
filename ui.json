@@ -21,7 +21,7 @@
       "entryPoint": "index.html?action=status"
     },
     {
-      "label": "Mappign",
+      "label": "Mapping",
       "menu": "system/markets/PANDA.BLACK",
       "urlKey": "mapping",
       "entryPoint": "index.html?action=mapping"
