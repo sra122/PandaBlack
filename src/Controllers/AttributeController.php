@@ -102,10 +102,8 @@ class AttributeController extends Controller
         $propertyValuesSet = [];
         foreach($values as $key => $value)
         {
-            $data = array(
-                'lang' => 'de',
-                'value' => $value . '-PB-' . $key
-            );
+            $data['lang'] = 'de';
+            $data['value'] = $value . '-PB-' . $key;
 
             array_push($propertyValuesSet, $data);
         }
