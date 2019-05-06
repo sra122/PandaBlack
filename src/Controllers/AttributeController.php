@@ -92,7 +92,8 @@ class AttributeController extends Controller
                         'relationValues' => [
                             [
                                 'lang' => 'de',
-                                'value' => 'test-value'
+                                'value' => 'test-value',
+                                'description' => 'test-description'
                             ]
                         ]
                     ]);
