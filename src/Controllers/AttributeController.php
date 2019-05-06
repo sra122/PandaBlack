@@ -88,8 +88,13 @@ class AttributeController extends Controller
                     $propertyRelationRepository->createRelation([
                         'propertyId' => $propertyId,
                         'relationTargetId' => null,
-                        'relationTypeIdentifier' => 1107,
-                        'relationValues' => $this->propertyValues($attributeValueSet['values'])
+                        'relationTypeIdentifier' => 'item',
+                        'relationValues' => [
+                            [
+                                'lang' => 'de',
+                                'value' => 'test-value'
+                            ]
+                        ]
                     ]);
                 }
             }
