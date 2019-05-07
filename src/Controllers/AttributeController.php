@@ -39,7 +39,7 @@ class AttributeController extends Controller
                     }
                 }*/
 
-                if(empty($attributeCheck) && !empty($attributeValueSet['values']) && $attributeValueSet['required']) {
+                /*if(empty($attributeCheck) && !empty($attributeValueSet['values']) && $attributeValueSet['required']) {
 
                     $propertyRepository = pluginApp(PropertyRepositoryContract::class);
                     $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
@@ -97,7 +97,7 @@ class AttributeController extends Controller
                             ]
                         ]
                     ]);
-                }
+                }*/
             }
         }
     }
