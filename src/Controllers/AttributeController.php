@@ -8,7 +8,7 @@ use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 
 
-use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
+use Plenty\Modules\Item\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
 class AttributeController extends Controller
@@ -127,18 +127,11 @@ class AttributeController extends Controller
             return $attributeValueSet;
         }*/
 
-        $properties = [];
-
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
-        $propertiesList = $propertyRepo->listProperties(1, 50);
+        $propertiesList = $propertyRepo->search([], 50, 1)->getResult();
 
-        foreach($propertiesList as $key => $property)
-        {
-            array_push($properties, $key);
-        }
-
-        return $properties;
+        return $propertiesList;
     }
 
 
