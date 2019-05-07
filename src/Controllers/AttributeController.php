@@ -134,14 +134,14 @@ class AttributeController extends Controller
 
         $propertiesList = $propertyRepo->listProperties();
 
-        array_push($properties, $propertiesList);
+        /*array_push($properties, $propertiesList);
 
         foreach($properties as $property)
         {
             array_push($propertyEntries, $property['entries']);
-        }
+        }*/
 
-        return $propertyEntries;
+        return is_object($propertiesList);
     }
 
 
