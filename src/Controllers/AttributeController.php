@@ -127,18 +127,14 @@ class AttributeController extends Controller
             return $attributeValueSet;
         }*/
 
-        $properties = [];
+        //$properties = [];
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
         $propertiesList = $propertyRepo->listProperties(1, 50);
 
-        foreach($propertiesList['entries'] as $property)
-        {
-            array_push($properties, $property);
-        }
 
-        return $properties;
+        return $propertiesList['entries'];
     }
 
 
