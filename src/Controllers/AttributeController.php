@@ -133,7 +133,7 @@ class AttributeController extends Controller
 
         $propertiesList = $propertyRepo->listProperties(1, 50);
 
-        return $propertiesList->entries;
+        return $propertiesList->getOwnPropertyNames();
     }
 
 
