@@ -141,7 +141,13 @@ class AttributeController extends Controller
             array_push($propertyEntries, $property['entries']);
         }*/
 
-        return is_object($propertiesList);
+        $property = [
+            'type' => gettype($propertiesList),
+            'is_object' => (string)(is_object($propertiesList))
+        ];
+
+
+        return $property;
     }
 
 
