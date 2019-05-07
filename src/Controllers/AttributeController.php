@@ -129,7 +129,7 @@ class AttributeController extends Controller
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
-        $propertiesList = $propertyRepo->all([], 50, 1)->getResult();
+        $propertiesList = $propertyRepo->all([], 50, 1);
 
         return $propertiesList;
     }
