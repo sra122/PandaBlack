@@ -118,7 +118,7 @@ class AttributeController extends Controller
     }
 
 
-    public function getProperties()
+    public function getPBAttributes()
     {
         /*$app = pluginApp(AppController::class);
         $attributeValueSet = $app->authenticate('pandaBlack_attributes', $categoryId);
