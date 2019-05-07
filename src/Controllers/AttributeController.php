@@ -140,7 +140,7 @@ class AttributeController extends Controller
 
         $property = [
             'is_object' => (string)(is_object($propertiesList)),
-            'className' => get_class($propertyRepo)
+            'className' => $propertiesList->get('entries')
         ];
 
         return $property;
