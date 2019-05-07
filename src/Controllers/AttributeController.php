@@ -138,7 +138,7 @@ class AttributeController extends Controller
 
         foreach($properties as $property)
         {
-            array_push($propertyEntries, $property->entries);
+            array_push($propertyEntries, $property['entries']);
         }
 
         return $propertyEntries;
