@@ -140,6 +140,8 @@ class AttributeController extends Controller
         {
             array_push($propertyEntries, $property->entries);
         }
+
+        return $propertyEntries;
     }
 
 
