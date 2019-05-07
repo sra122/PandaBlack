@@ -131,7 +131,7 @@ class AttributeController extends Controller
 
         $propertiesList = $propertyRepo->listProperties();
 
-        return $propertiesList;
+        return $propertiesList['page'];
     }
 
 
