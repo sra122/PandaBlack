@@ -139,8 +139,7 @@ class AttributeController extends Controller
         }*/
 
         $property = [
-            'is_object' => (string)(is_object($propertiesList)),
-            'className' => get_class($propertiesList)
+            'is_object' => (string)(is_object($propertiesList))
         ];
 
         return $property;
