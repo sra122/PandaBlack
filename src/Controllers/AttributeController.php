@@ -20,6 +20,7 @@ class AttributeController extends Controller
         //$attributeValueSets = $app->authenticate('pandaBlack_attributes', 65);
 
         $propertyRepository = pluginApp(PropertyRepositoryContract::class);
+        $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
 
         $attributeData = [
             'cast' => 'selection',
@@ -38,6 +39,13 @@ class AttributeController extends Controller
         ];
 
         $property = $propertyRepository->createProperty($attributeData);
+
+
+        foreach($attributeData['names'] as $attributeName)
+        {
+            $attributeName['propertyId'] = $property->id;
+            $propertyName = $propertyNameRepository->createName($attributeName);
+        }
 
 
         $dropdownValue = [
@@ -144,8 +152,8 @@ class AttributeController extends Controller
                             ]
                         ]
                     ]);
-                }*/
-            /*}*/
+                }
+            }*/
 
         $result = [
           'property' => $property->id,
@@ -181,7 +189,7 @@ class AttributeController extends Controller
             return $attributeValueSet;
         }*/
 
-        //$createResult = $this->createPBAttributes();
+        $createResult = $this->createPBAttributes();
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
@@ -190,7 +198,7 @@ class AttributeController extends Controller
         //$propertiesList[] = $paginatedResult->getResult();
 
         $result = [
-            /*'creation' => $createResult,*/
+            'creation' => $createResult,
             'propertyList' => $propertyList
         ];
 
