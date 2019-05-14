@@ -185,7 +185,7 @@ class AttributeController extends Controller
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
-        $propertyList = $propertyRepo->listProperties(2, 50);
+        $propertyList = $propertyRepo->listProperties(1, 50);
 
         //$propertiesList[] = $paginatedResult->getResult();
 
