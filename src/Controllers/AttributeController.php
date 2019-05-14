@@ -62,7 +62,7 @@ class AttributeController extends Controller
 
 
         $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
-        $propertySelectionRepo->createPropertySelection($dropdownValue);
+        $propertySelection = $propertySelectionRepo->createPropertySelection($dropdownValue);
 
 
 
@@ -147,6 +147,13 @@ class AttributeController extends Controller
                 }*/
             /*}*/
 
+        $result = [
+          'property' => $property->id,
+          'propertySelection' => $propertySelection->id
+        ];
+
+        return $result;
+
     }
 
 
@@ -174,7 +181,7 @@ class AttributeController extends Controller
             return $attributeValueSet;
         }*/
 
-        $this->createPBAttributes();
+        $createResult = $this->createPBAttributes();
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
@@ -182,7 +189,7 @@ class AttributeController extends Controller
 
         //$propertiesList[] = $paginatedResult->getResult();
 
-        return 'test';
+        return $createResult;
     }
 
 
