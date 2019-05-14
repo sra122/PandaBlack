@@ -29,11 +29,11 @@ class AttributeController extends Controller
             'names' => [
                 [
                     'lang' => 'de',
-                    'name' => 'Sprache'
+                    'name' => 'Farbe'
                 ],
                 [
                     'lang' => 'en',
-                    'name' => 'Language'
+                    'name' => 'Color'
                 ]
             ]
         ];
@@ -54,14 +54,19 @@ class AttributeController extends Controller
                 0 => [
                     'relationValues' => [
                         0 => [
-                            'value' => 'english',
-                            'lang' =>'EN',
-                            'description' => 'english description'
+                            'value' => 'Orange',
+                            'lang' =>'de',
+                            'description' => 'Orange Description'
                         ],
                         1 => [
-                            'value' => 'german',
-                            'lang' => 'DE',
-                            'description' => 'german description'
+                            'value' => 'Black',
+                            'lang' => 'de',
+                            'description' => 'Black description'
+                        ],
+                        2 => [
+                            'value' => 'Green',
+                            'lang' => 'de',
+                            'description' => 'Green Description'
                         ]
                     ]
                 ]
