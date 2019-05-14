@@ -3,6 +3,7 @@
 namespace PandaBlack\Controllers;
 
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
@@ -16,10 +17,56 @@ class AttributeController extends Controller
     public function createPBAttributes($categoryId = null)
     {
         $app = pluginApp(AppController::class);
-        $attributeValueSets = $app->authenticate('pandaBlack_attributes', 65);
+        //$attributeValueSets = $app->authenticate('pandaBlack_attributes', 65);
 
-        if(!empty($attributeValueSets)) {
-            foreach($attributeValueSets as $key => $attributeValueSet)
+        $propertyRepository = pluginApp(PropertyRepositoryContract::class);
+
+        $attributeData = [
+            'cast' => 'selection',
+            'typeIdentifier' => 'item',
+            'position' => 0,
+            'names' => [
+                [
+                    'lang' => 'de',
+                    'name' => 'Sprache'
+                ],
+                [
+                    'lang' => 'en',
+                    'name' => 'Language'
+                ]
+            ]
+        ];
+
+        $property = $propertyRepository->createProperty($attributeData);
+
+
+        $dropdownValue = [
+            'propertyId' => $property->id,
+            'relation' => [
+                0 => [
+                    'relationValues' => [
+                        0 => [
+                            'value' => 'english',
+                            'lang' =>'EN',
+                            'description' => 'english description'
+                        ],
+                        1 => [
+                            'value' => 'german',
+                            'lang' => 'DE',
+                            'description' => 'german description'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+
+        $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
+        $propertySelectionRepo->createPropertySelection($dropdownValue);
+
+
+
+            /*foreach($attributeValueSets as $key => $attributeValueSet)
             {
                 /*$attributeRepo = pluginApp(AttributeRepositoryContract::class);
                 $attributeValueRepository = pluginApp(AttributeValueRepositoryContract::class);
@@ -98,8 +145,8 @@ class AttributeController extends Controller
                         ]
                     ]);
                 }*/
-            }
-        }
+            /*}*/
+
     }
 
 
@@ -127,24 +174,15 @@ class AttributeController extends Controller
             return $attributeValueSet;
         }*/
 
+        $this->createPBAttributes();
+
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
-        $paginatedResult = $propertyRepo->listProperties(1, 50);
+        $paginatedResult = $propertyRepo->listProperties();
 
-        $propertiesList[] = $paginatedResult->getResult();
+        //$propertiesList[] = $paginatedResult->getResult();
 
-        /*array_push($properties, $propertiesList);
-
-        foreach($properties as $property)
-        {
-            array_push($propertyEntries, $property['entries']);
-        }*/
-
-        $property = [
-            'entriesObject' => $propertiesList
-        ];
-
-        return $property;
+        return 'test';
     }
 
 
