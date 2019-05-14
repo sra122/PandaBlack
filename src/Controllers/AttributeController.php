@@ -181,7 +181,7 @@ class AttributeController extends Controller
             return $attributeValueSet;
         }*/
 
-        $createResult = $this->createPBAttributes();
+        //$createResult = $this->createPBAttributes();
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
@@ -190,7 +190,7 @@ class AttributeController extends Controller
         //$propertiesList[] = $paginatedResult->getResult();
 
         $result = [
-            'creation' => $createResult,
+            /*'creation' => $createResult,*/
             'propertyList' => $propertyList
         ];
 
