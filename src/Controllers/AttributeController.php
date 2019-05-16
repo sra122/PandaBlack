@@ -29,7 +29,7 @@ class AttributeController extends Controller
             'names' => [
                 [
                     'lang' => 'de',
-                    'name' => 'Farbe'
+                    'name' => 'Farbe1'
                 ],
                 [
                     'lang' => 'en',
@@ -51,27 +51,27 @@ class AttributeController extends Controller
         $dropdownValue = [
             'propertyId' => $property->id,
             'relation' => [
-                0 => [
+                [
                     'relationValues' => [
-                        0 => [
+                        [
                             'value' => 'Orange',
                             'lang' =>'de',
                             'description' => 'Orange Description'
                         ]
                     ]
                 ],
-                1 => [
+                [
                     'relationValues' => [
-                        0 => [
+                        [
                             'value' => 'Black',
                             'lang' => 'de',
                             'description' => 'Black Description'
                         ]
                     ]
                 ],
-                2 => [
+                [
                     'relationValues' => [
-                        0 => [
+                        [
                             'value' => 'Green',
                             'lang' => 'de',
                             'description' => 'Green Description'
