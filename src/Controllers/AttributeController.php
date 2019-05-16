@@ -183,8 +183,8 @@ class AttributeController extends Controller
             }*/
 
         $result = [
-          'property' => $property->id,
-          'propertySelection' => $propertySelection->id
+          'property' => '',
+          'propertySelection' => ''
         ];
 
         return $result;
