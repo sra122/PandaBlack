@@ -22,7 +22,7 @@ class AttributeController extends Controller
         $attributes = $app->authenticate('pandaBlack_attributes', 65);
 
 
-        foreach($attributes as $attribute)
+        /*foreach($attributes as $attribute)
         {
             if($attribute['required'] && !empty($attribute['values'])) {
                 $propertyRepository = pluginApp(PropertyRepositoryContract::class);
@@ -72,7 +72,7 @@ class AttributeController extends Controller
             }
 
 
-        }
+        }*/
 
 
         /*$dropdownValues = ['Orange', 'Black', 'Green'];
