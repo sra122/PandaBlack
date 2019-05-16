@@ -17,33 +17,60 @@ class AttributeController extends Controller
     public function createPBAttributes($categoryId = null)
     {
         $app = pluginApp(AppController::class);
-        //$attributeValueSets = $app->authenticate('pandaBlack_attributes', 65);
-
-        $propertyRepository = pluginApp(PropertyRepositoryContract::class);
-        $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
-
-        $attributeData = [
-            'cast' => 'selection',
-            'typeIdentifier' => 'item',
-            'position' => 0,
-            'names' => [
-                [
-                    'lang' => 'de',
-                    'name' => 'Farbe2'
-                ]
-            ]
-        ];
-
-        $property = $propertyRepository->createProperty($attributeData);
+        $attributes = $app->authenticate('pandaBlack_attributes', 65);
 
 
-        foreach($attributeData['names'] as $attributeName)
+        foreach($attributes as $attribute)
         {
-            $attributeName['propertyId'] = $property->id;
-            $propertyName = $propertyNameRepository->createName($attributeName);
+            $propertyRepository = pluginApp(PropertyRepositoryContract::class);
+            $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+
+            $attributeData = [
+                'cast' => 'selection',
+                'typeIdentifier' => 'item',
+                'position' => 0,
+                'names' => [
+                    [
+                        'lang' => 'de',
+                        'name' => $attribute['name']
+                    ]
+                ]
+            ];
+
+            $property = $propertyRepository->createProperty($attributeData);
+
+            foreach($attributeData['names'] as $attributeName)
+            {
+                $attributeName['propertyId'] = $property->id;
+                $propertyName = $propertyNameRepository->createName($attributeName);
+            }
+
+            foreach($attribute['values'] as $key => $attributeValue)
+            {
+                $selectionData = [
+                    'propertyId' => $property->id,
+                    'relation' => [
+                        [
+                            'relationValues' => [
+                                [
+                                    'value' => $attributeValue,
+                                    'lang' => 'de',
+                                    'description' => $attributeValue . '-PB-' . $key
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
+                $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+
+            }
+
         }
 
-        $dropdownValues = ['Orange', 'Black', 'Green'];
+
+        /*$dropdownValues = ['Orange', 'Black', 'Green'];
 
         foreach($dropdownValues as $dropdownValue)
         {
@@ -65,49 +92,16 @@ class AttributeController extends Controller
             $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
             $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
-        }
-
-        /*$dropdownValue = [
-            'propertyId' => $property->id,
-            'relation' => [
-                [
-                    'relationValues' => [
-                        [
-                            'value' => 'Orange',
-                            'lang' =>'de',
-                            'description' => 'Orange Description'
-                        ]
-                    ]
-                ],
-                [
-                    'relationValues' => [
-                        [
-                            'value' => 'Black',
-                            'lang' => 'de',
-                            'description' => 'Black Description'
-                        ]
-                    ]
-                ],
-                [
-                    'relationValues' => [
-                        [
-                            'value' => 'Green',
-                            'lang' => 'de',
-                            'description' => 'Green Description'
-                        ]
-                    ]
-                ]
-            ]
-        ];*/
+        }*/
 
 
 
             /*foreach($attributeValueSets as $key => $attributeValueSet)
             {
-                /*$attributeRepo = pluginApp(AttributeRepositoryContract::class);
+                $attributeRepo = pluginApp(AttributeRepositoryContract::class);
                 $attributeValueRepository = pluginApp(AttributeValueRepositoryContract::class);
 
-                $attributeCheck = $attributeRepo->findByBackendName($attributeValueSet['name'] . '-PB-' . $key);
+                $attributeCheck = $attributeRepo->findByBackendName($attributeValueSet['name']);
 
                 if(empty($attributeCheck) && !empty($attributeValueSet['values']) && $attributeValueSet['required']) {
 
