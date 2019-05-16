@@ -57,13 +57,21 @@ class AttributeController extends Controller
                             'value' => 'Orange',
                             'lang' =>'de',
                             'description' => 'Orange Description'
-                        ],
-                        1 => [
+                        ]
+                    ]
+                ],
+                1 => [
+                    'relationValues' => [
+                        0 => [
                             'value' => 'Black',
                             'lang' => 'de',
-                            'description' => 'Black description'
-                        ],
-                        2 => [
+                            'description' => 'Black Description'
+                        ]
+                    ]
+                ],
+                2 => [
+                    'relationValues' => [
+                        0 => [
                             'value' => 'Green',
                             'lang' => 'de',
                             'description' => 'Green Description'
