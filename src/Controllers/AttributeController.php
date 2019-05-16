@@ -29,7 +29,7 @@ class AttributeController extends Controller
             'names' => [
                 [
                     'lang' => 'de',
-                    'name' => 'Farbe1'
+                    'name' => 'Farbe2'
                 ]
             ]
         ];
@@ -43,8 +43,31 @@ class AttributeController extends Controller
             $propertyName = $propertyNameRepository->createName($attributeName);
         }
 
+        $dropdownValues = ['Orange', 'Black', 'Green'];
 
-        $dropdownValue = [
+        foreach($dropdownValues as $dropdownValue)
+        {
+            $selectionData = [
+                'propertyId' => $property->id,
+                'relation' => [
+                    [
+                        'relationValues' => [
+                            [
+                                'value' => $dropdownValue,
+                                'lang' => 'de',
+                                'description' => $dropdownValue . ' Description'
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
+            $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+
+        }
+
+        /*$dropdownValue = [
             'propertyId' => $property->id,
             'relation' => [
                 [
@@ -75,11 +98,7 @@ class AttributeController extends Controller
                     ]
                 ]
             ]
-        ];
-
-
-        $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
-        $propertySelection = $propertySelectionRepo->createPropertySelection($dropdownValue);
+        ];*/
 
 
 
