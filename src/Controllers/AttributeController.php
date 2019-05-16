@@ -30,10 +30,6 @@ class AttributeController extends Controller
                 [
                     'lang' => 'de',
                     'name' => 'Farbe1'
-                ],
-                [
-                    'lang' => 'en',
-                    'name' => 'Color'
                 ]
             ]
         ];
