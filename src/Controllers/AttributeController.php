@@ -9,9 +9,11 @@ use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 
 
-use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
+use Plenty\Modules\Item\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
+
+//use Plenty\Modules\Item\Property\Contracts\PropertyRepositoryContract
 class AttributeController extends Controller
 {
     public function createPBAttributes($categoryId = null)
@@ -22,50 +24,53 @@ class AttributeController extends Controller
 
         foreach($attributes as $attribute)
         {
-            $propertyRepository = pluginApp(PropertyRepositoryContract::class);
-            $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+            if($attribute['required'] && !empty($attribute['values'])) {
+                $propertyRepository = pluginApp(PropertyRepositoryContract::class);
+                $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
 
-            $attributeData = [
-                'cast' => 'selection',
-                'typeIdentifier' => 'item',
-                'position' => 0,
-                'names' => [
-                    [
-                        'lang' => 'de',
-                        'name' => $attribute['name']
-                    ]
-                ]
-            ];
-
-            $property = $propertyRepository->createProperty($attributeData);
-
-            foreach($attributeData['names'] as $attributeName)
-            {
-                $attributeName['propertyId'] = $property->id;
-                $propertyName = $propertyNameRepository->createName($attributeName);
-            }
-
-            foreach($attribute['values'] as $key => $attributeValue)
-            {
-                $selectionData = [
-                    'propertyId' => $property->id,
-                    'relation' => [
+                $attributeData = [
+                    'cast' => 'selection',
+                    'typeIdentifier' => 'item',
+                    'position' => 0,
+                    'names' => [
                         [
-                            'relationValues' => [
-                                [
-                                    'value' => $attributeValue,
-                                    'lang' => 'de',
-                                    'description' => $attributeValue . '-PB-' . $key
-                                ]
-                            ]
+                            'lang' => 'de',
+                            'name' => $attribute['name']
                         ]
                     ]
                 ];
 
-                $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
-                $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+                $property = $propertyRepository->createProperty($attributeData);
 
+                foreach($attributeData['names'] as $attributeName)
+                {
+                    $attributeName['propertyId'] = $property->id;
+                    $propertyName = $propertyNameRepository->createName($attributeName);
+                }
+
+                foreach($attribute['values'] as $key => $attributeValue)
+                {
+                    $selectionData = [
+                        'propertyId' => $property->id,
+                        'relation' => [
+                            [
+                                'relationValues' => [
+                                    [
+                                        'value' => $attributeValue,
+                                        'lang' => 'de',
+                                        'description' => $attributeValue . '-PB-' . $key
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ];
+
+                    $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
+                    $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+
+                }
             }
+
 
         }
 
@@ -211,16 +216,15 @@ class AttributeController extends Controller
             return $attributeValueSet;
         }*/
 
-        $createResult = $this->createPBAttributes();
+        //$createResult = $this->createPBAttributes();
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
-        $propertyList = $propertyRepo->listProperties(1, 50);
+        $propertyList = $propertyRepo->all([], 50, 1);
 
         //$propertiesList[] = $paginatedResult->getResult();
 
         $result = [
-            'creation' => $createResult,
             'propertyList' => $propertyList
         ];
 
