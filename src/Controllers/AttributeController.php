@@ -220,10 +220,8 @@ class AttributeController extends Controller
 
         $propertyList = $propertyRepo->listProperties(1, 50, [], [], 0);
 
-        //$propertiesList[] = $paginatedResult->getResult();
-
         $result = [
-            'propertyList' => $propertyList['entries']
+            'propertyList' => $propertyList
         ];
 
         return $result;
