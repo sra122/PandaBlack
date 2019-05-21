@@ -10,8 +10,6 @@ use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
-
-//use Plenty\Modules\Item\Property\Contracts\PropertyRepositoryContract
 class AttributeController extends Controller
 {
     public function createPBAttributes($categoryId)
@@ -58,8 +56,24 @@ class AttributeController extends Controller
     public function getPMProperties()
     {
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
-        $propertyList = $propertyRepo->listProperties(1, 50, [], [], 0);
+        $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
 
-        return $propertyList;
+        $propertiesList = [];
+        $lang = ['de', 'DE', 'De'];
+        $key = 0;
+
+        foreach($properties as $property)
+        {
+            if(!empty($property['names'])) {
+                foreach($property['names'] as $propertyName)
+                {
+                    if(in_array($propertyName['lang'], $lang) && !empty($propertyName['name'])) {
+                        $propertiesList[$key++] = $propertyName['name'];
+                    }
+                }
+            }
+        }
+
+        return $propertiesList;
     }
 }
