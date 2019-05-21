@@ -42,13 +42,24 @@ class AttributeController extends Controller
     {
         $app = pluginApp(AppController::class);
         $attributeValueSet = $app->authenticate('pandaBlack_attributes', $categoryId);
-        if(isset($attributeValueSet)) {
+        if (isset($attributeValueSet)) {
             return $attributeValueSet;
         }
     }
+
+
     public function deletePBProperties()
     {
         $settingRepo = pluginApp(SettingsRepositoryContract::class);
         $settingRepo->deleteAll('PandaBlack', 'property');
+    }
+
+
+    public function getPMProperties()
+    {
+        $propertyRepo = pluginApp(PropertyRepositoryContract::class);
+        $propertyList = $propertyRepo->listProperties(1, 50, [], [], 0);
+
+        return $propertyList;
     }
 }
