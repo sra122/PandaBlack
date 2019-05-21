@@ -76,4 +76,30 @@ class AttributeController extends Controller
 
         return $propertiesList;
     }
+
+
+    public function getPMPropertyValues()
+    {
+        $propertyRepo = pluginApp(PropertyRepositoryContract::class);
+        $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
+
+        $propertyValues = [];
+        $lang = ['de', 'DE', 'De'];
+        $key = 0;
+
+        foreach($properties as $property)
+        {
+            if(!empty($property['selections'])) {
+                foreach($property['selections'] as $selectionProperty) {
+                    $propertyValue = $selectionProperty['relation']['relationValues'][0];
+
+                    if(in_array($propertyValue['lang'], $lang) && !empty($propertyValue['value'])) {
+                        $propertyValues[$key++] = $propertyValue['value'];
+                    }
+                }
+            }
+        }
+
+        return $propertyValues;
+    }
 }
