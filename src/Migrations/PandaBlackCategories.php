@@ -16,9 +16,7 @@ class PandaBlackCategories
         $this->Settings = $SettingsHelper;
     }
 
-    /**
-     *
-     */
+
     public function run()
     {
         if(empty($this->Settings->get('panda_black_category_as_property'))) {
@@ -35,7 +33,8 @@ class PandaBlackCategories
                 'names' => [
                     [
                         'lang' => 'de',
-                        'name' => 'PandaBlack Kategorie'
+                        'name' => 'PandaBlack Kategorie',
+                        'description' => 'PandaBlack Kategorie als Eigenschaften'
                     ]
                 ]
             ];
