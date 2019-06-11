@@ -22,11 +22,13 @@ Class PropertyController extends Controller
         $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
         $propertyId = $this->Settings->get('panda_black_category_as_property');
 
-        if(!empty($propertyId)) {
+        return $propertyId;
+
+        /*if(!empty($propertyId)) {
              $categoryName = $request->get('categoryName');
              $propertySelectionRepo->listPropertySelections(1, 50);
 
              return $propertySelectionRepo;
-        }
+        }*/
     }
 }
