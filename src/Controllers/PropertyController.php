@@ -2,6 +2,7 @@
 
 namespace PandaBlack\Controllers;
 
+use Etsy\Contracts\PropertyRepositoryContract;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Plugin\Controller;
@@ -19,16 +20,13 @@ Class PropertyController extends Controller
 
     public function createCategoryAsProperty(Request $request)
     {
-        $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
+        $propertyRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyId = $this->Settings->get('panda_black_category_as_property');
 
-        return $propertyId;
+        if(!empty($propertyId)) {
+             $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections']);
 
-        /*if(!empty($propertyId)) {
-             $categoryName = $request->get('categoryName');
-             $propertySelectionRepo->listPropertySelections(1, 50);
-
-             return $propertySelectionRepo;
-        }*/
+             return $propertyInfo;
+        }
     }
 }
