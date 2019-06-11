@@ -2,9 +2,8 @@
 
 namespace PandaBlack\Controllers;
 
-use Etsy\Contracts\PropertyRepositoryContract;
 use PandaBlack\Helpers\SettingsHelper;
-use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
