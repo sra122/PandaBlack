@@ -28,6 +28,6 @@ Class PropertyController extends Controller
 
              return $propertySelectionRepo;
         }*/
-        return $this->Settings->get('panda_black_category_as_property');
+        return 'test';
     }
 }
