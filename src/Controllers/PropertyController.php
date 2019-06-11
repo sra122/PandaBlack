@@ -19,7 +19,7 @@ Class PropertyController extends Controller
 
     public function createCategoryAsProperty(Request $request)
     {
-        /*$propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
+        $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
         $propertyId = $this->Settings->get('panda_black_category_as_property');
 
         if(!empty($propertyId)) {
@@ -27,7 +27,6 @@ Class PropertyController extends Controller
              $propertySelectionRepo->listPropertySelections(1, 50);
 
              return $propertySelectionRepo;
-        }*/
-        return 'test';
+        }
     }
 }
