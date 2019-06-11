@@ -16,6 +16,7 @@
   "runOnBuild"          : [
     "PandaBlack\\Migrations\\MergePandaBlackSettings",
     "PandaBlack\\Migrations\\PandaBlackOrderReferrer",
-    "PandaBlack\\Migrations\\PandaBlackAddress"
+    "PandaBlack\\Migrations\\PandaBlackAddress",
+    "PandaBlack\\Migrations\\PandaBlackCategories"
   ]
 }
