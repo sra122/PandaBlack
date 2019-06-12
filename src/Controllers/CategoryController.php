@@ -18,7 +18,6 @@ use Plenty\Modules\Category\Contracts\CategoryRepositoryContract;
 class CategoryController extends Controller
 {
     public $completeCategoryRepo = [];
-    public $check = false;
 
     public function all(Request $request)
     {
@@ -197,10 +196,6 @@ class CategoryController extends Controller
 
     public function getPBCategoriesAsDropdown()
     {
-        if(!$this->check) {
-            $this->savePBCategoriesInPM();
-        }
-
         $app = pluginApp(AppController::class);
 
         $pbCategories = $app->authenticate('pandaBlack_categories');
@@ -237,7 +232,7 @@ class CategoryController extends Controller
                     }
                 }
             }
-            return $categoryTree;
+            return $this->savePBCategoriesInPM();
         }
     }
 
@@ -245,9 +240,11 @@ class CategoryController extends Controller
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
 
-        $this->check = true;
+        return $settingsHelper->getSettingProperty();
 
-        $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());
+        /*$this->check = true;
+
+        $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());*/
 
         /*if(empty($pbCategoriesList)) {
             $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());
