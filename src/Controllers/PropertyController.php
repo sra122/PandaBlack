@@ -27,9 +27,9 @@ Class PropertyController extends Controller
         $propertyId = $this->Settings->get('panda_black_category_as_property');
 
         if(!empty($propertyId)) {
-             $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
+             $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections', 'options', 'relation'])->toArray();
 
-             return $propertyInfo['selections'];
+             return $propertyInfo;
 
              /*if(!(in_array($pbCategoryName, $propertyInfo['selections']))) {
                  return 'in array';
