@@ -24,7 +24,7 @@ Class PropertyController extends Controller
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
         $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
-        $propertyId = $this->Settings->get('panda_black_category_as_property');
+        $propertyId = $this->Settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
 
         $pbCategoryExist = false;
 

@@ -232,7 +232,7 @@ class CategoryController extends Controller
                     }
                 }
             }
-            return $this->getCategoriesList();
+            return $categoryTree;
         }
     }
 
@@ -241,16 +241,14 @@ class CategoryController extends Controller
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
 
-        return $settingsHelper->getSettingProperty();
-
-        /*$categoriesList = $settingsHelper->get('pb_categories_list');
+        $categoriesList = $settingsHelper->get('pb_categories_list');
 
         if(!empty($categoriesList)) {
             return $categoriesList;
         } else {
             $this->getPBCategoriesAsDropdown();
             $this->savePBCategoriesInPM();
-        }*/
+        }
     }
 
     public function savePBCategoriesInPM()
