@@ -25,7 +25,7 @@ Class PropertyController extends Controller
         if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections']);
 
-             return $propertyInfo;
+             return $propertyInfo->selections;
         }
     }
 }
