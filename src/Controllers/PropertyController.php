@@ -29,8 +29,9 @@ Class PropertyController extends Controller
         if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
 
-             if(!in_array($pbCategoryName, $propertyInfo['selections'])) {
-                 $selectionData = [
+             if(!(in_array($pbCategoryName, $propertyInfo['selections']))) {
+                 return 'in array';
+                 /*$selectionData = [
                      'propertyId' => $propertyId,
                      'relation' => [
                          [
@@ -47,7 +48,9 @@ Class PropertyController extends Controller
 
                  $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
-                 return $propertySelection->id;
+                 return $propertySelection->id;*/
+             } else {
+                 return $propertyInfo['selections'];
              }
         }
 
