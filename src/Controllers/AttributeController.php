@@ -2,15 +2,13 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
 class AttributeController extends Controller
 {
     public function createPBAttributes($categoryId)
@@ -39,13 +37,30 @@ class AttributeController extends Controller
 
     public function getPBAttributes($categoryId)
     {
-        $app = pluginApp(AppController::class);
-        $attributeValueSet = $app->authenticate('pandaBlack_attributes', $categoryId);
-        if (isset($attributeValueSet)) {
-            return $attributeValueSet;
-        }
-    }
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $pbApiHelper = pluginApp(PBApiHelper::class);
 
+        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+
+        if(isset($attributes[$categoryId])) {
+            return $attributes[$categoryId];
+        } else {
+            $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
+            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+        }
+
+        /*if(!empty($attributes)) {
+            if(isset($attributes[$categoryId])) {
+                return $attributes[$categoryId];
+            } else {
+                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
+                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+            }
+        } else {
+            $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
+            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+        }*/
+    }
 
     public function deletePBProperties()
     {
@@ -56,7 +71,7 @@ class AttributeController extends Controller
 
     public function getPMProperties()
     {
-        $settingHelper = pluginApp(SettingsHelper::class);
+        $settingsHelper = pluginApp(SettingsHelper::class);
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
         //Pagination is 0, it will provide complete list of Data.
@@ -67,7 +82,7 @@ class AttributeController extends Controller
 
         foreach($properties as $property)
         {
-            if(!empty($property['names']) && ($property['id'] !== $settingHelper->get('panda_black_category_as_property'))) {
+            if(!empty($property['names']) && ($property['id'] !== $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
                 foreach($property['names'] as $propertyName)
                 {
                     if(in_array($propertyName['lang'], $lang) && !empty($propertyName['name'])) {
@@ -83,7 +98,7 @@ class AttributeController extends Controller
 
     public function getPMPropertyValues()
     {
-        $settingHelper = pluginApp(SettingsHelper::class);
+        $settingsHelper = pluginApp(SettingsHelper::class);
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
         //Pagination is 0, it will provide complete list of Data.
@@ -94,7 +109,7 @@ class AttributeController extends Controller
 
         foreach($properties as $property)
         {
-            if(!empty($property['selections']) && ($property['id'] !== $settingHelper->get('panda_black_category_as_property'))) {
+            if(!empty($property['selections']) && ($property['id'] !== $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
                 foreach($property['selections'] as $selectionProperty) {
                     $propertyValue = $selectionProperty['relation']['relationValues'][0];
 

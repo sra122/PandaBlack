@@ -5,8 +5,6 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Plugin\Controller;
-use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
-use Plenty\Plugin\CachingRepository;
 class AppController extends Controller
 {
     /** @var SettingsHelper */

@@ -9,6 +9,8 @@ use Plenty\Modules\Market\Settings\Models\Settings;
 
 class SettingsHelper
 {
+    const ATTRIBUTES = 'pandaBlack_attributes';
+    const CATEGORIES_AS_PROPERTIES = 'panda_black_category_as_property';
     /** @var SettingsRepositoryContract */
     protected $SettingsRepositoryContract;
     /** @var CredentialsRepositoryContract */
