@@ -196,7 +196,6 @@ class CategoryController extends Controller
 
     public function getPBCategoriesAsDropdown()
     {
-        $this->savePBCategoriesInPM();
         $app = pluginApp(AppController::class);
 
         $pbCategories = $app->authenticate('pandaBlack_categories');
@@ -233,7 +232,7 @@ class CategoryController extends Controller
                     }
                 }
             }
-            return $categoryTree;
+            return $this->savePBCategoriesInPM();
         }
     }
 
