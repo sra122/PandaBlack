@@ -2,6 +2,7 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Plugin\Controller;
@@ -80,16 +81,18 @@ class AttributeController extends Controller
 
     public function getPMPropertyValues()
     {
+        $settingHelper = pluginApp(SettingsHelper::class);
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
-        $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
 
+        //Pagination is 0, it will provide complete list of Data.
+        $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
         $propertyValues = [];
         $lang = ['de', 'DE', 'De'];
         $key = 0;
 
         foreach($properties as $property)
         {
-            if(!empty($property['selections'])) {
+            if(!empty($property['selections']) && ($property['id'] !== $settingHelper->get('panda_black_category_as_property'))) {
                 foreach($property['selections'] as $selectionProperty) {
                     $propertyValue = $selectionProperty['relation']['relationValues'][0];
 
