@@ -23,7 +23,7 @@ Class PropertyController extends Controller
         $propertyId = $this->Settings->get('panda_black_category_as_property');
 
         if(!empty($propertyId)) {
-             $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections']);
+             $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
 
              return $propertyInfo['selections'];
         }
