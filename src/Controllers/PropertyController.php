@@ -31,11 +31,13 @@ Class PropertyController extends Controller
         if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
 
-             foreach($propertyInfo['selections'] as $selection) {
+             return $propertyInfo['selections'][0]['id'];
+
+             /*foreach($propertyInfo['selections'] as $selection) {
                  $selectionInfo = $propertySelectionRepo->getPropertySelection($selection->id)->toArray();
 
                  return $selectionInfo;
-             }
+             }*/
 
              /*if(!$pbCategoryExist) {
                  $selectionData = [
