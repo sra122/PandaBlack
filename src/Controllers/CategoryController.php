@@ -241,7 +241,11 @@ class CategoryController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbCredentials = $settingsHelper->get('pb_credentials_id');
 
-        return $pbCredentials;
+        if(empty($pbCredentials)) {
+            return 'test';
+        } else {
+            return 'test1';
+        }
 
         /*if(!empty($pbCredentials)) {
             $pbCategoriesList = $settingsHelper->get('pb_categories_list');
