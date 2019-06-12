@@ -30,7 +30,7 @@ class SettingsHelper
         $this->CredentialsRepositoryContract = $CredentialsRepositoryContract;
     }
 
-    public function getSettingProperty()
+    protected function getSettingProperty()
     {
         if ($this->hasSettingProperty === null) {
             /** @var Settings[] $properties */

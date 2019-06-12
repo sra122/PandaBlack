@@ -194,7 +194,7 @@ class CategoryController extends Controller
     }
 
 
-    public function getPBCategoriesAsDropdown()
+    private function getPBCategoriesAsDropdown()
     {
         $app = pluginApp(AppController::class);
 
@@ -232,7 +232,22 @@ class CategoryController extends Controller
                     }
                 }
             }
-            return $this->savePBCategoriesInPM();
+            return $categoryTree;
+        }
+    }
+
+
+    public function getCategoriesList()
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+
+        $categoriesList = $settingsHelper->get('pb_categories_list');
+
+        if(!empty($categoriesList)) {
+            return $categoriesList;
+        } else {
+            $this->getPBCategoriesAsDropdown();
+            $this->savePBCategoriesInPM();
         }
     }
 
@@ -240,16 +255,10 @@ class CategoryController extends Controller
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
 
-        return $settingsHelper->getSettingProperty();
+        $categoriesList = $settingsHelper->get('pb_categories_list');
 
-        /*$this->check = true;
-
-        $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());*/
-
-        /*if(empty($pbCategoriesList)) {
+        if(empty($categoriesList)) {
             $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());
-        } else {
-            $settingsHelper->update($this->getPBCategoriesAsDropdown(), $pbCategoriesList->id);
-        }*/
+        }
     }
 }

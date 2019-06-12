@@ -34,7 +34,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->delete('markets/panda-black/correlations/delete', 'PandaBlack\Controllers\CategoryController@deleteAllCorrelations');
             $router->delete('markets/panda-black/correlation/delete/{id}', 'PandaBlack\Controllers\CategoryController@deleteCorrelation');
 
-            $router->get('markets/panda-black/vendor-categories1', 'PandaBlack\Controllers\CategoryController@getPBCategoriesAsDropdown');
+            $router->get('markets/panda-black/vendor-categories1', 'PandaBlack\Controllers\CategoryController@getCategoriesList');
 
             //Attribute Actions
             $router->post('markets/panda-black/create-attribute/{id}', 'PandaBlack\Controllers\AttributeController@createPBAttributes');
