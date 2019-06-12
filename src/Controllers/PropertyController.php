@@ -34,7 +34,7 @@ Class PropertyController extends Controller
              foreach($propertyInfo['selections'] as $selection) {
                  $selectionInfo = $propertySelectionRepo->getPropertySelection($selection['id'])->toArray();
 
-                 if($selectionInfo['relationValues'][0]['value'] === $pbCategoryName) {
+                 if($selectionInfo['relation']['relationValues'][0]['value'] === $pbCategoryName) {
                      $pbCategoryExist = true;
                  }
              }
