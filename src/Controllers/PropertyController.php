@@ -59,11 +59,6 @@ Class PropertyController extends Controller
 
                  return $propertySelection->id;
              }
-
-             return true;
         }
-
-        // If Pb Category as Eigenschaft is not created.
-        return false;
     }
 }
