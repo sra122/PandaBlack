@@ -2,6 +2,7 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Category\Models\Category;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
@@ -195,6 +196,7 @@ class CategoryController extends Controller
 
     public function getPBCategoriesAsDropdown()
     {
+        $this->savePBCategoriesInPM();
         $app = pluginApp(AppController::class);
 
         $pbCategories = $app->authenticate('pandaBlack_categories');
@@ -233,5 +235,23 @@ class CategoryController extends Controller
             }
             return $categoryTree;
         }
+    }
+
+    public function savePBCategoriesInPM()
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $pbCredentials = $settingsHelper->get('pb_credentials_id');
+
+        return $pbCredentials;
+
+        /*if(!empty($pbCredentials)) {
+            $pbCategoriesList = $settingsHelper->get('pb_categories_list');
+
+            if(!empty($pbCategoriesList)) {
+                $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());
+            } else {
+                $settingsHelper->update($this->getPBCategoriesAsDropdown(), $pbCategoriesList->id);
+            }
+        }*/
     }
 }
