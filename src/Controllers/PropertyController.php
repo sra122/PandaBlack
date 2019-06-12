@@ -34,12 +34,10 @@ Class PropertyController extends Controller
              foreach($propertyInfo['selections'] as $selection) {
                  $selectionInfo = $propertySelectionRepo->getPropertySelection($selection->id)->toArray();
 
-                 if($selectionInfo['value'] === $pbCategoryName) {
-                    $pbCategoryExist = true;
-                 }
+                 return $selectionInfo;
              }
 
-             if(!$pbCategoryExist) {
+             /*if(!$pbCategoryExist) {
                  $selectionData = [
                      'propertyId' => $propertyId,
                      'relation' => [
@@ -60,7 +58,7 @@ Class PropertyController extends Controller
                  return $propertySelection->id;
              }
 
-             return true;
+             return true;*/
         }
 
         // If Pb Category as Eigenschaft is not created.
