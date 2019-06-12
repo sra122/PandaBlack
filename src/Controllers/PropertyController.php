@@ -26,13 +26,20 @@ Class PropertyController extends Controller
         $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
         $propertyId = $this->Settings->get('panda_black_category_as_property');
 
+        $pbCategoryExist = false;
+
         if(!empty($propertyId)) {
-             $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections', 'options', 'relation'])->toArray();
+             $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
 
-             return $propertyInfo;
+             foreach($propertyInfo['selections'] as $selection) {
+                 $selectionInfo = $propertySelectionRepo->getPropertySelection($selection->id)->toArray();
 
-             /*if(!(in_array($pbCategoryName, $propertyInfo['selections']))) {
-                 return 'in array';
+                 if($selectionInfo['value'] === $pbCategoryName) {
+                    $pbCategoryExist = true;
+                 }
+             }
+
+             if(!$pbCategoryExist) {
                  $selectionData = [
                      'propertyId' => $propertyId,
                      'relation' => [
@@ -51,9 +58,12 @@ Class PropertyController extends Controller
                  $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
                  return $propertySelection->id;
-             }*/
+             }
+
+             return true;
         }
 
+        // If Pb Category as Eigenschaft is not created.
         return false;
     }
 }
