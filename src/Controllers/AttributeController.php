@@ -56,16 +56,18 @@ class AttributeController extends Controller
 
     public function getPMProperties()
     {
+        $settingHelper = pluginApp(SettingsHelper::class);
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
-        $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
 
+        //Pagination is 0, it will provide complete list of Data.
+        $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
         $propertiesList = [];
         $lang = ['de', 'DE', 'De'];
         $key = 0;
 
         foreach($properties as $property)
         {
-            if(!empty($property['names'])) {
+            if(!empty($property['names']) && ($property['id'] !== $settingHelper->get('panda_black_category_as_property'))) {
                 foreach($property['names'] as $propertyName)
                 {
                     if(in_array($propertyName['lang'], $lang) && !empty($propertyName['name'])) {
