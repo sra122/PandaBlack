@@ -48,18 +48,6 @@ class AttributeController extends Controller
             $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
             $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
         }
-
-        /*if(!empty($attributes)) {
-            if(isset($attributes[$categoryId])) {
-                return $attributes[$categoryId];
-            } else {
-                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
-            }
-        } else {
-            $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
-        }*/
     }
 
     public function deletePBProperties()
