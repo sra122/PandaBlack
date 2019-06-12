@@ -4,6 +4,7 @@ namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
@@ -19,13 +20,38 @@ Class PropertyController extends Controller
 
     public function createCategoryAsProperty(Request $request)
     {
+        $pbCategoryName = $request->get('categoryName');
+        $pbCategoryId = $request->get('categoryId');
+
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
+        $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
         $propertyId = $this->Settings->get('panda_black_category_as_property');
 
         if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
 
-             return $propertyInfo['selections'];
+             if(!in_array($pbCategoryName, $propertyInfo['selections'])) {
+                 $selectionData = [
+                     'propertyId' => $propertyId,
+                     'relation' => [
+                         [
+                             'relationValues' => [
+                                 [
+                                     'value' => $pbCategoryName,
+                                     'lang' => 'de',
+                                     'description' => $pbCategoryName . '-PB-' . $pbCategoryId
+                                 ]
+                             ]
+                         ]
+                     ]
+                 ];
+
+                 $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+
+                 return $propertySelection->id;
+             }
         }
+
+        return false;
     }
 }
