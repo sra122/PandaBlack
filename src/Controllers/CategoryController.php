@@ -243,10 +243,12 @@ class CategoryController extends Controller
 
         $pbCategoriesList = $settingsHelper->get('pb_categories_list');
 
-        if(empty($pbCategoriesList)) {
+        $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());
+
+        /*if(empty($pbCategoriesList)) {
             $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());
         } else {
             $settingsHelper->update($this->getPBCategoriesAsDropdown(), $pbCategoriesList->id);
-        }
+        }*/
     }
 }
