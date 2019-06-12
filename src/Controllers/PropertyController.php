@@ -21,7 +21,6 @@ Class PropertyController extends Controller
     public function createCategoryAsProperty(Request $request)
     {
         $pbCategoryName = $request->get('categoryName');
-        $pbCategoryId = $request->get('categoryId');
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
         $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
@@ -39,7 +38,7 @@ Class PropertyController extends Controller
                                  [
                                      'value' => $pbCategoryName,
                                      'lang' => 'de',
-                                     'description' => $pbCategoryName . '-PB-' . $pbCategoryId
+                                     'description' => ''
                                  ]
                              ]
                          ]
