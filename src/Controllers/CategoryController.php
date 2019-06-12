@@ -241,7 +241,7 @@ class CategoryController extends Controller
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
 
-        $categoriesList = $settingsHelper->get('pb_categories_list');
+        $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
         if(!empty($categoriesList)) {
             return $categoriesList;
@@ -255,10 +255,10 @@ class CategoryController extends Controller
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
 
-        $categoriesList = $settingsHelper->get('pb_categories_list');
+        $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
         if(empty($categoriesList)) {
-            $settingsHelper->set('pb_categories_list', $this->getPBCategoriesAsDropdown());
+            $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $this->getPBCategoriesAsDropdown());
         } else {
             //$newCategories = array_diff($this->getPBCategoriesAsDropdown(), $categoriesList);
         }

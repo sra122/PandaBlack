@@ -27,6 +27,7 @@ Class PropertyController extends Controller
         $propertyId = $this->Settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
 
         $pbCategoryExist = false;
+        $correctData = true;
 
         if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
@@ -39,25 +40,31 @@ Class PropertyController extends Controller
                  }
              }
 
-             if(!$pbCategoryExist) {
-                 $selectionData = [
-                     'propertyId' => $propertyId,
-                     'relation' => [
-                         [
-                             'relationValues' => [
-                                 [
-                                     'value' => $pbCategoryName,
-                                     'lang' => 'de',
-                                     'description' => ''
+             $categoriesList = $this->Settings->get(SettingsHelper::CATEGORIES_LIST);
+
+             if(in_array($pbCategoryName, $categoriesList)) {
+                 if(!$pbCategoryExist) {
+                     $selectionData = [
+                         'propertyId' => $propertyId,
+                         'relation' => [
+                             [
+                                 'relationValues' => [
+                                     [
+                                         'value' => $pbCategoryName,
+                                         'lang' => 'de',
+                                         'description' => ''
+                                     ]
                                  ]
                              ]
                          ]
-                     ]
-                 ];
+                     ];
 
-                 $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+                     $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
-                 return $propertySelection->id;
+                     return $propertySelection->id;
+                 }
+             } else {
+                 return 'categoryNameChanged';
              }
         }
     }
