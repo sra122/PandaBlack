@@ -239,13 +239,9 @@ class CategoryController extends Controller
     public function savePBCategoriesInPM()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
-        $pbCredentials = $settingsHelper->get('pb_credentials_id');
+        $pbCredentials = $settingsHelper->getSettingProperty();
 
-        if(empty($pbCredentials)) {
-            return 'test';
-        } else {
-            return 'test1';
-        }
+        return $pbCredentials;
 
         /*if(!empty($pbCredentials)) {
             $pbCategoriesList = $settingsHelper->get('pb_categories_list');
