@@ -27,11 +27,12 @@ class MappingController extends Controller
 
                 $attributeName = str_replace('-attribute', '', $key);
 
+                return $this->checkPropertyExist($attributeName);
+
                 /*if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
                     $this->createProperty($attributeName);
                 }*/
 
-                return $attributeName;
             }
         }
     }
@@ -74,11 +75,13 @@ class MappingController extends Controller
 
         $propertyNamesArray = $propertyNameRepository->listNames();
 
-        if(in_array($propertyName, $propertyNamesArray)) {
+        /*if(in_array($propertyName, $propertyNamesArray)) {
             return true;
         }
 
-        return false;
+        return false;*/
+
+        return $propertyNamesArray;
     }
 
 
