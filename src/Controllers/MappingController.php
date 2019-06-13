@@ -29,7 +29,7 @@ class MappingController extends Controller
                 $attributeName = str_replace('-attribute', '', $key);
 
                 if(!($this->checkPropertyExist($attributeName))) {
-                    $this->createProperty($attributeName);
+                    return $this->createProperty($attributeName);
                 }
             }
         }
@@ -63,6 +63,9 @@ class MappingController extends Controller
             $propertyName['propertyId'] = $property->id;
             $propertyName = $propertyNameRepository->createName($propertyName);
         }
+
+
+        return $property;
     }
 
 
@@ -84,6 +87,7 @@ class MappingController extends Controller
     }
 
 
+    /** TODO */
     private function propertyUnchanged($attributeName, $categoryId)
     {
         /** @var SettingsHelper $settingHelper */
