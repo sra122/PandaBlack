@@ -95,9 +95,7 @@ class MappingController extends Controller
 
         if(isset($attributes[$categoryId])) {
             foreach($attributes[$categoryId] as $attribute) {
-                if($attribute->required) {
-                    return $attribute;
-                }
+                return $attribute;
             }
         }
 
