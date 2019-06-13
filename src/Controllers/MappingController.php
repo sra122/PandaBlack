@@ -27,7 +27,7 @@ class MappingController extends Controller
 
                 $attributeName = str_replace('-attribute', '', $key);
 
-                return $this->checkPropertyExist($attributeName);
+                return $this->propertyUnchanged($attributeName, (int)$categoryId);
 
                 /*if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
                     $this->createProperty($attributeName);
@@ -73,15 +73,16 @@ class MappingController extends Controller
         /** @var PropertyNameRepositoryContract $propertyNameRepository */
         $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
 
-        $propertyNamesArray = $propertyNameRepository->listNames();
+        $properties = $propertyNameRepository->listNames();
 
-        /*if(in_array($propertyName, $propertyNamesArray)) {
-            return true;
+        foreach($properties as $property)
+        {
+            if($property->name === $propertyName) {
+                return true;
+            }
         }
 
-        return false;*/
-
-        return $propertyNamesArray;
+        return false;
     }
 
 
@@ -93,11 +94,13 @@ class MappingController extends Controller
         $attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
 
         if(isset($attributes[$categoryId])) {
-            foreach($attributes[$categoryId] as $attribute) {
+            /*foreach($attributes[$categoryId] as $attribute) {
                 if($attribute->required && ($attribute->name == $attributeName)) {
                     return true;
                 }
-            }
+            }*/
+
+            return $attributes[$categoryId];
         }
 
         return false;
