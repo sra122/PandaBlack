@@ -47,6 +47,9 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
 
             //PandaBlack Category as Property
             $router->post('markets/panda-black/create-category-as-property', 'PandaBlack\Controllers\PropertyController@createCategoryAsProperty');
+
+            //mapping
+            $router->post('markets/panda-black/mapping', 'PandaBlack\Controllers\MappingController@mapping');
         });
     }
 }
