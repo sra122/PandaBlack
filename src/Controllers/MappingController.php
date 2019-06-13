@@ -8,6 +8,7 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
@@ -91,7 +92,18 @@ class MappingController extends Controller
         /** @var SettingsHelper $settingHelper */
         $settingHelper = pluginApp(SettingsHelper::class);
 
-        $attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
+        $pbApiHelper = pluginApp(PBApiHelper::class);
+
+        $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
+
+        foreach($attributes as $attribute)
+        {
+            if($attribute->required && ($attribute->name == $attributeName)) {
+                return $attribute;
+            }
+        }
+
+        /*$attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
 
         if(isset($attributes[$categoryId])) {
             foreach($attributes[$categoryId] as $attribute) {
@@ -99,7 +111,7 @@ class MappingController extends Controller
                     return 'object';
                 }
             }
-        }
+        }*/
 
         return false;
     }
