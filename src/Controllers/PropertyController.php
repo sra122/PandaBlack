@@ -27,7 +27,6 @@ Class PropertyController extends Controller
         $propertyId = $this->Settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
 
         $pbCategoryExist = false;
-        $correctData = true;
 
         if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
@@ -42,31 +41,29 @@ Class PropertyController extends Controller
 
              $categoriesList = $this->Settings->get(SettingsHelper::CATEGORIES_LIST);
 
-             try {
-                 if(in_array($pbCategoryName, $categoriesList)) {
-                     if(!$pbCategoryExist) {
-                         $selectionData = [
-                             'propertyId' => $propertyId,
-                             'relation' => [
-                                 [
-                                     'relationValues' => [
-                                         [
-                                             'value' => $pbCategoryName,
-                                             'lang' => 'de',
-                                             'description' => ''
-                                         ]
+             if(in_array($pbCategoryName, $categoriesList)) {
+                 if(!$pbCategoryExist) {
+                     $selectionData = [
+                         'propertyId' => $propertyId,
+                         'relation' => [
+                             [
+                                 'relationValues' => [
+                                     [
+                                         'value' => $pbCategoryName,
+                                         'lang' => 'de',
+                                         'description' => ''
                                      ]
                                  ]
                              ]
-                         ];
+                         ]
+                     ];
 
-                         $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+                     $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
-                         return $propertySelection->id;
-                     }
+                     return $propertySelection->id;
                  }
-             } catch (\Exception $e) {
-                 return $e->getMessage();
+             } else {
+                 return 'categoryNameChanged'; //TODO Change the error return status
              }
         }
     }
