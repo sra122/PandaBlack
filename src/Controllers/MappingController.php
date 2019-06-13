@@ -27,6 +27,14 @@ class MappingController extends Controller
 
                 $attributeName = str_replace('-attribute', '', $key);
 
+                if(!($this->checkPropertyExist($attributeName))) {
+                    return 'test';
+                }
+
+                if($this->propertyUnchanged($attributeName, (int)$categoryId)) {
+                    return 'check';
+                }
+
                 if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
                     $this->createProperty($attributeName);
                 }
