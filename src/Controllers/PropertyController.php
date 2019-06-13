@@ -42,29 +42,31 @@ Class PropertyController extends Controller
 
              $categoriesList = $this->Settings->get(SettingsHelper::CATEGORIES_LIST);
 
-             if(in_array($pbCategoryName, $categoriesList)) {
-                 if(!$pbCategoryExist) {
-                     $selectionData = [
-                         'propertyId' => $propertyId,
-                         'relation' => [
-                             [
-                                 'relationValues' => [
-                                     [
-                                         'value' => $pbCategoryName,
-                                         'lang' => 'de',
-                                         'description' => ''
+             try {
+                 if(in_array($pbCategoryName, $categoriesList)) {
+                     if(!$pbCategoryExist) {
+                         $selectionData = [
+                             'propertyId' => $propertyId,
+                             'relation' => [
+                                 [
+                                     'relationValues' => [
+                                         [
+                                             'value' => $pbCategoryName,
+                                             'lang' => 'de',
+                                             'description' => ''
+                                         ]
                                      ]
                                  ]
                              ]
-                         ]
-                     ];
+                         ];
 
-                     $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
+                         $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
-                     return $propertySelection->id;
+                         return $propertySelection->id;
+                     }
                  }
-             } else {
-                 return 'categoryNameChanged';
+             } catch (\Exception $e) {
+                 return $e->getMessage();
              }
         }
     }
