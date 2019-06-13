@@ -19,6 +19,6 @@ class MappingController extends Controller
         $mappingData = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
-        return $categoryId;
+        return $mappingData;
     }
 }
