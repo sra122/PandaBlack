@@ -95,7 +95,7 @@ class MappingController extends Controller
 
         if(isset($attributes[$categoryId])) {
             foreach($attributes[$categoryId] as $attribute) {
-                return $attribute->name;
+                return $attribute;
             }
         }
 
