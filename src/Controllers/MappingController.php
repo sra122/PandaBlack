@@ -98,7 +98,7 @@ class MappingController extends Controller
 
         foreach($attributes as $attribute)
         {
-            return $attribute;
+            return $attribute->name;
         }
 
         /*$attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
