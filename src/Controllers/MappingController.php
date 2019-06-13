@@ -98,9 +98,7 @@ class MappingController extends Controller
 
         foreach($attributes as $attribute)
         {
-            if($attribute->required && ($attribute->name == $attributeName)) {
-                return $attribute;
-            }
+            return $attribute;
         }
 
         /*$attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
