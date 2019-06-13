@@ -27,11 +27,9 @@ class MappingController extends Controller
 
                 $attributeName = str_replace('-attribute', '', $key);
 
-                return $this->propertyUnchanged($attributeName, (int)$categoryId);
-
-                /*if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
+                if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
                     $this->createProperty($attributeName);
-                }*/
+                }
 
             }
         }
@@ -94,13 +92,11 @@ class MappingController extends Controller
         $attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
 
         if(isset($attributes[$categoryId])) {
-            /*foreach($attributes[$categoryId] as $attribute) {
+            foreach($attributes[$categoryId] as $attribute) {
                 if($attribute->required && ($attribute->name == $attributeName)) {
                     return true;
                 }
-            }*/
-
-            return $attributes[$categoryId];
+            }
         }
 
         return false;
