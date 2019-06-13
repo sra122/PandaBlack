@@ -24,15 +24,13 @@ class MappingController extends Controller
 
         foreach($mappingInfos as $key => $mappingInfo)
         {
-            if(array_reverse(explode('-', $mappingInfo))[0] == 'attribute' && $mappingInfo == 'Create Automatically') {
+            if(array_reverse(explode('-', $key))[0] == 'attribute' && $mappingInfo == 'Create Automatically') {
 
-                $attributeName = str_replace('-attribute', '', $mappingInfo);
+                $attributeName = str_replace('-attribute', '', $key);
 
-                return $attributeName;
-
-                /*if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
+                if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
                     $this->createProperty($attributeName);
-                }*/
+                }
             }
         }
     }
