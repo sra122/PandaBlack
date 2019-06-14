@@ -32,7 +32,7 @@ class MappingController extends Controller
 
         $this->mapPropertyValues($mappingInfos, $categoryId);
 
-        $this->saveMapping();
+        return $this->saveMapping();
     }
 
     private function mapProperties($mappingInfos)
