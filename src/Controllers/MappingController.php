@@ -12,7 +12,6 @@ use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertyRelationValueRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
@@ -24,7 +23,7 @@ class MappingController extends Controller
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
-        return $this->checkPropertyValueExist(105, '1-99');
+        return $this->checkPropertyValueExist(101, '1-99');
 
         /*foreach($mappingInfos as $key => $mappingInfo)
         {
@@ -101,11 +100,26 @@ class MappingController extends Controller
     }
 
 
-    private function checkPropertyValueExist($propertyRelationId, $propertyValue)
+    private function checkPropertyValueExist($propertyId, $propertyValue)
     {
+       $propertyRepo = pluginApp(PropertyRepositoryContract::class);
        $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
 
-       return $propertyRelationRepo->getRelation($propertyRelationId);
+       $propertyRelations = $propertyRepo->getProperty($propertyId, ['relation']);
+
+       foreach($propertyRelations->relation as $propertyRelation)
+       {
+            $propertyRelationData = $propertyRelationRepo->getRelation($propertyRelation->id);
+
+            foreach($propertyRelationData->relationValues as $propertyRelationValue)
+            {
+                if($propertyRelationValue->lang == 'de' && ($propertyRelationValue->value == $propertyValue)) {
+                    return 'test';
+                }
+            }
+       }
+
+       return false;
     }
 
 
