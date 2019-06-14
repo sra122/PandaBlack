@@ -103,7 +103,7 @@ class MappingController extends Controller
     {
        $propertyRepo = pluginApp(PropertyRepositoryContract::class);
 
-       return $propertyRepo->getProperty($propertyId, ['options']);
+       return $propertyRepo->getProperty($propertyId, ['relation']);
     }
 
 
