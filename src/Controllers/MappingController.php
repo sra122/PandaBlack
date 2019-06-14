@@ -19,16 +19,21 @@ use Plenty\Plugin\Http\Request;
 
 class MappingController extends Controller
 {
+    public $mappingInfo = [];
+
     public function mapping(Request $request)
     {
+        $this->fetchPropertiesInfo();
+
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
         $this->mapProperties($mappingInfos);
 
         $this->mapPropertyValues($mappingInfos, $categoryId);
-    }
 
+        $this->saveMapping();
+    }
 
     private function mapProperties($mappingInfos)
     {
@@ -41,7 +46,11 @@ class MappingController extends Controller
 
                 if(!($this->checkPropertyExist($attributeName))) {
                     $this->createProperty($attributeName);
+
+                    $this->mappingInfo['property'][$attributeName] =  $attributeName;
                 }
+            } else {
+                $this->mappingInfo['property'][$key] = $mappingInfo;
             }
         }
     }
@@ -77,9 +86,22 @@ class MappingController extends Controller
 
                     $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
                     $propertySelectionRepo->createPropertySelection($selectionData);
+
+                    $this->mappingInfo['propertyValue'][$attributeValueName] = $attributeValueName;
                 }
+            } else {
+                $this->mappingInfo['propertyValue'][$key] = $mappingInfo;
             }
         }
+    }
+
+
+    private function saveMapping()
+    {
+        $settingsRepo = pluginApp(SettingsHelper::class);
+
+        return $this->mappingInfo;
+
     }
 
 
@@ -154,6 +176,18 @@ class MappingController extends Controller
        }
 
        return false;
+    }
+
+
+    private function fetchPropertiesInfo()
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+
+        $this->mappingInfo = $settingsHelper->get(SettingsHelper::MAPPING_INFO);
+
+        if(empty($this->mappingInfo)) {
+            $settingsHelper->set(SettingsHelper::MAPPING_INFO, []);
+        }
     }
 
 

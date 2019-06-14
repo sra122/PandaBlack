@@ -67,7 +67,6 @@ class AttributeController extends Controller
 
         $propertiesList = [];
         $lang = ['de', 'DE', 'De'];
-        $key = 0;
 
         foreach($properties as $property)
         {
