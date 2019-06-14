@@ -11,6 +11,8 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyRelationValueRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
@@ -22,7 +24,7 @@ class MappingController extends Controller
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
-        return $this->checkPropertyValueExist(101, '1-99');
+        return $this->checkPropertyValueExist(105, '1-99');
 
         /*foreach($mappingInfos as $key => $mappingInfo)
         {
@@ -99,11 +101,11 @@ class MappingController extends Controller
     }
 
 
-    private function checkPropertyValueExist($propertyId, $propertyValue)
+    private function checkPropertyValueExist($propertyRelationId, $propertyValue)
     {
-       $propertyRepo = pluginApp(PropertyRepositoryContract::class);
+       $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
 
-       return $propertyRepo->getProperty($propertyId, ['relation']);
+       return $propertyRelationRepo->getRelation($propertyRelationId);
     }
 
 
