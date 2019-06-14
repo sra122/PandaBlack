@@ -32,7 +32,7 @@ class MappingController extends Controller
 
         $this->mapPropertyValues($mappingInfos, $categoryId);
 
-        return $this->saveMapping();
+        $this->saveMapping();
     }
 
     private function mapProperties($mappingInfos)
@@ -102,9 +102,7 @@ class MappingController extends Controller
     private function saveMapping()
     {
         $settingsRepo = pluginApp(SettingsHelper::class);
-
-        return $this->mappingInfo;
-
+        $settingsRepo->set(SettingsHelper::MAPPING_INFO, $this->mappingInfo);
     }
 
 
@@ -182,7 +180,7 @@ class MappingController extends Controller
     }
 
 
-    private function fetchPropertiesInfo()
+    public function fetchPropertiesInfo()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
 
@@ -191,6 +189,8 @@ class MappingController extends Controller
         if(empty($this->mappingInfo)) {
             $settingsHelper->set(SettingsHelper::MAPPING_INFO, []);
         }
+
+        return $this->mappingInfo;
     }
 
 
