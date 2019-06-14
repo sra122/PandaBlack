@@ -49,7 +49,7 @@ class MappingController extends Controller
 
                     $this->mappingInfo['property'][$attributeName] =  $attributeName;
                 }
-            } else {
+            } else if(array_reverse(explode('-', $key))[0] == 'attribute') {
                 $this->mappingInfo['property'][$key] = $mappingInfo;
             }
         }
@@ -89,7 +89,7 @@ class MappingController extends Controller
 
                     $this->mappingInfo['propertyValue'][$attributeValueName] = $attributeValueName;
                 }
-            } else {
+            } else if(is_numeric($propertyId)) {
                 $this->mappingInfo['propertyValue'][$key] = $mappingInfo;
             }
         }
