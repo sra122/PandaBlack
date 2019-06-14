@@ -39,19 +39,21 @@ class MappingController extends Controller
             // Attribute value as Property Value -- Create Automatically
             $attributeName = array_reverse(explode('~', $key))[0];
 
+            $attributeValueName = explode('~', $key)[0];
+
             $propertyId = $this->checkPropertyExist($attributeName);
 
             if(is_numeric($propertyId) && $mappingInfo == 'Create Automatically') {
-                if(!($this->checkPropertyValueExist($propertyId, $mappingInfo))) {
+                if(!($this->checkPropertyValueExist($propertyId, $attributeValueName))) {
                     $selectionData = [
                         'propertyId' => $propertyId,
                         'relation' => [
                             [
                                 'relationValues' => [
                                     [
-                                        'value' => $mappingInfo,
+                                        'value' => $attributeValueName,
                                         'lang' => 'de',
-                                        'description' => $mappingInfo . '-PB-' . $categoryId
+                                        'description' => $attributeValueName . '-PB-' . $categoryId
                                     ]
                                 ]
                             ]
