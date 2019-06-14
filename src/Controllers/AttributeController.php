@@ -65,11 +65,8 @@ class AttributeController extends Controller
         //Pagination is 0, it will provide complete list of Data.
         $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
 
-        return $properties;
-
-        /*$propertiesList = [];
+        $propertiesList = [];
         $lang = ['de', 'DE', 'De'];
-        $key = 0;
 
         foreach($properties as $property)
         {
@@ -77,13 +74,13 @@ class AttributeController extends Controller
                 foreach($property['names'] as $propertyName)
                 {
                     if(in_array($propertyName['lang'], $lang) && !empty($propertyName['name'])) {
-                        $propertiesList[$key++] = $propertyName['name'];
+                        $propertiesList[$propertyName['propertyId']] = $propertyName['name'];
                     }
                 }
             }
         }
 
-        return $propertiesList;*/
+        return $propertiesList;
     }
 
 
