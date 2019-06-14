@@ -8,6 +8,7 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
@@ -23,17 +24,25 @@ class MappingController extends Controller
 
         foreach($mappingInfos as $key => $mappingInfo)
         {
+            $attributeName = 'Dicke';
+
+            return $this->checkPropertyExist($attributeName);
+            /*// Attribute as Property -- Create Automatically
             if(array_reverse(explode('-', $key))[0] == 'attribute' && $mappingInfo == 'Create Automatically') {
 
                 $attributeName = str_replace('-attribute', '', $key);
 
-                return $this->propertyUnchanged($attributeName, (int)$categoryId);
-
-                if(!($this->checkPropertyExist($attributeName)) && ($this->propertyUnchanged($attributeName, (int)$categoryId))) {
-                    $this->createProperty($attributeName);
+                if(!($this->checkPropertyExist($attributeName))) {
+                    return $this->createProperty($attributeName);
                 }
-
             }
+
+            // Attribute value as Property Value -- Create Automatically
+            $attributeName = array_reverse(explode('~', $key))[0];
+
+            if($this->checkPropertyExist($attributeName) && $mappingInfo == 'Create Automatically') {
+                return 'checked';
+            }*/
         }
     }
 
@@ -65,6 +74,9 @@ class MappingController extends Controller
             $propertyName['propertyId'] = $property->id;
             $propertyName = $propertyNameRepository->createName($propertyName);
         }
+
+
+        return $property;
     }
 
 
@@ -78,7 +90,7 @@ class MappingController extends Controller
         foreach($properties as $property)
         {
             if($property->name === $propertyName) {
-                return true;
+                return $property;
             }
         }
 
@@ -86,18 +98,34 @@ class MappingController extends Controller
     }
 
 
+    /** TODO */
     private function propertyUnchanged($attributeName, $categoryId)
     {
         /** @var SettingsHelper $settingHelper */
         $settingHelper = pluginApp(SettingsHelper::class);
 
-        $attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
+        $pbApiHelper = pluginApp(PBApiHelper::class);
+
+        $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
+
+        foreach($attributes as $attribute)
+        {
+            return $attribute->name;
+        }
+
+        /*$attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
 
         if(isset($attributes[$categoryId])) {
             foreach($attributes[$categoryId] as $attribute) {
+<<<<<<< HEAD
                 return $attribute->name;
+=======
+                if(is_object($attribute)) {
+                    return 'object';
+                }
+>>>>>>> 2e14752e78d3672c288ffcfe4c966f8d01b8c7f9
             }
-        }
+        }*/
 
         return false;
     }
