@@ -64,7 +64,10 @@ class AttributeController extends Controller
 
         //Pagination is 0, it will provide complete list of Data.
         $properties = $propertyRepo->listProperties(1, 50, [], [], 0);
-        $propertiesList = [];
+
+        return $properties;
+
+        /*$propertiesList = [];
         $lang = ['de', 'DE', 'De'];
         $key = 0;
 
@@ -80,7 +83,7 @@ class AttributeController extends Controller
             }
         }
 
-        return $propertiesList;
+        return $propertiesList;*/
     }
 
 
