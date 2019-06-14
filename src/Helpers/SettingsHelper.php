@@ -13,6 +13,7 @@ class SettingsHelper
     const CATEGORIES_AS_PROPERTIES = 'panda_black_category_as_property';
     const CATEGORIES_LIST = 'pb_categories_list';
     const MAPPING_INFO = 'pb_mapping';
+    const NOTIFICATION = 'pb_notification';
 
 
     /** @var SettingsRepositoryContract */

@@ -94,6 +94,14 @@ class MappingController extends Controller
                 }
             } else if(is_numeric($propertyId)) {
                 $this->mappingInfo['propertyValue'][$attributeValueName] = $mappingInfo;
+            } else if(is_bool($propertyId)) {
+
+                // If seller is trying to create a PropertyValue under a Property that is not Present.
+                $settingsRepo = pluginApp(SettingsHelper::class);
+
+                $notification = $settingsRepo->get(SettingsHelper::NOTIFICATION);
+                $notification['propertyNotFound'][$attributeName] = $attributeValueName;
+                $settingsRepo->set(SettingsHelper::NOTIFICATION, $notification);
             }
         }
     }
@@ -133,7 +141,6 @@ class MappingController extends Controller
             $propertyName['propertyId'] = $property->id;
             $propertyName = $propertyNameRepository->createName($propertyName);
         }
-
 
         return $property;
     }
@@ -224,5 +231,12 @@ class MappingController extends Controller
         }*/
 
         return false;
+    }
+
+
+    public function fetchNotifications()
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        return $settingsHelper->get(SettingsHelper::NOTIFICATION);
     }
 }
