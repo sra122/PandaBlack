@@ -67,6 +67,7 @@ class AttributeController extends Controller
 
         $propertiesList = [];
         $lang = ['de', 'DE', 'De'];
+        $key = 0;
 
         foreach($properties as $property)
         {
@@ -74,7 +75,7 @@ class AttributeController extends Controller
                 foreach($property['names'] as $propertyName)
                 {
                     if(in_array($propertyName['lang'], $lang) && !empty($propertyName['name'])) {
-                        $propertiesList[$propertyName['propertyId']] = $propertyName['name'];
+                        $propertiesList[$key++] = $propertyName['name'];
                     }
                 }
             }
