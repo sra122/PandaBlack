@@ -13,6 +13,7 @@ use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
@@ -23,9 +24,7 @@ class MappingController extends Controller
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
-        return $this->checkPropertyValueExist(101, '1-99');
-
-        /*foreach($mappingInfos as $key => $mappingInfo)
+        foreach($mappingInfos as $key => $mappingInfo)
         {
             // Attribute as Property -- Create Automatically
             if(array_reverse(explode('-', $key))[0] == 'attribute' && $mappingInfo == 'Create Automatically') {
@@ -43,9 +42,27 @@ class MappingController extends Controller
             $propertyId = $this->checkPropertyExist($attributeName);
 
             if(is_numeric($propertyId) && $mappingInfo == 'Create Automatically') {
+                if(!($this->checkPropertyValueExist($propertyId, $mappingInfo))) {
+                    $selectionData = [
+                        'propertyId' => $propertyId,
+                        'relation' => [
+                            [
+                                'relationValues' => [
+                                    [
+                                        'value' => $mappingInfo,
+                                        'lang' => 'de',
+                                        'description' => $mappingInfo . '-PB-' . $categoryId
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ];
 
+                    $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
+                    return $propertySelectionRepo->createPropertySelection($selectionData);
+                }
             }
-        }*/
+        }
     }
 
 
@@ -114,7 +131,7 @@ class MappingController extends Controller
             foreach($propertyRelationData->relationValues as $propertyRelationValue)
             {
                 if($propertyRelationValue->lang == 'de' && ($propertyRelationValue->value == $propertyValue)) {
-                    return 'test';
+                    return true;
                 }
             }
        }
