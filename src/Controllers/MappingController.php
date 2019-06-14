@@ -24,6 +24,14 @@ class MappingController extends Controller
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
+        $this->mapProperties($mappingInfos);
+
+        $this->mapPropertyValues($mappingInfos, $categoryId);
+    }
+
+
+    private function mapProperties($mappingInfos)
+    {
         foreach($mappingInfos as $key => $mappingInfo)
         {
             // Attribute as Property -- Create Automatically
@@ -32,10 +40,17 @@ class MappingController extends Controller
                 $attributeName = str_replace('-attribute', '', $key);
 
                 if(!($this->checkPropertyExist($attributeName))) {
-                    return $this->createProperty($attributeName);
+                    $this->createProperty($attributeName);
                 }
             }
+        }
+    }
 
+
+    private function mapPropertyValues($mappingInfos, $categoryId)
+    {
+        foreach($mappingInfos as $key => $mappingInfo)
+        {
             // Attribute value as Property Value -- Create Automatically
             $attributeName = array_reverse(explode('~', $key))[0];
 
@@ -61,7 +76,7 @@ class MappingController extends Controller
                     ];
 
                     $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
-                    return $propertySelectionRepo->createPropertySelection($selectionData);
+                    $propertySelectionRepo->createPropertySelection($selectionData);
                 }
             }
         }
