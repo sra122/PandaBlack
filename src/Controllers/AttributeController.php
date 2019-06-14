@@ -75,13 +75,13 @@ class AttributeController extends Controller
                 foreach($property['names'] as $propertyName)
                 {
                     if(in_array($propertyName['lang'], $lang) && !empty($propertyName['name'])) {
-                        $propertiesList[$key++] = $propertyName['name'];
+                        $propertiesList[$propertyName['propertyId']] = $propertyName['name'];
                     }
                 }
             }
         }
 
-        return $propertiesList;
+        return array_values($propertiesList);
     }
 
 
