@@ -22,12 +22,11 @@ class MappingController extends Controller
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
-        foreach($mappingInfos as $key => $mappingInfo)
-        {
-            $attributeName = 'Dicke';
+        return $this->checkPropertyValueExist(101, '1-99');
 
-            return $this->checkPropertyExist($attributeName);
-            /*// Attribute as Property -- Create Automatically
+        /*foreach($mappingInfos as $key => $mappingInfo)
+        {
+            // Attribute as Property -- Create Automatically
             if(array_reverse(explode('-', $key))[0] == 'attribute' && $mappingInfo == 'Create Automatically') {
 
                 $attributeName = str_replace('-attribute', '', $key);
@@ -40,10 +39,12 @@ class MappingController extends Controller
             // Attribute value as Property Value -- Create Automatically
             $attributeName = array_reverse(explode('~', $key))[0];
 
-            if($this->checkPropertyExist($attributeName) && $mappingInfo == 'Create Automatically') {
-                return 'checked';
-            }*/
-        }
+            $propertyId = $this->checkPropertyExist($attributeName);
+
+            if(is_numeric($propertyId) && $mappingInfo == 'Create Automatically') {
+
+            }
+        }*/
     }
 
 
@@ -90,11 +91,19 @@ class MappingController extends Controller
         foreach($properties as $property)
         {
             if($property->name === $propertyName) {
-                return $property;
+                return $property->propertyId;
             }
         }
 
         return false;
+    }
+
+
+    private function checkPropertyValueExist($propertyId, $propertyValue)
+    {
+       $propertyRepo = pluginApp(PropertyRepositoryContract::class);
+
+       return $propertyRepo->getProperty($propertyId, ['options']);
     }
 
 
