@@ -95,21 +95,29 @@ class AttributeController extends Controller
         $lang = ['de', 'DE', 'De'];
         $key = 0;
 
-        return $properties;
-
-        /*foreach($properties as $property)
+        foreach($properties as $property)
         {
             if(!empty($property['selections']) && ($property['id'] !== $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
+
+                $propertyName = '';
+
+                foreach($property['names'] as $propertyName)
+                {
+                    if(in_array($propertyName['lang'], $lang)) {
+                        $propertyName = $propertyName['name'];
+                    }
+                }
+
                 foreach($property['selections'] as $selectionProperty) {
                     $propertyValue = $selectionProperty['relation']['relationValues'][0];
 
                     if(in_array($propertyValue['lang'], $lang) && !empty($propertyValue['value'])) {
-                        $propertyValues[$key++] = $propertyValue['value'];
+                        $propertyValues[$key++] = $propertyValue['value'] . '-' . $propertyName;
                     }
                 }
             }
         }
 
-        return $propertyValues;*/
+        return $propertyValues;
     }
 }
