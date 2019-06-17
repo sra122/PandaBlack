@@ -94,7 +94,7 @@ class MappingController extends Controller
                 }
             } else if(is_numeric($propertyId)) {
                 $this->mappingInfo['propertyValue'][$attributeValueName] = $mappingInfo;
-            } else if(is_bool($propertyId)) {
+            } else if(is_bool($propertyId) && !empty($attributeName)) {
 
                 // If seller is trying to create a PropertyValue under a Property that is not Present.
                 $settingsRepo = pluginApp(SettingsHelper::class);
