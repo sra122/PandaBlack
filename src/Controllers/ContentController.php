@@ -206,14 +206,14 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        $productStatus = $this->productStatus($productDetails);
+        /*$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
-        }
+        }*/
 
-        return $productStatus;
+        return $productDetails;
 
         /*$propertiesRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
