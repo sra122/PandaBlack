@@ -76,7 +76,7 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
-            return $resultItems;
+            array_push($exportData, $resultItems);
 
             /*do {
 
