@@ -35,6 +35,9 @@ class MappingController extends Controller
         $this->saveMapping();
     }
 
+    /**
+     * @param $mappingInfos
+     */
     private function mapProperties($mappingInfos)
     {
         foreach($mappingInfos as $key => $mappingInfo)
@@ -58,7 +61,10 @@ class MappingController extends Controller
         }
     }
 
-
+    /**
+     * @param $mappingInfos
+     * @param $categoryId
+     */
     private function mapPropertyValues($mappingInfos, $categoryId)
     {
         foreach($mappingInfos as $key => $mappingInfo)
@@ -106,7 +112,9 @@ class MappingController extends Controller
         }
     }
 
-
+    /**
+     *
+     */
     private function saveMapping()
     {
         $settingsRepo = pluginApp(SettingsHelper::class);
@@ -114,6 +122,10 @@ class MappingController extends Controller
     }
 
 
+    /**
+     * @param $propertyName
+     * @return \Plenty\Modules\Property\Models\Property
+     */
     private function createProperty($propertyName)
     {
         /** @var PropertyRepositoryContract $propertyRepository */
@@ -145,7 +157,10 @@ class MappingController extends Controller
         return $property;
     }
 
-
+    /**
+     * @param $propertyName
+     * @return bool
+     */
     private function checkPropertyExist($propertyName)
     {
         /** @var PropertyNameRepositoryContract $propertyNameRepository */
@@ -164,6 +179,11 @@ class MappingController extends Controller
     }
 
 
+    /**
+     * @param $propertyId
+     * @param $propertyValue
+     * @return bool
+     */
     private function checkPropertyValueExist($propertyId, $propertyValue)
     {
        $propertyRepo = pluginApp(PropertyRepositoryContract::class);
@@ -186,7 +206,9 @@ class MappingController extends Controller
        return false;
     }
 
-
+    /**
+     * @return array
+     */
     public function fetchPropertiesInfo()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
@@ -234,6 +256,9 @@ class MappingController extends Controller
     }
 
 
+    /**
+     * @return mixed
+     */
     public function fetchNotifications()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);

@@ -70,13 +70,15 @@ class ContentController extends Controller
             ]);
 
             $itemRepository->setFilters([
-                'referrerId' => $this->Settings->get('orderReferrerId'),
+                'referrerId' => $this->Settings->get(SettingsHelper::ORDER_REFERRER),
                 $filterVariation => time()-3600
             ]);
 
             $resultItems = $itemRepository->search();
 
-            do {
+            return $resultItems;
+
+            /*do {
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
                 $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
@@ -184,7 +186,7 @@ class ContentController extends Controller
                     }
                 }
 
-            } while(!$resultItems->isLastPage());
+            } while(!$resultItems->isLastPage());*/
         }
 
         $templateData = array(

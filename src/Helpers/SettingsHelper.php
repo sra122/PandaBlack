@@ -14,6 +14,7 @@ class SettingsHelper
     const CATEGORIES_LIST = 'pb_categories_list';
     const MAPPING_INFO = 'pb_mapping';
     const NOTIFICATION = 'pb_notification';
+    const ORDER_REFERRER = 'orderReferrerId';
 
 
     /** @var SettingsRepositoryContract */

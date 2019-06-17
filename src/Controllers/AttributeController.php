@@ -11,6 +11,11 @@ use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 class AttributeController extends Controller
 {
+    /**
+     * CreatePBAttributes Method
+     *
+     * @param $categoryId
+     */
     public function createPBAttributes($categoryId)
     {
         $app = pluginApp(AppController::class);
@@ -35,6 +40,12 @@ class AttributeController extends Controller
     }
 
 
+    /**
+     * GetPBAttributes Method
+     *
+     * @param $categoryId
+     * @return mixed
+     */
     public function getPBAttributes($categoryId)
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
@@ -50,6 +61,10 @@ class AttributeController extends Controller
         }
     }
 
+
+    /**
+     * DeletePBProperties Method
+     */
     public function deletePBProperties()
     {
         $settingRepo = pluginApp(SettingsRepositoryContract::class);
@@ -57,6 +72,11 @@ class AttributeController extends Controller
     }
 
 
+    /**
+     * GetPMProperties Method
+     *
+     * @return array
+     */
     public function getPMProperties()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
@@ -84,6 +104,11 @@ class AttributeController extends Controller
     }
 
 
+    /**
+     * GetPMPropertyValues Method
+     *
+     * @return array
+     */
     public function getPMPropertyValues()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
