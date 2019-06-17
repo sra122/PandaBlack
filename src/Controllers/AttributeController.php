@@ -95,7 +95,9 @@ class AttributeController extends Controller
         $lang = ['de', 'DE', 'De'];
         $key = 0;
 
-        foreach($properties as $property)
+        return $properties;
+
+        /*foreach($properties as $property)
         {
             if(!empty($property['selections']) && ($property['id'] !== $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
                 foreach($property['selections'] as $selectionProperty) {
@@ -108,6 +110,6 @@ class AttributeController extends Controller
             }
         }
 
-        return $propertyValues;
+        return $propertyValues;*/
     }
 }
