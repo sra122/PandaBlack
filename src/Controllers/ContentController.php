@@ -285,7 +285,12 @@ class ContentController extends Controller
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
-        return $productStatus;
+        $test = [
+            'productDetails' => $productDetails,
+            'productStatus' => $productStatus
+        ];
+
+        return $test;
     }
 
 
