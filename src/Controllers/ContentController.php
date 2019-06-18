@@ -76,20 +76,20 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
-            /*foreach($resultItems->getResult() as $variation) {
+            foreach($resultItems->getResult() as $variation) {
                 array_push($exportData, $variation);
-            }*/
+            }
 
-            do {
+            /*do {
 
-                /*$settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
+                $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
                 $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
 
                 $categoryId = [];
 
                 foreach($categoryMapping['entries'] as $category) {
                     $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
-                }*/
+                }
 
                 $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                 $variationStock = pluginApp(VariationStockRepositoryContract::class);
@@ -188,7 +188,7 @@ class ContentController extends Controller
                     }
                 }
 
-            } while(!$resultItems->isLastPage());
+            } while(!$resultItems->isLastPage());*/
         }
 
         $templateData = array(
