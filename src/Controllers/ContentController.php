@@ -185,7 +185,7 @@ class ContentController extends Controller
 
     private function attributesInfo($properties, $categoryId)
     {
-        $attributesInfo = [];
+        $attributeDetails = [];
 
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
@@ -226,7 +226,7 @@ class ContentController extends Controller
                         {
                             if($propertyInfo == $propertyValue)
                             {
-                                $attributesInfo[$key] = $propertyValueKey;
+                                $attributeDetails[$key] = $propertyValueKey;
                             }
                         }
                     }
@@ -234,15 +234,32 @@ class ContentController extends Controller
             }
         }
 
-        $test = [
-            'propertyInfos' => $propertyInfos,
-            'pbMapping' => $pbMapping['property'],
-            'pbMappingValues' => $pbMapping['propertyValue'],
-            'propertiesList' => $propertyLists,
-            'attributesInfo' => $attributesInfo
-        ];
 
-        return $test;
+        if(!empty($attributeDetails)) {
+            foreach($attributeDetails as $attributeName => $attributeDetail)
+            {
+                $matched = false;
+                foreach($pbAttributes as $pbAttribute)
+                {
+                    if($pbAttribute['required'] && ($pbAttribute['name'] == $attributeName))
+                    {
+                        foreach($pbAttribute['values'] as $pbAttributeValue)
+                        {
+                            if($pbAttributeValue == $attributeDetail) {
+                                $matched = true;
+                            }
+                        }
+                    }
+                }
+
+                if(!$matched) {
+                    unset($attributeDetails[$attributeName]);
+                }
+            }
+        }
+
+
+        return $attributeDetails;
     }
 
 
