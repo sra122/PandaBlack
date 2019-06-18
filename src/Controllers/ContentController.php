@@ -285,8 +285,11 @@ class ContentController extends Controller
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $notification = $settingsHelper->get(SettingsHelper::NOTIFICATION);
+
         $test = [
-            'productDetails' => $productDetails,
+            'notification' => $notification,
             'productStatus' => $productStatus
         ];
 
@@ -329,14 +332,12 @@ class ContentController extends Controller
             if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
                 array_push($noStockProducts, $productDetail['product_id']);
                 $unfulfilledData = true;
-                //unset($productDetails['exportData'][$key]);
             }
 
             //ASIN Check
             if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
                 array_push($noASINProducts, $productDetail['product_id']);
                 $unfulfilledData = true;
-                //unset($productDetails['exportData'][$key]);
             }
 
             if($unfulfilledData) {
