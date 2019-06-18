@@ -334,9 +334,9 @@ class ContentController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $categoryPropertyId = $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
 
-        /*foreach($properties as $property)
+        foreach($properties as $property)
         {
-            if($property['propertyId'] == $categoryPropertyId) {
+            if($property['propertyId'] == (int)$categoryPropertyId) {
                 $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
                 $propertyRepo = pluginApp(PropertyRepositoryContract::class);
@@ -344,7 +344,10 @@ class ContentController extends Controller
 
                 foreach($propertyLists as $propertyList)
                 {
-                    if($propertyList['id'] == $property['propertyId'] && !empty($propertyLists['selections'])) {
+                    if($propertyList['id'] == $property['propertyId']) {
+                        return $propertyList;
+                    }
+                    /*if($propertyList['id'] == $property['propertyId'] && !empty($propertyLists['selections'])) {
 
                         foreach($propertyList['selections'] as $selection)
                         {
@@ -355,11 +358,9 @@ class ContentController extends Controller
                         }
 
                         return $propertyList['selections'];
-                    }
+                    }*/
                 }
             }
-        }*/
-
-        return $categoryPropertyId;
+        }
     }
 }
