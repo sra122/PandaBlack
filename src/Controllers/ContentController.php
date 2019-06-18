@@ -80,7 +80,7 @@ class ContentController extends Controller
                 array_push($exportData, $variation);
             }
 
-            do {
+            /*do {
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
                 $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
@@ -97,7 +97,7 @@ class ContentController extends Controller
 
                 foreach($resultItems->getResult()  as $variation) {
 
-                    /*if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+                    if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                         if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -185,10 +185,10 @@ class ContentController extends Controller
 
                             $exportData[$variation['id']]['attributes'] = $attributeSets;
                         }
-                    }*/
+                    }
                 }
 
-            } while(!$resultItems->isLastPage());
+            } while(!$resultItems->isLastPage());*/
         }
 
         $templateData = array(
@@ -206,7 +206,9 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        return $this->categoryIdFromSettingsRepo($productDetails[0]['properties']);
+        /*return $this->categoryIdFromSettingsRepo($productDetails[0]['properties']);*/
+
+        return $productDetails;
 
         /*$productStatus = $this->productStatus($productDetails);
 
