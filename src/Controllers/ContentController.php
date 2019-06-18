@@ -346,13 +346,15 @@ class ContentController extends Controller
                 {
                     if($propertyList['id'] == $property['propertyId'] && !empty($propertyLists['selections'])) {
 
-                        foreach($propertyList['selections'] as $selection)
+                        /*foreach($propertyList['selections'] as $selection)
                         {
                             if($selection['id'] == $property['relationValues'][0]['value']) {
 
                                 return array_flip($categoriesList)[$selection['relation']['relationValues'][0]['value']];
                             }
-                        }
+                        }*/
+
+                        return $propertyList['selections'];
                     }
                 }
             }
