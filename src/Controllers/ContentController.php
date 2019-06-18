@@ -220,7 +220,7 @@ class ContentController extends Controller
             {
                 foreach($propertyLists as $propertyList)
                 {
-                    if($propertyList['id'] == $id)
+                    if($propertyList['id'] == $id && ($this->getPropertyNameInDE($propertyList['names']) == $key))
                     {
                         foreach($pbMapping['propertyValue'] as $propertyValueKey => $propertyValue)
                         {
@@ -243,6 +243,21 @@ class ContentController extends Controller
         ];
 
         return $test;
+    }
+
+
+    public function getPropertyNameInDE($names)
+    {
+        $propertyName = '';
+
+        foreach($names as $name)
+        {
+            if($name['lang'] == 'de') {
+                $propertyName = $name['name'];
+            }
+        }
+
+        return $propertyName;
     }
 
     /**
