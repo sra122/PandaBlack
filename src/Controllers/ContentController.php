@@ -316,7 +316,7 @@ class ContentController extends Controller
                 $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
 
                 foreach($attributes as $attributeKey => $attribute) {
-                    if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
+                    if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
                             $missingAttributeProducts[$productDetail['product_id']][$attributeKey] = $attribute['name'];
                             $unfulfilledData = true;
