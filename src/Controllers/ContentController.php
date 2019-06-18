@@ -360,6 +360,6 @@ class ContentController extends Controller
             }
         }*/
 
-        return $properties;
+        return $categoryPropertyId;
     }
 }
