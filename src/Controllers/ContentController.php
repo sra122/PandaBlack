@@ -206,7 +206,7 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        return $productDetails[0]['properties'];
+        return $this->categoryIdFromSettingsRepo($productDetails['exportData'][0]['properties']);
 
         /*return $productDetails;*/
 
