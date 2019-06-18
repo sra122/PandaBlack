@@ -185,6 +185,8 @@ class ContentController extends Controller
 
     private function attributesInfo($properties, $categoryId)
     {
+        $attributesInfo = [];
+
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
 
@@ -194,7 +196,7 @@ class ContentController extends Controller
 
         $propertyLists = $propertiesRepo->listProperties(1, 50, [], [], 0);
 
-        $propertyInfo = [];
+        $propertyInfos = [];
 
         foreach($propertyLists as $propertyList)
         {
@@ -205,14 +207,39 @@ class ContentController extends Controller
                     foreach($propertyList['selections'] as $selection)
                     {
                         if($selection['id'] == $property['relationValues'][0]['value']) {
-                            $propertyInfo[$propertyList['id']] = $selection;
+                            $propertyInfos[$propertyList['id']] = $selection['relation']['relationValues'][0]['value'];
                         }
                     }
                 }
             }
         }
 
-        return $pbMapping;
+        foreach($pbMapping['property'] as $key => $mappedProperty)
+        {
+            foreach($propertyInfos as $propertyInfo)
+            {
+                if($mappedProperty == $propertyInfo)
+                {
+                    foreach($pbAttributes as $pbAttribute)
+                    {
+                        if($pbAttribute['required'] && ($pbAttribute['name'] == $key))
+                        {
+                            foreach($pbAttribute['values'] as $value)
+                            {
+                                foreach($pbMapping['propertyValue'] as $propertyValue)
+                                {
+                                    if($propertyValue == $value) {
+                                        $attributesInfo[$key] = $propertyValue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $attributesInfo;
     }
 
     /**
