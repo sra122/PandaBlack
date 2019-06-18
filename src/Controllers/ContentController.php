@@ -340,7 +340,7 @@ class ContentController extends Controller
                 $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
                 $propertyRepo = pluginApp(PropertyRepositoryContract::class);
-                return $propertyRepo->getProperty($property['propertyId'], ['selections'])->toArray();
+                return $propertyRepo->listProperties(1, 50, [], [], 0);
             }
         }
     }
