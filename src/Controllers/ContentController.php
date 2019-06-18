@@ -216,35 +216,30 @@ class ContentController extends Controller
 
         foreach($pbMapping['property'] as $key => $mappedProperty)
         {
-            foreach($propertyInfos as $propertyInfo)
+            foreach($propertyInfos as $id => $propertyInfo)
             {
-                $attributesInfo[$key] = $propertyInfo;
-                /*if($mappedProperty == $propertyInfo)
+                foreach($propertyLists as $propertyList)
                 {
-                    foreach($pbAttributes as $pbAttribute)
+                    if($propertyList['id'] == $id)
                     {
-                        if($pbAttribute['required'] && ($pbAttribute['name'] == $key))
+                        foreach($pbMapping['propertyValue'] as $propertyValueKey => $propertyValue)
                         {
-                            foreach($pbAttribute['values'] as $value)
+                            if($propertyInfo == $propertyValue)
                             {
-                                foreach($pbMapping['propertyValue'] as $propertyValue)
-                                {
-                                    if($propertyValue == $value) {
-                                        $attributesInfo[$key] = $propertyValue;
-                                    }
-                                }
+                                $attributesInfo[$key] = $propertyValueKey;
                             }
                         }
                     }
-                    $attributesInfo[$key] = $propertyInfo;
-                }*/
+                }
             }
         }
 
         $test = [
             'propertyInfos' => $propertyInfos,
             'pbMapping' => $pbMapping['property'],
-            'propertiesList' => $propertyLists
+            'pbMappingValues' => $pbMapping['propertyValue'],
+            'propertiesList' => $propertyLists,
+            'attributesInfo' => $attributesInfo
         ];
 
         return $test;
