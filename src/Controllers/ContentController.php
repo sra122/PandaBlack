@@ -344,10 +344,7 @@ class ContentController extends Controller
 
                 foreach($propertyLists as $propertyList)
                 {
-                    if($propertyList['id'] == $property['propertyId']) {
-                        return $propertyList;
-                    }
-                    /*if($propertyList['id'] == $property['propertyId'] && !empty($propertyLists['selections'])) {
+                    if($propertyList['id'] == $property['propertyId'] && !empty($propertyList['selections'])) {
 
                         foreach($propertyList['selections'] as $selection)
                         {
@@ -358,7 +355,7 @@ class ContentController extends Controller
                         }
 
                         return $propertyList['selections'];
-                    }*/
+                    }
                 }
             }
         }
