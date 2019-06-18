@@ -241,7 +241,13 @@ class ContentController extends Controller
             }
         }
 
-        return $attributesInfo;
+        $test = [
+            'propertyInfos' => $propertyInfos,
+            'pbMapping' => $pbMapping['property'],
+            'propertiesList' => $propertyLists
+        ];
+
+        return $test;
     }
 
     /**
