@@ -188,6 +188,8 @@ class ContentController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
 
+        $pbMapping = $settingsHelper->get(SettingsHelper::MAPPING_INFO);
+
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
 
         $propertyLists = $propertiesRepo->listProperties(1, 50, [], [], 0);
@@ -210,7 +212,7 @@ class ContentController extends Controller
             }
         }
 
-        return $pbAttributes;
+        return $pbMapping;
     }
 
     /**
