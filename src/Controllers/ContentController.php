@@ -199,8 +199,8 @@ class ContentController extends Controller
         {
             foreach($properties as $property)
             {
-                if($property['propertyId'] == $propertyList['id']) {
-                    $propertyInfo[$propertyList['id']] = $property;
+                if($property['propertyId'] == $propertyList['id'] && ($property['propertyId'] !== $categoryId)) {
+                    $propertyInfo[$propertyList['id']] = $propertyList;
                 }
             }
         }
