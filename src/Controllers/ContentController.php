@@ -136,6 +136,8 @@ class ContentController extends Controller
                     $textArray = $variation['item']->texts;
                     $variation['texts'] = $textArray->toArray();
 
+                    $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
+
                     $exportData[$variation['id']] = array(
                         'parent_product_id' => $variation['mainVariationId'],
                         'product_id' => $variation['id'],
@@ -143,7 +145,7 @@ class ContentController extends Controller
                         'name' => $variation['item']['texts'][0]['name1'],
                         'price' => $variation['variationSalesPrices'][0]['price'],
                         'currency' => 'Euro',
-                        'category' => $this->categoryIdFromSettingsRepo($variation['properties']),
+                        'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
                         'image_url' => $variation['images'][0]['url'],
                         'color' => '',
@@ -160,15 +162,15 @@ class ContentController extends Controller
                         'ean' => (count($ean) > 0) ? implode(',', $ean) : null
                     );
 
-                    $attributeSets = [];
+                    /*$attributeSets = [];
                     foreach($variation['variationAttributeValues'] as $attribute) {
 
                         $attributeId = array_reverse(explode('-', $attribute['attribute']['backendName']))[0];
                         $attributeValue = array_reverse(explode('-', $attribute['attributeValue']['backendName']))[0];
                         $attributeSets[(int)$attributeId] = (int)$attributeValue;
-                    }
+                    }*/
 
-                    $exportData[$variation['id']]['attributes'] = $attributeSets;
+                    $exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
                 }
 
             } while(!$resultItems->isLastPage());
@@ -180,6 +182,31 @@ class ContentController extends Controller
         return $templateData;
     }
 
+
+    private function attributesInfo($properties, $categoryId)
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+        $relativePbAttributes = $pbAttributes[$categoryId];
+
+        $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
+
+        $propertyLists = $propertiesRepo->listProperties(1, 50, [], [], 0);
+
+        $propertyInfo = [];
+
+        foreach($propertyLists as $propertyList)
+        {
+            foreach($properties as $property)
+            {
+                if($property['propertyId'] == $propertyList['id']) {
+                    $propertyInfo[$propertyList['id']] = $property;
+                }
+            }
+        }
+
+        return $propertyInfo;
+    }
 
     /**
      * @return array
