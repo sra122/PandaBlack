@@ -76,119 +76,102 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
-            foreach($resultItems->getResult() as $variation) {
+            /*foreach($resultItems->getResult() as $variation) {
                 array_push($exportData, $variation);
-            }
+            }*/
 
-            /*do {
-
-                $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
-                $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
-
-                $categoryId = [];
-
-                foreach($categoryMapping['entries'] as $category) {
-                    $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
-                }
+            do {
 
                 $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                 $variationStock = pluginApp(VariationStockRepositoryContract::class);
                 $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
 
-                foreach($resultItems->getResult()  as $variation) {
+                foreach($resultItems->getResult()  as $variation)
+                {
+                    $stockData = $variationStock->listStockByWarehouse($variation['id']);
 
-                    if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+                    $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
 
-                        if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+                    //ASIN
+                    $asin = null;
+                    try {
+                        $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
 
-                            $stockData = $variationStock->listStockByWarehouse($variation['id']);
-
-                            $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
-
-                            //ASIN
-                            $asin = null;
-                            try {
-                                $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
-
-                                foreach($identNumbers as $identNumber)
-                                {
-                                    if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
-                                        $asin = $identNumber['value'];
-                                    }
-                                }
-                            } catch (\Exception $e) {
-                                $asin = null;
+                        foreach($identNumbers as $identNumber)
+                        {
+                            if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
+                                $asin = $identNumber['value'];
                             }
+                        }
+                    } catch (\Exception $e) {
+                        $asin = null;
+                    }
 
 
-                            //SKU
-                            $sku = null;
-                            try {
-                                if(count($variation['variationSkus']) > 0) {
-                                    foreach($variation['variationSkus'] as $skuInformation)
-                                    {
-                                        if($skuInformation->marketId === $this->Settings->get('orderReferrerId')) {
-                                            $sku = $skuInformation->sku;
-                                        }
-                                    }
-                                }
-                            } catch (\Exception $e) {
-                                $sku = null;
-                            }
-
-                            //EAN
-                            $ean = [];
-
-                            if(count($variation['variationBarcodes']) > 0) {
-                                foreach($variation['variationBarcodes'] as $variationBarcode)
-                                {
-                                    array_push($ean, $variationBarcode->code);
+                    //SKU
+                    $sku = null;
+                    try {
+                        if(count($variation['variationSkus']) > 0) {
+                            foreach($variation['variationSkus'] as $skuInformation)
+                            {
+                                if($skuInformation->marketId === $this->Settings->get('orderReferrerId')) {
+                                    $sku = $skuInformation->sku;
                                 }
                             }
+                        }
+                    } catch (\Exception $e) {
+                        $sku = null;
+                    }
 
-                            $textArray = $variation['item']->texts;
-                            $variation['texts'] = $textArray->toArray();
+                    //EAN
+                    $ean = [];
 
-//                            $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
-
-                            $exportData[$variation['id']] = array(
-                                'parent_product_id' => $variation['mainVariationId'],
-                                'product_id' => $variation['id'],
-                                'item_id' => $variation['itemId'],
-                                'name' => $variation['item']['texts'][0]['name1'],
-                                'price' => $variation['variationSalesPrices'][0]['price'],
-                                'currency' => 'Euro',
-                                'category' => $this->categoryIdFromSettingsRepo($variation['properties']),
-                                'short_description' => $variation['item']['texts'][0]['description'],
-                                'image_url' => $variation['images'][0]['url'],
-                                'color' => '',
-                                'size' => '',
-                                'content_supplier' => $manufacturer['name'],
-                                'product_type' => '',
-                                'quantity' => $stockData[0]['netStock'],
-                                'store_name' => '',
-                                'status' => $variation['isActive'],
-                                'brand' => $manufacturer['name'],
-                                'last_update_at' => $variation['relatedUpdatedAt'],
-                                'asin' => $asin,
-                                'sku' => $sku,
-                                'ean' => (count($ean) > 0) ? implode(',', $ean) : null
-                            );
-
-                            $attributeSets = [];
-                            foreach($variation['variationAttributeValues'] as $attribute) {
-
-                                $attributeId = array_reverse(explode('-', $attribute['attribute']['backendName']))[0];
-                                $attributeValue = array_reverse(explode('-', $attribute['attributeValue']['backendName']))[0];
-                                $attributeSets[(int)$attributeId] = (int)$attributeValue;
-                            }
-
-                            $exportData[$variation['id']]['attributes'] = $attributeSets;
+                    if(count($variation['variationBarcodes']) > 0) {
+                        foreach($variation['variationBarcodes'] as $variationBarcode)
+                        {
+                            array_push($ean, $variationBarcode->code);
                         }
                     }
+
+                    $textArray = $variation['item']->texts;
+                    $variation['texts'] = $textArray->toArray();
+
+                    $exportData[$variation['id']] = array(
+                        'parent_product_id' => $variation['mainVariationId'],
+                        'product_id' => $variation['id'],
+                        'item_id' => $variation['itemId'],
+                        'name' => $variation['item']['texts'][0]['name1'],
+                        'price' => $variation['variationSalesPrices'][0]['price'],
+                        'currency' => 'Euro',
+                        'category' => $this->categoryIdFromSettingsRepo($variation['properties']),
+                        'short_description' => $variation['item']['texts'][0]['description'],
+                        'image_url' => $variation['images'][0]['url'],
+                        'color' => '',
+                        'size' => '',
+                        'content_supplier' => $manufacturer['name'],
+                        'product_type' => '',
+                        'quantity' => $stockData[0]['netStock'],
+                        'store_name' => '',
+                        'status' => $variation['isActive'],
+                        'brand' => $manufacturer['name'],
+                        'last_update_at' => $variation['relatedUpdatedAt'],
+                        'asin' => $asin,
+                        'sku' => $sku,
+                        'ean' => (count($ean) > 0) ? implode(',', $ean) : null
+                    );
+
+                    $attributeSets = [];
+                    foreach($variation['variationAttributeValues'] as $attribute) {
+
+                        $attributeId = array_reverse(explode('-', $attribute['attribute']['backendName']))[0];
+                        $attributeValue = array_reverse(explode('-', $attribute['attributeValue']['backendName']))[0];
+                        $attributeSets[(int)$attributeId] = (int)$attributeValue;
+                    }
+
+                    $exportData[$variation['id']]['attributes'] = $attributeSets;
                 }
 
-            } while(!$resultItems->isLastPage());*/
+            } while(!$resultItems->isLastPage());
         }
 
         $templateData = array(
