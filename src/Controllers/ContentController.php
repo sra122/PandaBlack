@@ -334,7 +334,7 @@ class ContentController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $categoryPropertyId = $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
 
-        foreach($properties as $property)
+        /*foreach($properties as $property)
         {
             if($property['propertyId'] == $categoryPropertyId) {
                 $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
@@ -346,18 +346,20 @@ class ContentController extends Controller
                 {
                     if($propertyList['id'] == $property['propertyId'] && !empty($propertyLists['selections'])) {
 
-                        /*foreach($propertyList['selections'] as $selection)
+                        foreach($propertyList['selections'] as $selection)
                         {
                             if($selection['id'] == $property['relationValues'][0]['value']) {
 
                                 return array_flip($categoriesList)[$selection['relation']['relationValues'][0]['value']];
                             }
-                        }*/
+                        }
 
                         return $propertyList['selections'];
                     }
                 }
             }
-        }
+        }*/
+
+        return $properties;
     }
 }
