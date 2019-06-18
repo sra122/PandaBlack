@@ -76,20 +76,20 @@ class ContentController extends Controller
 
             $resultItems = $itemRepository->search();
 
-            foreach($resultItems->getResult() as $variation) {
+            /*foreach($resultItems->getResult() as $variation) {
                 array_push($exportData, $variation);
-            }
+            }*/
 
-            /*do {
+            do {
 
-                $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
+                /*$settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
                 $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
 
                 $categoryId = [];
 
                 foreach($categoryMapping['entries'] as $category) {
                     $categoryId[$category->settings[0]['category'][0]['id']] = $category->settings;
-                }
+                }*/
 
                 $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
                 $variationStock = pluginApp(VariationStockRepositoryContract::class);
@@ -149,7 +149,7 @@ class ContentController extends Controller
                             $textArray = $variation['item']->texts;
                             $variation['texts'] = $textArray->toArray();
 
-                            $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
+//                            $categoryMappingInfo = $categoryId[$variation['variationCategories'][0]['categoryId']];
 
                             $exportData[$variation['id']] = array(
                                 'parent_product_id' => $variation['mainVariationId'],
@@ -158,7 +158,7 @@ class ContentController extends Controller
                                 'name' => $variation['item']['texts'][0]['name1'],
                                 'price' => $variation['variationSalesPrices'][0]['price'],
                                 'currency' => 'Euro',
-                                'category' => $categoryMappingInfo[0]['vendorCategory'][0]['id'],
+                                'category' => $this->categoryIdFromSettingsRepo($variation['properties']),
                                 'short_description' => $variation['item']['texts'][0]['description'],
                                 'image_url' => $variation['images'][0]['url'],
                                 'color' => '',
@@ -188,7 +188,7 @@ class ContentController extends Controller
                     }
                 }
 
-            } while(!$resultItems->isLastPage());*/
+            } while(!$resultItems->isLastPage());
         }
 
         $templateData = array(
@@ -206,10 +206,6 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        return $this->categoryIdFromSettingsRepo($productDetails['exportData'][0]['properties']);
-
-        /*return $productDetails;*/
-
         /*$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
@@ -218,6 +214,8 @@ class ContentController extends Controller
         }
 
         return $productStatus;*/
+
+        return $productDetails;
     }
 
 
