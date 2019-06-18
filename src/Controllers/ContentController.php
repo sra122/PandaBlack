@@ -220,7 +220,7 @@ class ContentController extends Controller
             {
                 if($mappedProperty == $propertyInfo)
                 {
-                    foreach($pbAttributes as $pbAttribute)
+                    /*foreach($pbAttributes as $pbAttribute)
                     {
                         if($pbAttribute['required'] && ($pbAttribute['name'] == $key))
                         {
@@ -234,7 +234,8 @@ class ContentController extends Controller
                                 }
                             }
                         }
-                    }
+                    }*/
+                    $attributesInfo[$key] = $propertyInfo;
                 }
             }
         }
