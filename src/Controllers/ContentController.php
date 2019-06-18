@@ -162,14 +162,6 @@ class ContentController extends Controller
                         'ean' => (count($ean) > 0) ? implode(',', $ean) : null
                     );
 
-                    /*$attributeSets = [];
-                    foreach($variation['variationAttributeValues'] as $attribute) {
-
-                        $attributeId = array_reverse(explode('-', $attribute['attribute']['backendName']))[0];
-                        $attributeValue = array_reverse(explode('-', $attribute['attributeValue']['backendName']))[0];
-                        $attributeSets[(int)$attributeId] = (int)$attributeValue;
-                    }*/
-
                     $exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
                 }
 
@@ -235,6 +227,7 @@ class ContentController extends Controller
         }
 
 
+        // Check the Attributes that are mapped are present in PB attributes list of the selected Category.
         if(!empty($attributeDetails)) {
             foreach($attributeDetails as $attributeName => $attributeDetail)
             {
@@ -285,22 +278,20 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
-        /*$productStatus = $this->productStatus($productDetails);
+        $productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
-        return $productStatus;*/
-
-        return $productDetails;
+        return $productStatus;
     }
 
 
     private function productStatus($productDetails)
     {
-        $app = pluginApp(AppController::class);
+        $settingsHelper = pluginApp(SettingsHelper::class);
 
         $emptyAttributeProducts = [];
         $missingAttributeProducts = [];
@@ -311,23 +302,19 @@ class ContentController extends Controller
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
             $unfulfilledData = false;
+
             // Attributes Check
             if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
-                //unset($productDetails['exportData'][$key]);
                 $unfulfilledData = true;
             } else {
-                $attributes = $app->authenticate('pandaBlack_attributes', (int)$productDetail['category']);
+                $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
 
                 foreach($attributes as $attributeKey => $attribute) {
                     if(!array_key_exists($attributeKey, $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
                             $missingAttributeProducts[$productDetail['product_id']][$attributeKey] = $attribute['name'];
-                            //array_push($missingAttributeProducts[$productDetail['product_id']][$attributeKey], $attribute['name']);
                             $unfulfilledData = true;
-                            /*array_push($missingAttributeProducts, $productDetail['product_id']);
-                            unset($productDetails['exportData'][$key]);
-                            break;*/
                         }
                     }
                 }
