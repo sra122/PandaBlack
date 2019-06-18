@@ -211,7 +211,7 @@ class ContentController extends Controller
             }
         }
 
-        return $relativePbAttributes;
+        return $pbAttributes;
     }
 
     /**
