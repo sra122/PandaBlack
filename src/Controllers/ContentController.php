@@ -186,8 +186,8 @@ class ContentController extends Controller
     private function attributesInfo($properties, $categoryId)
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
-        $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
-        //$relativePbAttributes = $pbAttributes[$categoryId];
+        $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+        $relativePbAttributes = $pbAttributes[$categoryId];
 
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
 
@@ -199,7 +199,7 @@ class ContentController extends Controller
         {
             foreach($properties as $property)
             {
-                if($property['propertyId'] == $propertyList['id'] && ($propertyList['id'] != $categoryId)) {
+                if($property['propertyId'] == $propertyList['id'] && ($propertyList['id'] != $categoryId) && !empty($propertyList['selections'])) {
 
                     foreach($propertyList['selections'] as $selection)
                     {
@@ -211,7 +211,7 @@ class ContentController extends Controller
             }
         }
 
-        return $pbAttributes;
+        return $relativePbAttributes;
     }
 
     /**
