@@ -46,7 +46,7 @@ class PandaBlackCategories
                 $propertyName = $propertyNameRepository->createName($propertyName);
             }
 
-            $this->Settings->set('panda_black_category_as_property', $property->id);
+            $this->Settings->set(SettingsHelper::CATEGORIES_AS_PROPERTIES, $property->id);
         }
     }
 }

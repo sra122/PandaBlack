@@ -80,7 +80,7 @@ class ContentController extends Controller
                 array_push($exportData, $variation);
             }
 
-            /*do {
+            do {
 
                 $settingsRepositoryContract = pluginApp(SettingsRepositoryContract::class);
                 $categoryMapping = $settingsRepositoryContract->search(['marketplaceId' => 'PandaBlack', 'type' => 'category'], 1, 100)->toArray();
@@ -97,7 +97,7 @@ class ContentController extends Controller
 
                 foreach($resultItems->getResult()  as $variation) {
 
-                    if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
+                    /*if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
                         if(isset($categoryId[$variation['variationCategories'][0]['categoryId']])) {
 
@@ -185,10 +185,10 @@ class ContentController extends Controller
 
                             $exportData[$variation['id']]['attributes'] = $attributeSets;
                         }
-                    }
+                    }*/
                 }
 
-            } while(!$resultItems->isLastPage());*/
+            } while(!$resultItems->isLastPage());
         }
 
         $templateData = array(
@@ -206,95 +206,16 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
 
+        return $this->categoryIdFromSettingsRepo($productDetails[0]['properties']);
+
         /*$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
-        }*/
+        }
 
-        return $productDetails;
-
-        /*$propertiesRepo = pluginApp(PropertyRepositoryContract::class);
-        $propertyRelationRepo = pluginApp(PropertyRelationRepositoryContract::class);
-        $propertyRelationValueRepo = pluginApp(PropertyRelationValueRepositoryContract::class);
-
-        //$properties = $propertiesRepo->getProperty(18);
-
-        /*$data = [
-            'cast' => 'selection',
-            'typeIdentifier' => 'item',
-            'position' => 1,
-            'names' => [
-                0 => [
-                    'lang' => 'de',
-                    'name' => 'Color1'
-                ]
-            ],
-            'selections' => [
-                0 => [
-                    'position' => 0,
-                    'relation' => [
-                        'relation' => [
-                            'relationTypeIdentifier' => null,
-                            'relationTargetId' => null,
-                            'relationValues' => [
-                                0 => [
-                                    'lang' => 'DE',
-                                    'value' => 'Red'
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                1 => [
-                    'position' => 0,
-                    'relation' => [
-                        'relation' => [
-                            'relationTypeIdentifier' => null,
-                            'relationTargetId' => null,
-                            'relationValues' => [
-                                0 => [
-                                    'lang' => 'DE',
-                                    'value' => 'Black'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        /*$data = [
-            'cast' => 'selection',
-            'typeIdentifier' => 'item',
-            'position' => 1,
-            'names' => [
-                [
-                    'lang' => 'de',
-                    'name' => 'Color2'
-                ]
-            ],
-        ];*/
-
-        //$properties = $propertiesRepo->getProperty(8)->toArray();
-
-        /*$relation = [
-            'propertyId' => $properties['id'],
-        ];
-
-        $propertyRelation = $propertyRelationRepo->createRelation($relation)->toArray();
-
-        $values = [
-            'propertyRelationId' => $propertyRelation['id'],
-            'lang' => 'de',
-            'value' => 'Kg',
-        ];
-
-        $propertyValues = $propertyRelationValueRepo->createPropertyRelationValue($values);*/
-
-
-        //return $properties;
+        return $productStatus;*/
     }
 
 
@@ -403,5 +324,22 @@ class ContentController extends Controller
         }
 
         return $validProducts;
+    }
+
+
+    private function categoryIdFromSettingsRepo($properties)
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $categoryPropertyId = $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
+
+        foreach($properties as $property)
+        {
+            if($property['propertyId'] == $categoryPropertyId) {
+                $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+
+                $propertyRepo = pluginApp(PropertyRepositoryContract::class);
+                return $propertyRepo->getProperty($property['propertyId'], ['selections'])->toArray();
+            }
+        }
     }
 }
