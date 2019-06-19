@@ -1,6 +1,7 @@
 <?php
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
@@ -182,6 +183,18 @@ class ContentController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
 
+        // In case, if attributes are not saved in Settings.
+        if(empty($pbAttributes)) {
+            $pbApiHelper = pluginApp(PBApiHelper::class);
+            $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+
+            $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
+
+            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+
+            $pbAttributes = $attributes[$categoryId];
+        }
+
         $pbMapping = $settingsHelper->get(SettingsHelper::MAPPING_INFO);
 
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
@@ -250,7 +263,6 @@ class ContentController extends Controller
                 }
             }
         }
-
 
         return $attributeDetails;
     }
