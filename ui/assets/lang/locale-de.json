@@ -4,7 +4,7 @@
     "deleteMappingToolTip": "Löscht alle Kategorienzuordnungen zwischen Plentymarkets und PANDA.BLACK",
     "refresh": "Aktualisieren",
     "refreshToolTip": "Laden / Aktualisieren verfügbarer Panda Black-Kategorien",
-    "sendProductsToPandaBlack": "Artikel an PANDA.BLACK übergeben",
+    "validation": "Überprüfen die Produkte",
     "pandaBlackCategoryTitle": "PANDA.BLACK Kategorieauswahl",
     "plentyMarketCategoryTitle": "Plentymarkets Kategorieauswahl",
     "requiredAttributesTitle": "Pflichtattribute für die ausgewählte Kategorie",
