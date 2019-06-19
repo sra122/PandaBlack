@@ -265,15 +265,26 @@ class MappingController extends Controller
         return $settingsHelper->get(SettingsHelper::NOTIFICATION);
     }
 
-
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function removeNotification(Request $request)
     {
         $propertyName = $request->get('propertyName');
+        $notificationType = $request->get('notificationType');
         $settingsHelper = pluginApp(SettingsHelper::class);
-        $propertyNotFound = $settingsHelper->get(SettingsHelper::NOTIFICATION);
+        $notifications = $settingsHelper->get(SettingsHelper::NOTIFICATION);
 
-        unset($propertyNotFound['propertyNotFound'][$propertyName]);
+        if($notificationType == 'noStockProducts' || $notificationType == 'noAsinProducts')
+        {
+            unset($notifications[$notificationType]);
+        } else {
+            unset($notifications[$notificationType][$propertyName]);
+        }
 
-        $settingsHelper->set(SettingsHelper::NOTIFICATION, $propertyNotFound);
+        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notifications);
+
+        return $notifications;
     }
 }

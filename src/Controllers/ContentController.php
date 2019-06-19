@@ -6,17 +6,10 @@ use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
-use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
-use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
-use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
-use Plenty\Modules\Item\VariationImage\Contracts\VariationImageRepositoryContract;
 use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
 use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
-use Plenty\Modules\Property\Contracts\PropertyRelationValueRepositoryContract;
-use Plenty\Plugin\Http\Request;
 class ContentController extends Controller
 {
     /** @var SettingsHelper */
@@ -76,10 +69,6 @@ class ContentController extends Controller
             ]);
 
             $resultItems = $itemRepository->search();
-
-            /*foreach($resultItems->getResult() as $variation) {
-                array_push($exportData, $variation);
-            }*/
 
             do {
 
@@ -239,7 +228,6 @@ class ContentController extends Controller
             }
         }
 
-
         // Check the Attributes that are mapped are present in PB attributes list of the selected Category.
         if(!empty($attributeDetails)) {
             foreach($attributeDetails as $attributeName => $attributeDetail)
@@ -300,12 +288,7 @@ class ContentController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $settingsHelper->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
 
-        $test = [
-            'notification' => $settingsHelper->get(SettingsHelper::NOTIFICATION),
-            'productStatus' => $productStatus
-        ];
-
-        return $test;
+        return $productStatus;
     }
 
 
