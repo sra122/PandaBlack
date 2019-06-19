@@ -264,4 +264,16 @@ class MappingController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         return $settingsHelper->get(SettingsHelper::NOTIFICATION);
     }
+
+
+    public function removeNotification(Request $request)
+    {
+        $propertyName = $request->get('propertyName');
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $propertyNotFound = $settingsHelper->get(SettingsHelper::NOTIFICATION);
+
+        unset($propertyNotFound['propertyNotFound'][$propertyName]);
+
+        $settingsHelper->set(SettingsHelper::NOTIFICATION, $propertyNotFound);
+    }
 }
