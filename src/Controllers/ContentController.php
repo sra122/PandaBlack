@@ -288,13 +288,7 @@ class ContentController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $settingsHelper->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
 
-        $test = [
-            'productDetails' => $productDetails,
-            'productStatus' => $productStatus,
-            'attributes' => $settingsHelper->get(SettingsHelper::ATTRIBUTES)
-        ];
-
-        return $test;
+        return $productStatus;
     }
 
 
