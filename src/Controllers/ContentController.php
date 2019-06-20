@@ -313,12 +313,11 @@ class ContentController extends Controller
             } else {
                 $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
 
+                $count = 0;
                 foreach($attributes as $attributeKey => $attribute) {
-                    $count = 0;
                     if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
-                            $count++;
-                            $missingAttributeProducts[$productDetail['product_id']][$count] = $attribute['name'];
+                            $missingAttributeProducts[$productDetail['product_id']][$count++] = $attribute['name'];
                             $unfulfilledData = true;
                         }
                     }
