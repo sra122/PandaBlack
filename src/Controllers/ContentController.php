@@ -317,7 +317,8 @@ class ContentController extends Controller
                     $count = 0;
                     if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required']) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
-                            $missingAttributeProducts[$productDetail['product_id']][$count++] = $attribute['name'];
+                            $count++;
+                            $missingAttributeProducts[$productDetail['product_id']][$count] = $attribute['name'];
                             $unfulfilledData = true;
                         }
                     }
