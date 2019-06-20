@@ -290,7 +290,8 @@ class ContentController extends Controller
 
         $test = [
             'productDetails' => $productDetails,
-            'productStatus' => $productStatus
+            'productStatus' => $productStatus,
+            'attributes' => $settingsHelper->get(SettingsHelper::ATTRIBUTES)
         ];
 
         return $test;
