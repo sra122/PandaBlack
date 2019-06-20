@@ -313,6 +313,16 @@ class ContentController extends Controller
             } else {
                 $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
 
+                // Attributes information is not saved in settings
+                if(empty($attributes)) {
+                    $app = pluginApp(AppController::class);
+                    $attributes = $app->authenticate(SettingsHelper::ATTRIBUTES, $productDetail['category']);
+
+                    $completeAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+                    $completeAttributes[$productDetail['category']] = $attributes;
+                    $settingsHelper->set(SettingsHelper::ATTRIBUTES, $completeAttributes);
+                }
+
                 $count = 0;
                 foreach($attributes as $attributeKey => $attribute) {
                     if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required']) {
