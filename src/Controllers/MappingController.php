@@ -276,7 +276,9 @@ class MappingController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $notifications = $settingsHelper->get(SettingsHelper::NOTIFICATION);
 
-        if($notificationType == 'noStockProducts' || $notificationType == 'noAsinProducts' || $notificationType == 'emptyAttributeProducts')
+        $specialNotification = ['noStockProducts', 'noAsinProducts', 'emptyAttributeProducts'];
+
+        if(in_array($notificationType, $specialNotification))
         {
             unset($notifications[$notificationType]);
         } else {
