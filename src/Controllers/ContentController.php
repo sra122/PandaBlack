@@ -288,7 +288,12 @@ class ContentController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $settingsHelper->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
 
-        return $productStatus;
+        $test = [
+            'productDetails' => $productDetails,
+            'productStatus' => $productStatus
+        ];
+
+        return $test;
     }
 
 
@@ -312,16 +317,6 @@ class ContentController extends Controller
                 $unfulfilledData = true;
             } else {
                 $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
-
-                // Attributes information is not saved in settings
-                if(empty($attributes)) {
-                    $app = pluginApp(AppController::class);
-                    $attributes = $app->authenticate(SettingsHelper::ATTRIBUTES, $productDetail['category']);
-
-                    $completeAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
-                    $completeAttributes[$productDetail['category']] = $attributes;
-                    $settingsHelper->set(SettingsHelper::ATTRIBUTES, $completeAttributes);
-                }
 
                 $count = 0;
                 foreach($attributes as $attributeKey => $attribute) {
