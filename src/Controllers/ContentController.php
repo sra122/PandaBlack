@@ -13,11 +13,11 @@ use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 class ContentController extends Controller
 {
     /** @var SettingsHelper */
-    protected $Settings;
+    protected $settingsHelper;
 
-    public function __construct(SettingsHelper $SettingsHelper)
+    public function __construct(SettingsHelper $settingsHelper)
     {
-        $this->Settings = $SettingsHelper;
+        $this->settingsHelper = $settingsHelper;
     }
 
     /**
@@ -64,7 +64,7 @@ class ContentController extends Controller
             ]);
 
             $itemRepository->setFilters([
-                'referrerId' => $this->Settings->get(SettingsHelper::ORDER_REFERRER),
+                'referrerId' => $this->settingsHelper->get(SettingsHelper::ORDER_REFERRER),
                 $filterVariation => time()-3600
             ]);
 
@@ -104,7 +104,7 @@ class ContentController extends Controller
                         if(count($variation['variationSkus']) > 0) {
                             foreach($variation['variationSkus'] as $skuInformation)
                             {
-                                if($skuInformation->marketId === $this->Settings->get('orderReferrerId')) {
+                                if($skuInformation->marketId === $this->settingsHelper->get('orderReferrerId')) {
                                     $sku = $skuInformation->sku;
                                 }
                             }
@@ -169,22 +169,21 @@ class ContentController extends Controller
     {
         $attributeDetails = [];
 
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
+        $pbAttributes = $this->settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
 
         // In case, if attributes are not saved in Settings.
         if(empty($pbAttributes)) {
             $pbApiHelper = pluginApp(PBApiHelper::class);
-            $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+            $attributes = $this->settingsHelper->get(SettingsHelper::ATTRIBUTES);
 
             $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
 
-            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+            $this->settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
 
             $pbAttributes = $attributes[$categoryId];
         }
 
-        $pbMapping = $settingsHelper->get(SettingsHelper::MAPPING_INFO);
+        $pbMapping = $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
 
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
 
@@ -285,8 +284,16 @@ class ContentController extends Controller
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
 
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $settingsHelper->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
+        $adminNotification = $this->settingsHelper->get(SettingsHelper::NOTIFICATION)['admin'];
+
+        /* Appending the Admin Notification */
+        if(empty($adminNotification)) {
+            $productStatus['unfulfilledProducts']['admin'] = [];
+        } else {
+            $productStatus['unfulfilledProducts']['admin'] = $adminNotification;
+        }
+
+        $this->settingsHelper->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
 
         return $productStatus;
     }

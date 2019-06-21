@@ -20,6 +20,12 @@ use Plenty\Plugin\Http\Request;
 class MappingController extends Controller
 {
     public $mappingInfo = [];
+    protected $settingsHelper;
+
+    public function __construct(SettingsHelper $settingsHelper)
+    {
+        $this->settingsHelper = $settingsHelper;
+    }
 
     public function mapping(Request $request)
     {
@@ -103,11 +109,9 @@ class MappingController extends Controller
             } else if(is_bool($propertyId) && !empty($attributeName)) {
 
                 // If seller is trying to create a PropertyValue under a Property that is not Present.
-                $settingsRepo = pluginApp(SettingsHelper::class);
-
-                $notification = $settingsRepo->get(SettingsHelper::NOTIFICATION);
+                $notification = $this->settingsHelper->get(SettingsHelper::NOTIFICATION);
                 $notification['propertyNotFound'][$attributeName] = $attributeValueName;
-                $settingsRepo->set(SettingsHelper::NOTIFICATION, $notification);
+                $this->settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
             }
         }
     }
@@ -117,8 +121,7 @@ class MappingController extends Controller
      */
     private function saveMapping()
     {
-        $settingsRepo = pluginApp(SettingsHelper::class);
-        $settingsRepo->set(SettingsHelper::MAPPING_INFO, $this->mappingInfo);
+        $this->settingsHelper->set(SettingsHelper::MAPPING_INFO, $this->mappingInfo);
     }
 
 
@@ -211,12 +214,10 @@ class MappingController extends Controller
      */
     public function fetchPropertiesInfo()
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-
-        $this->mappingInfo = $settingsHelper->get(SettingsHelper::MAPPING_INFO);
+        $this->mappingInfo = $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
 
         if(empty($this->mappingInfo)) {
-            $settingsHelper->set(SettingsHelper::MAPPING_INFO, []);
+            $this->settingsHelper->set(SettingsHelper::MAPPING_INFO, []);
         }
 
         return $this->mappingInfo;
@@ -261,8 +262,7 @@ class MappingController extends Controller
      */
     public function fetchNotifications()
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        return $settingsHelper->get(SettingsHelper::NOTIFICATION);
+        return $this->settingsHelper->get(SettingsHelper::NOTIFICATION);
     }
 
     /**
@@ -273,10 +273,9 @@ class MappingController extends Controller
     {
         $propertyName = $request->get('propertyName');
         $notificationType = $request->get('notificationType');
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $notifications = $settingsHelper->get(SettingsHelper::NOTIFICATION);
+        $notifications = $this->settingsHelper->get(SettingsHelper::NOTIFICATION);
 
-        $specialNotification = ['noStockProducts', 'noAsinProducts', 'emptyAttributeProducts'];
+        $specialNotification = ['noStockProducts', 'noAsinProducts', 'emptyAttributeProducts', 'admin'];
 
         if(in_array($notificationType, $specialNotification))
         {
@@ -285,7 +284,7 @@ class MappingController extends Controller
             unset($notifications[$notificationType][$propertyName]);
         }
 
-        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notifications);
+        $this->settingsHelper->set(SettingsHelper::NOTIFICATION, $notifications);
 
         return $notifications;
     }

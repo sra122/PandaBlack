@@ -38,8 +38,6 @@ class OrderController extends Controller
 
             foreach($orders as $order)
             {
-
-
                 $data = [
                     'typeId' => 1, // sales order
                     'methodOfPaymentId' => 1,
