@@ -301,8 +301,6 @@ class ContentController extends Controller
 
     private function productStatus($productDetails)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-
         $emptyAttributeProducts = [];
         $missingAttributeProducts = [];
         $wrongAttributeMapping = [];
@@ -318,7 +316,7 @@ class ContentController extends Controller
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
                 $unfulfilledData = true;
             } else {
-                $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
+                $attributes = $this->settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
 
                 $count = 0;
                 foreach($attributes as $attributeKey => $attribute) {
@@ -378,7 +376,7 @@ class ContentController extends Controller
                 $pbSkuExist = false;
                 foreach($stockUnits as $stockUnit)
                 {
-                    if($stockUnit->marketId === $this->Settings->get('orderReferrerId')) {
+                    if($stockUnit->marketId === $this->settingsHelper->get('orderReferrerId')) {
                         $pbSkuExist = true;
                     }
                 }
@@ -386,7 +384,7 @@ class ContentController extends Controller
                 if(!$pbSkuExist) {
                     $skuInfo = $variationSKURepository->create([
                         'variationId' => $validProduct['product_id'],
-                        'marketId' => $this->Settings->get('orderReferrerId'),
+                        'marketId' => $this->settingsHelper->get('orderReferrerId'),
                         'accountId' => 0,
                         'sku' => (string)$validProduct['product_id']
                     ])->toArray();
@@ -404,13 +402,12 @@ class ContentController extends Controller
 
     private function categoryIdFromSettingsRepo($properties)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $categoryPropertyId = $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
+        $categoryPropertyId = $this->settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
 
         foreach($properties as $property)
         {
             if($property['propertyId'] == (int)$categoryPropertyId) {
-                $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+                $categoriesList = $this->settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
                 $propertyRepo = pluginApp(PropertyRepositoryContract::class);
                 $propertyLists = $propertyRepo->listProperties(1, 50, [], [], 0);
