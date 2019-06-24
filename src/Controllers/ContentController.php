@@ -247,7 +247,7 @@ class ContentController extends Controller
         $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
-            $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
+            //$app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
             return $validProductsWithSKU;
         }
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
@@ -330,7 +330,7 @@ class ContentController extends Controller
                 }
             }
 
-            if(!$skuExist) {
+            if(!$skuExist || count($stockUnits) <= 0) {
                 $skuInfo = $variationSKURepository->create([
                     'variationId' => $validProduct['product_id'],
                     'marketId' => $this->settings->get('orderReferrerId'),
