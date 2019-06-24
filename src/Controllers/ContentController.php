@@ -402,7 +402,6 @@ class ContentController extends Controller
 
     private function completeData()
     {
-        $productsData = [];
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
         $itemRepository->setSearchParams([
             'with' => [
@@ -441,12 +440,7 @@ class ContentController extends Controller
 
         $resultItems = $itemRepository->search();
 
-        foreach($resultItems->getResult() as $variation)
-        {
-            array_push($productsData, $variation);
-        }
-
-        /*do {
+        do {
             $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
             $variationStock = pluginApp(VariationStockRepositoryContract::class);
             $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
@@ -491,7 +485,7 @@ class ContentController extends Controller
                 }
                 $textArray = $variation['item']->texts;
                 $variation['texts'] = $textArray->toArray();
-                $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
+                $categoryId = (count($variation['properties']) > 0) ? $this->categoryIdFromSettingsRepo($variation['properties']) : '';
                 $this->exportData[$variation['id']] = array(
                     'parent_product_id' => $variation['mainVariationId'],
                     'product_id' => $variation['id'],
@@ -515,11 +509,9 @@ class ContentController extends Controller
                     'sku' => $sku,
                     'ean' => (count($ean) > 0) ? implode(',', $ean) : null
                 );
-                $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
+                //$this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
             }
-        } while(!$resultItems->isLastPage());*/
-
-        return $productsData;
+        } while(!$resultItems->isLastPage());
     }
 
     private function completeProductsInfo()
