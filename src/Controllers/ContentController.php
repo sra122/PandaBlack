@@ -51,10 +51,18 @@ class ContentController extends Controller
                 'images' => true,
             ]
         ]);
-        $itemRepository->setFilters([
-            'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
-            $filterVariation => time()-3600
-        ]);
+
+        if($filterVariation !== null) {
+            $itemRepository->setFilters([
+                'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
+                $filterVariation => time()-3600
+            ]);
+        } else {
+            $itemRepository->setFilters([
+               'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
+            ]);
+        }
+
         $resultItems = $itemRepository->search();
         do {
             $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
@@ -363,5 +371,16 @@ class ContentController extends Controller
                 }
             }
         }
+    }
+
+
+    public function validateProducts()
+    {
+        $this->productsExtraction();
+
+        $templateData = array(
+            'exportData' => $this->exportData
+        );
+        return $templateData;
     }
 }
