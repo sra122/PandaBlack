@@ -521,6 +521,6 @@ class ContentController extends Controller
         /*$templateData = array(
             'exportData' => $this->exportData
         );*/
-        return $this->completeData();
+        return $this->exportData;
     }
 }
