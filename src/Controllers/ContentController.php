@@ -372,7 +372,7 @@ class ContentController extends Controller
         }
     }
 
-    public function validateProducts()
+    /*public function validateProducts()
     {
         $app = pluginApp(AppController::class);
         $this->productsExtraction(null);
@@ -382,6 +382,20 @@ class ContentController extends Controller
         );
 
         $productStatus = $this->productStatus($templateData);
+        if(!empty($productStatus['validProductDetails'])) {
+            $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
+            $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
+        }
+        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
+        return $productStatus;
+    }*/
+
+
+    public function validateProducts()
+    {
+        $app = pluginApp(AppController::class);
+        $productDetails = $this->productDetails();
+        $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
