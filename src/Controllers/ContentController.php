@@ -402,6 +402,7 @@ class ContentController extends Controller
 
     private function completeData()
     {
+        $productsData = [];
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
         $itemRepository->setSearchParams([
             'with' => [
@@ -433,13 +434,19 @@ class ContentController extends Controller
             ]
         ]);
 
-        /*$itemRepository->setFilters([
+        $itemRepository->setFilters([
             'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
-        ]);*/
+        ]);
 
 
         $resultItems = $itemRepository->search();
-        do {
+
+        foreach($resultItems as $variation)
+        {
+            array_push($productsData, $variation);
+        }
+
+        /*do {
             $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
             $variationStock = pluginApp(VariationStockRepositoryContract::class);
             $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
@@ -510,16 +517,18 @@ class ContentController extends Controller
                 );
                 $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
             }
-        } while(!$resultItems->isLastPage());
+        } while(!$resultItems->isLastPage());*/
+
+        return $productsData;
     }
 
     private function completeProductsInfo()
     {
-        $this->completeData();
+        /*$this->completeData();*/
 
         /*$templateData = array(
             'exportData' => $this->exportData
         );*/
-        return $this->exportData;
+        return $this->completeData();
     }
 }
