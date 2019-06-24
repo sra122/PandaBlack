@@ -337,9 +337,9 @@ class ContentController extends Controller
                         $validProducts[$key]['sku'] = $skuInfo;
                     }
                 }
-                $validProducts[$key]['sku'] = '1234test';
+                //$validProducts[$key]['sku'] = '1234test';
             }
-            //$validProducts[$key]['sku'] = '1234testStock';
+            $validProducts[$key]['sku'] = '1234testStock';
         }
         return $validProducts;
     }
