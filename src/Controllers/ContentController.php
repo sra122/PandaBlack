@@ -314,24 +314,21 @@ class ContentController extends Controller
 
     private function generateSKU($validProducts)
     {
-        $test = [];
         foreach($validProducts as $key => $validProduct)
         {
             $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
             $stockUnits = $variationSKURepository->findByVariationId($validProduct['product_id']);
-            $skuExist = false;
 
-            /*if(count($stockUnits) > 0) {
+            if(count($stockUnits) > 0) {
                 foreach($stockUnits as $stockUnit)
                 {
                     if($stockUnit->marketId === $this->settings->get('orderReferrerId')) {
                         $validProducts[$key]['sku'] = $stockUnits->sku;
-                        $skuExist = true;
                     }
                 }
             }
 
-            if(!$skuExist || count($stockUnits) <= 0) {
+            if(count($stockUnits) <= 0) {
                 $skuInfo = $variationSKURepository->create([
                     'variationId' => $validProduct['product_id'],
                     'marketId' => $this->settings->get('orderReferrerId'),
@@ -341,12 +338,10 @@ class ContentController extends Controller
                 if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
                     $validProducts[$key]['sku'] = $skuInfo;
                 }
-            }*/
-
-            $test[$key][count($stockUnits)] = $stockUnits;
+            }
 
         }
-        return $test;
+        return $validProducts;
     }
 
 
