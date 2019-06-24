@@ -52,16 +52,11 @@ class ContentController extends Controller
             ]
         ]);
 
-        if($filterVariation !== null) {
-            $itemRepository->setFilters([
-                'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
-                $filterVariation => time()-3600
-            ]);
-        } else {
-            $itemRepository->setFilters([
-               'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
-            ]);
-        }
+        $itemRepository->setFilters([
+            'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
+            $filterVariation => time()-3600
+        ]);
+
 
         $resultItems = $itemRepository->search();
         do {
@@ -405,9 +400,122 @@ class ContentController extends Controller
     }
 
 
+    private function completeData()
+    {
+        $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
+        $itemRepository->setSearchParams([
+            'with' => [
+                'item' => null,
+                'lang' => 'de',
+                'properties' => true,
+                'variationSalesPrices' => true,
+                'variationCategories' => true,
+                'variationClients' => true,
+                'variationAttributeValues' => true,
+                'variationSkus' => true,
+                'variationMarkets' => true,
+                'variationSuppliers' => true,
+                'variationWarehouses' => true,
+                'variationDefaultCategory' => true,
+                'variationBarcodes' => true,
+                'variationProperties' => true,
+                'unit' => true,
+                'variationStock' => [
+                    'params' => [
+                        'type' => 'virtual'
+                    ],
+                    'fields' => [
+                        'stockNet'
+                    ]
+                ],
+                'stock' => true,
+                'images' => true,
+            ]
+        ]);
+
+        $itemRepository->setFilters([
+            'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
+        ]);
+
+
+        $resultItems = $itemRepository->search();
+        do {
+            $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
+            $variationStock = pluginApp(VariationStockRepositoryContract::class);
+            $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+            foreach($resultItems->getResult()  as $variation)
+            {
+                $stockData = $variationStock->listStockByWarehouse($variation['id']);
+                $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
+                //ASIN
+                $asin = null;
+                try {
+                    $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                    foreach($identNumbers as $identNumber)
+                    {
+                        if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
+                            $asin = $identNumber['value'];
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $asin = null;
+                }
+                //SKU
+                $sku = null;
+                try {
+                    if(count($variation['variationSkus']) > 0) {
+                        foreach($variation['variationSkus'] as $skuInformation)
+                        {
+                            if($skuInformation->marketId === $this->settings->get('orderReferrerId')) {
+                                $sku = $skuInformation->sku;
+                            }
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $sku = null;
+                }
+                //EAN
+                $ean = [];
+                if(count($variation['variationBarcodes']) > 0) {
+                    foreach($variation['variationBarcodes'] as $variationBarcode)
+                    {
+                        array_push($ean, $variationBarcode->code);
+                    }
+                }
+                $textArray = $variation['item']->texts;
+                $variation['texts'] = $textArray->toArray();
+                $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
+                $this->exportData[$variation['id']] = array(
+                    'parent_product_id' => $variation['mainVariationId'],
+                    'product_id' => $variation['id'],
+                    'item_id' => $variation['itemId'],
+                    'name' => $variation['item']['texts'][0]['name1'],
+                    'price' => $variation['variationSalesPrices'][0]['price'],
+                    'currency' => 'Euro',
+                    'category' => $categoryId,
+                    'short_description' => $variation['item']['texts'][0]['description'],
+                    'image_url' => $variation['images'][0]['url'],
+                    'color' => '',
+                    'size' => '',
+                    'content_supplier' => $manufacturer['name'],
+                    'product_type' => '',
+                    'quantity' => $stockData[0]['netStock'],
+                    'store_name' => '',
+                    'status' => $variation['isActive'],
+                    'brand' => $manufacturer['name'],
+                    'last_update_at' => $variation['relatedUpdatedAt'],
+                    'asin' => $asin,
+                    'sku' => $sku,
+                    'ean' => (count($ean) > 0) ? implode(',', $ean) : null
+                );
+                $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
+            }
+        } while(!$resultItems->isLastPage());
+    }
+
     private function completeProductsInfo()
     {
-        $this->productsExtraction();
+        $this->completeData();
 
         $templateData = array(
             'exportData' => $this->exportData
