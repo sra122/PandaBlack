@@ -466,6 +466,6 @@ class ContentController extends Controller
 
         $this->settingsHelper->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
 
-        return $productStatus;
+        return $this->exportData;
     }
 }
