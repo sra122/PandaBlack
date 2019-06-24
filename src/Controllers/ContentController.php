@@ -388,15 +388,15 @@ class ContentController extends Controller
 
     public function validateProducts()
     {
-        $app = pluginApp(AppController::class);
+        /*$app = pluginApp(AppController::class);
         $productDetails = $this->completeProductsInfo();
         $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
-        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
-        return $productStatus;
+        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);*/
+        return $this->settings->get(SettingsHelper::ORDER_REFERRER);
     }
 
 
