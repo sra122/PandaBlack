@@ -318,27 +318,28 @@ class ContentController extends Controller
         {
             $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
             $stockUnits = $variationSKURepository->findByVariationId($validProduct['product_id']);
-            if(count($stockUnits) <= 0) {
-                $pbSkuExist = false;
+            $skuExist = false;
+
+            if(count($stockUnits) > 0) {
                 foreach($stockUnits as $stockUnit)
                 {
                     if($stockUnit->marketId === $this->settings->get('orderReferrerId')) {
-                        $pbSkuExist = true;
+                        $validProducts[$key]['sku'] = $stockUnits->sku;
+                        $skuExist = true;
                     }
                 }
-                if(!$pbSkuExist) {
-                    $skuInfo = $variationSKURepository->create([
-                        'variationId' => $validProduct['product_id'],
-                        'marketId' => $this->settings->get('orderReferrerId'),
-                        'accountId' => 0,
-                        'sku' => (string)$validProduct['product_id']
-                    ])->toArray();
-                    if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
-                        $validProducts[$key]['sku'] = $skuInfo;
-                    }
+            }
+
+            if(!$skuExist) {
+                $skuInfo = $variationSKURepository->create([
+                    'variationId' => $validProduct['product_id'],
+                    'marketId' => $this->settings->get('orderReferrerId'),
+                    'accountId' => 0,
+                    'sku' => (string)$validProduct['product_id']
+                ])->toArray();
+                if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
+                    $validProducts[$key]['sku'] = $skuInfo;
                 }
-            } else {
-                $validProducts[$key]['sku'] = $stockUnits;
             }
         }
         return $validProducts;
