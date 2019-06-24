@@ -374,7 +374,7 @@ class ContentController extends Controller
 
     public function validateProducts()
     {
-        $this->productsExtraction();
+        $this->productsExtraction(null);
 
         $templateData = array(
             'exportData' => $this->exportData
