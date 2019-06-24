@@ -19,7 +19,7 @@ class ContentController extends Controller
         $this->settings = $SettingsHelper;
     }
 
-    private function productsExtraction()
+    private function productsExtraction($filterVariation = null)
     {
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
         $itemRepository->setSearchParams([
@@ -52,7 +52,7 @@ class ContentController extends Controller
             ]
         ]);
 
-       /* if($filterVariation !== null) {
+        if($filterVariation !== null) {
             $itemRepository->setFilters([
                 'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
                 $filterVariation => time()-3600
@@ -61,11 +61,7 @@ class ContentController extends Controller
             $itemRepository->setFilters([
                'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
             ]);
-        }*/
-
-        $itemRepository->setFilters([
-            'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
-        ]);
+        }
 
         $resultItems = $itemRepository->search();
         do {
@@ -150,7 +146,7 @@ class ContentController extends Controller
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
         foreach($filterVariations as $filterVariation)
         {
-            $this->productsExtraction();
+            $this->productsExtraction($filterVariation);
         }
         $templateData = array(
             'exportData' => $this->exportData
