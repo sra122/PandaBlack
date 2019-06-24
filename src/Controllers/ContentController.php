@@ -150,7 +150,7 @@ class ContentController extends Controller
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
         foreach($filterVariations as $filterVariation)
         {
-            $this->productsExtraction($filterVariation);
+            $this->productsExtraction();
         }
         $templateData = array(
             'exportData' => $this->exportData
