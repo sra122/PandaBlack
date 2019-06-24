@@ -336,10 +336,10 @@ class ContentController extends Controller
                     if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
                         $validProducts[$key]['sku'] = $skuInfo;
                     }
-                } else {
-                    $validProducts[$key]['sku'] = $stockUnits;
                 }
+                $validProducts[$key]['sku'] = '1234test';
             }
+            //$validProducts[$key]['sku'] = '1234testStock';
         }
         return $validProducts;
     }
