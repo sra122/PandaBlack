@@ -19,7 +19,7 @@ class ContentController extends Controller
         $this->settings = $SettingsHelper;
     }
 
-    private function productsExtraction($filterVariation = null)
+    private function productsExtraction()
     {
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
         $itemRepository->setSearchParams([
@@ -52,7 +52,7 @@ class ContentController extends Controller
             ]
         ]);
 
-        if($filterVariation !== null) {
+       /* if($filterVariation !== null) {
             $itemRepository->setFilters([
                 'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
                 $filterVariation => time()-3600
@@ -61,7 +61,11 @@ class ContentController extends Controller
             $itemRepository->setFilters([
                'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
             ]);
-        }
+        }*/
+
+        $itemRepository->setFilters([
+            'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
+        ]);
 
         $resultItems = $itemRepository->search();
         do {
@@ -347,7 +351,6 @@ class ContentController extends Controller
     }
 
 
-
     private function categoryIdFromSettingsRepo($properties)
     {
         $categoryPropertyId = $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
@@ -372,7 +375,6 @@ class ContentController extends Controller
             }
         }
     }
-
 
     public function validateProducts()
     {
