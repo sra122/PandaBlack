@@ -394,7 +394,7 @@ class ContentController extends Controller
     public function validateProducts()
     {
         $app = pluginApp(AppController::class);
-        $productDetails = $this->productDetails();
+        $productDetails = $this->completeProductsInfo();
         $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
@@ -402,5 +402,16 @@ class ContentController extends Controller
         }
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
         return $productStatus;
+    }
+
+
+    private function completeProductsInfo()
+    {
+        $this->productsExtraction();
+
+        $templateData = array(
+            'exportData' => $this->exportData
+        );
+        return $templateData;
     }
 }
