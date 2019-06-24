@@ -12,10 +12,10 @@ use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 class ContentController extends Controller
 {
     /** @var SettingsHelper */
-    protected $Settings;
+    protected $settings;
     public function __construct(SettingsHelper $SettingsHelper)
     {
-        $this->Settings = $SettingsHelper;
+        $this->settings = $SettingsHelper;
     }
     /**
      * @return array
@@ -57,7 +57,7 @@ class ContentController extends Controller
                 ]
             ]);
             $itemRepository->setFilters([
-                'referrerId' => $this->Settings->get(SettingsHelper::ORDER_REFERRER),
+                'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
                 $filterVariation => time()-3600
             ]);
             $resultItems = $itemRepository->search();
@@ -88,7 +88,7 @@ class ContentController extends Controller
                         if(count($variation['variationSkus']) > 0) {
                             foreach($variation['variationSkus'] as $skuInformation)
                             {
-                                if($skuInformation->marketId === $this->Settings->get('orderReferrerId')) {
+                                if($skuInformation->marketId === $this->settings->get('orderReferrerId')) {
                                     $sku = $skuInformation->sku;
                                 }
                             }
@@ -144,17 +144,16 @@ class ContentController extends Controller
     private function attributesInfo($properties, $categoryId)
     {
         $attributeDetails = [];
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $pbAttributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[$categoryId];
+        $pbAttributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[$categoryId];
         // In case, if attributes are not saved in Settings.
         if(empty($pbAttributes)) {
             $pbApiHelper = pluginApp(PBApiHelper::class);
-            $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+            $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES);
             $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+            $this->settings->set(SettingsHelper::ATTRIBUTES, $attributes);
             $pbAttributes = $attributes[$categoryId];
         }
-        $pbMapping = $settingsHelper->get(SettingsHelper::MAPPING_INFO);
+        $pbMapping = $this->settings->get(SettingsHelper::MAPPING_INFO);
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyLists = $propertiesRepo->listProperties(1, 50, [], [], 0);
         $propertyInfos = [];
@@ -241,8 +240,7 @@ class ContentController extends Controller
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $settingsHelper->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
+        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
         return $productStatus;
     }
 
@@ -250,7 +248,6 @@ class ContentController extends Controller
 
     private function productStatus($productDetails)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
         $emptyAttributeProducts = [];
         $missingAttributeProducts = [];
         $wrongAttributeMapping = [];
@@ -264,7 +261,7 @@ class ContentController extends Controller
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
                 $unfulfilledData = true;
             } else {
-                $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
+                $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
                 $count = 0;
                 foreach($attributes as $attributeKey => $attribute) {
                     if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required']) {
@@ -315,14 +312,14 @@ class ContentController extends Controller
                 $pbSkuExist = false;
                 foreach($stockUnits as $stockUnit)
                 {
-                    if($stockUnit->marketId === $this->Settings->get('orderReferrerId')) {
+                    if($stockUnit->marketId === $this->settings->get('orderReferrerId')) {
                         $pbSkuExist = true;
                     }
                 }
                 if(!$pbSkuExist) {
                     $skuInfo = $variationSKURepository->create([
                         'variationId' => $validProduct['product_id'],
-                        'marketId' => $this->Settings->get('orderReferrerId'),
+                        'marketId' => $this->settings->get('orderReferrerId'),
                         'accountId' => 0,
                         'sku' => (string)$validProduct['product_id']
                     ])->toArray();
@@ -339,12 +336,11 @@ class ContentController extends Controller
 
     private function categoryIdFromSettingsRepo($properties)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $categoryPropertyId = $settingsHelper->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
+        $categoryPropertyId = $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
         foreach($properties as $property)
         {
             if($property['propertyId'] == (int)$categoryPropertyId) {
-                $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+                $categoriesList = $this->settings->get(SettingsHelper::CATEGORIES_LIST);
                 $propertyRepo = pluginApp(PropertyRepositoryContract::class);
                 $propertyLists = $propertyRepo->listProperties(1, 50, [], [], 0);
                 foreach($propertyLists as $propertyList)
