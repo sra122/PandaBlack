@@ -441,7 +441,7 @@ class ContentController extends Controller
 
         $resultItems = $itemRepository->search();
 
-        foreach($resultItems as $variation)
+        foreach($resultItems->getResult() as $variation)
         {
             array_push($productsData, $variation);
         }
