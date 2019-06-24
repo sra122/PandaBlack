@@ -433,9 +433,9 @@ class ContentController extends Controller
             ]
         ]);
 
-        $itemRepository->setFilters([
+        /*$itemRepository->setFilters([
             'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER)
-        ]);
+        ]);*/
 
 
         $resultItems = $itemRepository->search();
@@ -517,9 +517,9 @@ class ContentController extends Controller
     {
         $this->completeData();
 
-        $templateData = array(
+        /*$templateData = array(
             'exportData' => $this->exportData
-        );
-        return $templateData;
+        );*/
+        return $this->exportData;
     }
 }
