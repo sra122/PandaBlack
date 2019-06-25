@@ -63,7 +63,8 @@ class ContentController extends Controller
         {
             array_push($this->exportData, $variation);
         }
-        do {
+
+        /*do {
             $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
             $variationStock = pluginApp(VariationStockRepositoryContract::class);
             $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
@@ -131,7 +132,7 @@ class ContentController extends Controller
                 );
                 $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
             }
-        } while(!$resultItems->isLastPage());
+        } while(!$resultItems->isLastPage());*/
     }
 
     /**
@@ -251,7 +252,7 @@ class ContentController extends Controller
             //$app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
-        return $productStatus;
+        return $productDetails;
     }
 
 
