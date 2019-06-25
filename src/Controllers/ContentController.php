@@ -62,7 +62,10 @@ class ContentController extends Controller
         foreach($resultItems->getResult() as $variation)
         {
             if(count($variation['variationSkus']) > 0) {
-                array_push($this->exportData, $variation['variationSkus']);
+                foreach($variation['variationSkus'] as $skuInfo)
+                {
+                    array_push($this->exportData, $skuInfo['sku']);
+                }
             }
         }
 
