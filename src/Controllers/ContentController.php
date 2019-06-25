@@ -59,17 +59,7 @@ class ContentController extends Controller
 
         $resultItems = $itemRepository->search();
 
-        foreach($resultItems->getResult() as $variation)
-        {
-            if(count($variation['variationSkus']) > 0) {
-                foreach($variation['variationSkus'] as $skuInfo)
-                {
-                    array_push($this->exportData, $skuInfo['sku']);
-                }
-            }
-        }
-
-        /*do {
+        do {
             $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
             $variationStock = pluginApp(VariationStockRepositoryContract::class);
             $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
@@ -132,12 +122,12 @@ class ContentController extends Controller
                     'brand' => $manufacturer['name'],
                     'last_update_at' => $variation['relatedUpdatedAt'],
                     'asin' => $asin,
-                    'sku' => $sku,
+                    'sku' => (count($variation['variationSkus']) > 0) ? $this->getSKUDetails($variation['variationSkus']) : null,
                     'ean' => (count($ean) > 0) ? implode(',', $ean) : null
                 );
                 $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
             }
-        } while(!$resultItems->isLastPage());*/
+        } while(!$resultItems->isLastPage());
     }
 
     /**
@@ -154,6 +144,17 @@ class ContentController extends Controller
             'exportData' => $this->exportData
         );
         return $templateData;
+    }
+
+
+    private function getSKUDetails($variationSkus)
+    {
+        foreach($variationSkus as $skuInfo)
+        {
+            if((int)$skuInfo['marketId'] == (int)$this->settings->get('orderReferrerId')) {
+                return $skuInfo['sku'];
+            }
+        }
     }
 
 
@@ -322,7 +323,7 @@ class ContentController extends Controller
     {
         foreach($validProducts as $key => $validProduct)
         {
-            if(!empty($validProduct['sku'])) {
+            if(empty($validProduct['sku'])) {
                 $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
                 $stockUnits = $variationSKURepository->findByVariationId($validProduct['product_id']);
 
