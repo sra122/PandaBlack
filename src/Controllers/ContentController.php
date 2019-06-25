@@ -63,7 +63,7 @@ class ContentController extends Controller
         {
             array_push($this->exportData, $variation);
         }
-        /*do {
+        do {
             $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
             $variationStock = pluginApp(VariationStockRepositoryContract::class);
             $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
@@ -86,18 +86,15 @@ class ContentController extends Controller
                 }
                 //SKU
                 $sku = null;
-                try {
-                    if(count($variation['variationSkus']) > 0) {
-                        foreach($variation['variationSkus'] as $skuInformation)
-                        {
-                            if($skuInformation->marketId === $this->settings->get('orderReferrerId')) {
-                                $sku = $skuInformation->sku;
-                            }
+                if(count($variation['variationSkus']) > 0) {
+                    foreach($variation['variationSkus'] as $skuInformation)
+                    {
+                        if($skuInformation['marketId'] === $this->settings->get('orderReferrerId')) {
+                            $sku = $skuInformation['sku'];
                         }
                     }
-                } catch (\Exception $e) {
-                    $sku = null;
                 }
+
                 //EAN
                 $ean = [];
                 if(count($variation['variationBarcodes']) > 0) {
@@ -134,7 +131,7 @@ class ContentController extends Controller
                 );
                 $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
             }
-        } while(!$resultItems->isLastPage());*/
+        } while(!$resultItems->isLastPage());
     }
 
     /**
@@ -320,30 +317,22 @@ class ContentController extends Controller
     {
         foreach($validProducts as $key => $validProduct)
         {
-            $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
-            $stockUnits = $variationSKURepository->findByVariationId($validProduct['product_id']);
+            if($validProduct['sku'] == null) {
+                $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
+                $stockUnits = $variationSKURepository->findByVariationId($validProduct['product_id']);
 
-            if(count($stockUnits) > 0) {
-                foreach($stockUnits as $stockUnit)
-                {
-                    if($stockUnit->marketId === $this->settings->get('orderReferrerId')) {
-                        $validProducts[$key]['sku'] = $stockUnits->sku;
+                if(count($stockUnits) <= 0) {
+                    $skuInfo = $variationSKURepository->create([
+                        'variationId' => $validProduct['product_id'],
+                        'marketId' => $this->settings->get('orderReferrerId'),
+                        'accountId' => 0,
+                        'sku' => (string)$validProduct['product_id']
+                    ])->toArray();
+                    if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
+                        $validProducts[$key]['sku'] = $skuInfo;
                     }
                 }
             }
-
-            if(count($stockUnits) <= 0) {
-                $skuInfo = $variationSKURepository->create([
-                    'variationId' => $validProduct['product_id'],
-                    'marketId' => $this->settings->get('orderReferrerId'),
-                    'accountId' => 0,
-                    'sku' => (string)$validProduct['product_id']
-                ])->toArray();
-                if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
-                    $validProducts[$key]['sku'] = $skuInfo;
-                }
-            }
-
         }
         return $validProducts;
     }
