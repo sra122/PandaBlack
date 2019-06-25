@@ -255,7 +255,7 @@ class ContentController extends Controller
             return $validProductsWithSKU;
         }
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
-        return $productStatus;
+        return $productDetails;
     }
 
 
