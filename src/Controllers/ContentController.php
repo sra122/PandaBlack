@@ -57,9 +57,13 @@ class ContentController extends Controller
             $filterVariation => time()-3600
         ]);
 
-
         $resultItems = $itemRepository->search();
-        do {
+
+        foreach($resultItems->getResult() as $variation)
+        {
+            array_push($this->exportData, $variation);
+        }
+        /*do {
             $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
             $variationStock = pluginApp(VariationStockRepositoryContract::class);
             $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
@@ -130,7 +134,7 @@ class ContentController extends Controller
                 );
                 $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
             }
-        } while(!$resultItems->isLastPage());
+        } while(!$resultItems->isLastPage());*/
     }
 
     /**
