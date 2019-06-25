@@ -249,10 +249,9 @@ class ContentController extends Controller
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             //$app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
-            return $validProductsWithSKU;
         }
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
-        return $productDetails;
+        return $productStatus;
     }
 
 
@@ -317,7 +316,7 @@ class ContentController extends Controller
     {
         foreach($validProducts as $key => $validProduct)
         {
-            if($validProduct['sku'] == null) {
+            if(!empty($validProduct['sku'])) {
                 $variationSKURepository = pluginApp(VariationSkuRepositoryContract::class);
                 $stockUnits = $variationSKURepository->findByVariationId($validProduct['product_id']);
 
@@ -328,7 +327,7 @@ class ContentController extends Controller
                         'accountId' => 0,
                         'sku' => (string)$validProduct['product_id']
                     ])->toArray();
-                    if(isset($validProduct['sku']) && !empty($validProduct['sku'])) {
+                    if(isset($validProduct['sku'])) {
                         $validProducts[$key]['sku'] = $skuInfo;
                     }
                 }
