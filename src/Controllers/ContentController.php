@@ -516,15 +516,17 @@ class ContentController extends Controller
                 //$this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
             }
         } while(!$resultItems->isLastPage());
+
+        return $product;
     }
 
     private function completeProductsInfo()
     {
-        $this->completeData();
+        $products = $this->completeData();
 
         /*$templateData = array(
             'exportData' => $this->exportData
         );*/
-        return $this->exportData;
+        return $products;
     }
 }
