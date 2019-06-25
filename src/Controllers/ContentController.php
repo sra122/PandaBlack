@@ -405,6 +405,7 @@ class ContentController extends Controller
 
     private function completeData()
     {
+        $product = [];
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
         $itemRepository->setSearchParams([
             'with' => [
@@ -489,7 +490,7 @@ class ContentController extends Controller
                 $textArray = $variation['item']->texts;
                 $variation['texts'] = $textArray->toArray();
                 $categoryId = (count($variation['properties']) > 0) ? $this->categoryIdFromSettingsRepo($variation['properties']) : '';
-                $this->exportData[$variation['id']] = array(
+                $product[$variation['id']] = array(
                     'parent_product_id' => $variation['mainVariationId'],
                     'product_id' => $variation['id'],
                     'item_id' => $variation['itemId'],
