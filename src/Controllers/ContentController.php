@@ -519,7 +519,7 @@ class ContentController extends Controller
 
     private function completeProductsInfo()
     {
-        /*$this->completeData();*/
+        $this->completeData();
 
         /*$templateData = array(
             'exportData' => $this->exportData
