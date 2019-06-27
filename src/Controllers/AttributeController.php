@@ -145,4 +145,19 @@ class AttributeController extends Controller
 
         return $propertyValues;
     }
+
+
+    public function updatePBAttributeInPM()
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $pbApiHelper = pluginApp(PBApiHelper::class);
+
+        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+
+        foreach($attributes as $categoryId => $attribute)
+        {
+            $attribute[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
+            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+        }
+    }
 }
