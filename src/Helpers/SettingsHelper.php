@@ -76,14 +76,14 @@ class SettingsHelper
         return $this->credentialProperty;
     }
 
-    public function get($key)
+    public function get($key, $toArray = false)
     {
         $settingProperty = $this->getSettingProperty();
         if ($settingProperty === null || !isset($settingProperty->settings[$key])) {
             return null;
         }
 
-        return $settingProperty->settings[$key];
+        return ($toArray) ? $settingProperty->settings[$key]->toArray() : $settingProperty->settings[$key];
     }
 
     public function set($key, $value)
