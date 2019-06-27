@@ -154,7 +154,9 @@ class AttributeController extends Controller
 
         $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
 
-        $categories = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+        $categoriesController = pluginApp(CategoryController::class);
+        $categories = $categoriesController->getPBCategoriesAsDropdown();
+
         foreach($categories as $categoryId => $category)
         {
             if(isset($attributes[$categoryId])) {
