@@ -154,10 +154,12 @@ class AttributeController extends Controller
 
         $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
 
-        foreach($attributes as $categoryId => $attribute)
-        {
-            $attribute[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+        if(is_array($attributes)) {
+            foreach($attributes as $categoryId => $attribute)
+            {
+                $attribute[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
+                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+            }
         }
     }
 }
