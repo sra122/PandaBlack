@@ -194,7 +194,7 @@ class CategoryController extends Controller
     }
 
 
-    private function getPBCategoriesAsDropdown()
+    public function getPBCategoriesAsDropdown()
     {
         $app = pluginApp(AppController::class);
 
