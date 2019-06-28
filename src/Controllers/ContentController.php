@@ -245,9 +245,6 @@ class ContentController extends Controller
 
 
 
-    /**
-     * @return array
-     */
     public function sendProductDetails()
     {
         $app = pluginApp(AppController::class);
@@ -260,7 +257,7 @@ class ContentController extends Controller
         //$notifications = $this->settings->get(SettingsHelper::NOTIFICATION);
         //$productStatus['unfulfilledProducts']['admin'] = isset(($notifications)['admin']) ? $notifications['admin'] : '';
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);*/
-        return $productStatus;
+        return 'test';
     }
 
     private function productStatus($productDetails)
