@@ -280,7 +280,7 @@ class MappingController extends Controller
     {
         $notification = $this->fetchNotifications();
 
-        $adminNotification = isset($notification['admin']) ? $notification['admin'] : '';
+        /*$adminNotification = isset($notification['admin']) ? $notification['admin'] : '';
 
         $app = pluginApp(AppController::class);
         $settingsHelper = pluginApp(SettingsHelper::class);
@@ -302,6 +302,8 @@ class MappingController extends Controller
             $notification['admin'] = $adminNotification;
         }
 
-        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
+        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);*/
+
+        return $notification;
     }
 }

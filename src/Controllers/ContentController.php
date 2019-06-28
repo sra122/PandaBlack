@@ -253,17 +253,15 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails();
         $productStatus = $this->productStatus($productDetails);
-        if(!empty($productStatus['validProductDetails'])) {
+        /*if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
         //$notifications = $this->settings->get(SettingsHelper::NOTIFICATION);
         //$productStatus['unfulfilledProducts']['admin'] = isset(($notifications)['admin']) ? $notifications['admin'] : '';
-        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
+        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);*/
         return $productStatus;
     }
-
-
 
     private function productStatus($productDetails)
     {
