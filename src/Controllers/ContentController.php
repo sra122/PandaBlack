@@ -257,6 +257,7 @@ class ContentController extends Controller
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
+        $productStatus['unfulfilledProducts']['admin'] = isset($this->settings->get(SettingsHelper::NOTIFICATION)['admin']) ? $this->settings->get(SettingsHelper::NOTIFICATION)['admin'] : '';
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
         return $productStatus;
     }

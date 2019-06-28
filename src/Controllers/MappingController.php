@@ -239,20 +239,6 @@ class MappingController extends Controller
             return $attribute->name;
         }
 
-        /*$attributes = $settingHelper->get(SettingsHelper::ATTRIBUTES);
-
-        if(isset($attributes[$categoryId])) {
-            foreach($attributes[$categoryId] as $attribute) {
-<<<<<<< HEAD
-                return $attribute->name;
-=======
-                if(is_object($attribute)) {
-                    return 'object';
-                }
->>>>>>> 2e14752e78d3672c288ffcfe4c966f8d01b8c7f9
-            }
-        }*/
-
         return false;
     }
 
@@ -275,7 +261,7 @@ class MappingController extends Controller
         $notificationType = $request->get('notificationType');
         $notifications = $this->settingsHelper->get(SettingsHelper::NOTIFICATION);
 
-        $specialNotification = ['noStockProducts', 'noAsinProducts', 'emptyAttributeProducts', 'admin'];
+        $specialNotification = ['noStockProducts', 'noAsinProducts', 'emptyAttributeProducts'];
 
         if(in_array($notificationType, $specialNotification))
         {
@@ -287,5 +273,35 @@ class MappingController extends Controller
         $this->settingsHelper->set(SettingsHelper::NOTIFICATION, $notifications);
 
         return $notifications;
+    }
+
+
+    public function updateNotifications()
+    {
+        $notification = $this->fetchNotifications();
+
+        $adminNotification = isset($notification['admin']) ? $notification['admin'] : '';
+
+        $app = pluginApp(AppController::class);
+        $settingsHelper = pluginApp(SettingsHelper::class);
+
+        $pbNotifications = $app->authenticate('pandaBlack_notifications');
+
+        if(isset($pbNotifications)) {
+            foreach($pbNotifications as $key => $pbNotification)
+            {
+                if(!isset($adminNotification[$key]) && (time() - $pbNotification['timestamp'] > 86400)) {
+                    $adminNotification[$key] = $pbNotification;
+                    $adminNotification[$key]['id'] = $key;
+                    if($adminNotification[$key]['type'] !== 'info') {
+                        $adminNotification[$key]['categoryName'] = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST)[$pbNotification['values']['category_id']];
+                    }
+                }
+            }
+
+            $notification['admin'] = $adminNotification;
+        }
+
+        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
     }
 }
