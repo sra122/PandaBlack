@@ -30,7 +30,7 @@ class PandaBlackServiceProvider extends ServiceProvider
     {
         /*$container->add(CronContainer::HOURLY, ItemExportCron::class);
         $container->add(CronContainer::HOURLY, OrdersCron::class);*/
-        $container->add(CronContainer::HOURLY, CategoriesUpdateCron::class);
+        //$container->add(CronContainer::HOURLY, CategoriesUpdateCron::class);
         $container->add(CronContainer::HOURLY, AttributesUpdateCron::class);
 
 

@@ -263,9 +263,9 @@ class CategoryController extends Controller
     }
 
 
-    public function updateCategoriesInPM()
+    /*public function updateCategoriesInPM()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
         $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $this->getPBCategoriesAsDropdown());
-    }
+    }*/
 }
