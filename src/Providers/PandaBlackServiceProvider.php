@@ -36,7 +36,7 @@ class PandaBlackServiceProvider extends ServiceProvider
 
         $eventProceduresService->registerProcedure('pandablack', ProcedureEntry::PROCEDURE_GROUP_SHIPPING, [
             'de' => 'Versandbestätigung an PandaBlack senden',
-            'en' => 'Send shipping notification to Etsy'
+            'en' => 'Send shipping notification to PandaBlack'
         ], 'PandaBlack\\Procedures\\ShippingNotificationEventProcedure@run');
     }
 }
