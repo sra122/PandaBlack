@@ -13,6 +13,7 @@
     "attributeMapping": "Category Mapping",
     "attributeMappingButton": "Save",
     "deleteCategoryMapping": "Delete Category Mapping",
-    "productsNotSentMessage": "Products are not sent to PANDA.BLACK"
+    "productsNotSentMessage": "Products are not sent to PANDA.BLACK",
+    "property" : "property"
   }
 }
