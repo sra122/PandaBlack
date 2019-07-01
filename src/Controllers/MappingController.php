@@ -287,20 +287,19 @@ class MappingController extends Controller
 
         $pbNotifications = $app->authenticate('pandaBlack_notifications');
 
-        if(isset($pbNotifications)) {
-            foreach($pbNotifications as $key => $pbNotification)
-            {
-                if(!isset($adminNotification[$key]) && !empty($adminNotification[$key]) && ((time() - $pbNotification['timestamp']) < 4*86400)) {
-                    $adminNotification[$key] = $pbNotification;
-                    $adminNotification[$key]['id'] = $key;
-                    if($adminNotification[$key]['type'] !== 'info') {
-                        $adminNotification[$key]['categoryName'] = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST)[$pbNotification['values']['category_id']];
-                    }
+        foreach($pbNotifications as $key => $pbNotification)
+        {
+            if(!isset($adminNotification[$key]) && ((time() - $pbNotification['timestamp']) < 4*86400)) {
+                $adminNotification[$key] = $pbNotification;
+                $adminNotification[$key]['id'] = $key;
+                if($adminNotification[$key]['type'] !== 'info') {
+                    $adminNotification[$key]['categoryName'] = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST)[$pbNotification['values']['category_id']];
                 }
             }
-
-            $notification['admin'] = $adminNotification;
         }
+
+        $notification['admin'] = $adminNotification;
+
 
         $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
 
