@@ -3,8 +3,7 @@
 namespace PandaBlack\Providers;
 
 use PandaBlack\Controllers\CategoryController;
-use PandaBlack\Crons\AttributesUpdateCron;
-use PandaBlack\Crons\CategoriesUpdateCron;
+use PandaBlack\Crons\CategoriesAndAttributesUpdateCron;
 use PandaBlack\Crons\OrdersCron;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
@@ -30,13 +29,13 @@ class PandaBlackServiceProvider extends ServiceProvider
     {
         /*$container->add(CronContainer::HOURLY, ItemExportCron::class);
         $container->add(CronContainer::HOURLY, OrdersCron::class);*/
-        $container->add(CronContainer::HOURLY, CategoriesUpdateCron::class);
-        $container->add(CronContainer::HOURLY, AttributesUpdateCron::class);
+        //$container->add(CronContainer::HOURLY, CategoriesUpdateCron::class);
+        $container->add(CronContainer::HOURLY, CategoriesAndAttributesUpdateCron::class);
 
 
         $eventProceduresService->registerProcedure('pandablack', ProcedureEntry::PROCEDURE_GROUP_SHIPPING, [
             'de' => 'Versandbestätigung an PandaBlack senden',
-            'en' => 'Send shipping notification to Etsy'
+            'en' => 'Send shipping notification to PandaBlack'
         ], 'PandaBlack\\Procedures\\ShippingNotificationEventProcedure@run');
     }
 }

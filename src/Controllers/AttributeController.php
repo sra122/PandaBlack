@@ -147,7 +147,7 @@ class AttributeController extends Controller
     }
 
 
-    public function updatePBAttributeInPM()
+    public function updatePBCategoriesAttributesInPM()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
@@ -156,6 +156,8 @@ class AttributeController extends Controller
 
         $categoriesController = pluginApp(CategoryController::class);
         $categories = $categoriesController->getPBCategoriesAsDropdown();
+
+        $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $categories);
 
         foreach($categories as $categoryId => $category)
         {

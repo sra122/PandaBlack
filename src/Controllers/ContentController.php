@@ -245,23 +245,19 @@ class ContentController extends Controller
 
 
 
-    /**
-     * @return array
-     */
     public function sendProductDetails()
     {
         $app = pluginApp(AppController::class);
+        $mapping = pluginApp(MappingController::class);
         $productDetails = $this->productDetails();
         $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
+        $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
-        return $productStatus;
     }
-
-
 
     private function productStatus($productDetails)
     {

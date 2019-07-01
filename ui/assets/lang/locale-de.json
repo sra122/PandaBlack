@@ -13,6 +13,7 @@
     "attributeMapping": "Kategoriezuordnung",
     "attributeMappingButton": "Speichern",
     "deleteCategoryMapping": "Kategorienzuordnung löschen",
-    "productsNotSentMessage": "Produkte werden nicht an PANDA.BLACK gesendet"
+    "productsNotSentMessage": "Produkte werden nicht an PANDA.BLACK gesendet",
+    "property" : "Eigenschaften"
   }
 }
