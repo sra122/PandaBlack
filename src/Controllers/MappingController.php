@@ -290,7 +290,7 @@ class MappingController extends Controller
         if(isset($pbNotifications)) {
             foreach($pbNotifications as $key => $pbNotification)
             {
-                if(!isset($adminNotification[$key]) && !empty($adminNotification[$key]) && (time() - $pbNotification['timestamp'] > 86400)) {
+                if(!isset($adminNotification[$key]) && !empty($adminNotification[$key]) && ((time() - $pbNotification['timestamp']) < 4*86400)) {
                     $adminNotification[$key] = $pbNotification;
                     $adminNotification[$key]['id'] = $key;
                     if($adminNotification[$key]['type'] !== 'info') {
