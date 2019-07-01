@@ -7,7 +7,7 @@ use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 
 class ShippingNotificationEventProcedure
 {
-    public function run(EventProceduresTriggered $eventTriggered)
+    /*public function run(EventProceduresTriggered $eventTriggered)
     {
         $order = $eventTriggered->getOrder();
         $trackingCode = $this->getTrackingCode($order);
@@ -35,5 +35,5 @@ class ShippingNotificationEventProcedure
         }
 
         return null;
-    }
+    }*/
 }
