@@ -18,7 +18,7 @@ class PandaBlackServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->getApplication()->register(PandaBlackServiceProvider::class);
+        $this->getApplication()->register(PandaBlackRouteServiceProvider::class);
     }
 
     /**
