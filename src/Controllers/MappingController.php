@@ -280,7 +280,7 @@ class MappingController extends Controller
     {
         $notification = $this->fetchNotifications();
 
-        /*$adminNotification = isset($notification['admin']) ? $notification['admin'] : '';
+        $adminNotification = isset($notification['admin']) ? $notification['admin'] : '';
 
         $app = pluginApp(AppController::class);
         $settingsHelper = pluginApp(SettingsHelper::class);
@@ -290,7 +290,7 @@ class MappingController extends Controller
         if(isset($pbNotifications)) {
             foreach($pbNotifications as $key => $pbNotification)
             {
-                if(!isset($adminNotification[$key]) && (time() - $pbNotification['timestamp'] > 86400)) {
+                if(!isset($adminNotification[$key]) && !empty($adminNotification[$key]) && (time() - $pbNotification['timestamp'] > 86400)) {
                     $adminNotification[$key] = $pbNotification;
                     $adminNotification[$key]['id'] = $key;
                     if($adminNotification[$key]['type'] !== 'info') {
@@ -302,14 +302,8 @@ class MappingController extends Controller
             $notification['admin'] = $adminNotification;
         }
 
-        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);*/
+        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
 
         return $notification;
-    }
-
-
-    public function test()
-    {
-        return 'test';
     }
 }
