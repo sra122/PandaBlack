@@ -45,7 +45,6 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             //Sending Content Actions
             $router->post('markets/panda-black/products-data', 'PandaBlack\Controllers\ContentController@sendProductDetails');
             $router->get('markets/panda-black/products-status', 'PandaBlack\Controllers\ContentController@sendProductDetails');
-            //$router->get('markets/panda-black/products-status', 'PandaBlack\Controllers\MappingController@updateNotifications');
 
             //PandaBlack Category as Property
             $router->post('markets/panda-black/create-category-as-property', 'PandaBlack\Controllers\PropertyController@createCategoryAsProperty');
@@ -55,9 +54,9 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->get('markets/panda-black/mapping-data', 'PandaBlack\Controllers\MappingController@fetchPropertiesInfo');
 
             //Notification
-            //$router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\MappingController@fetchNotifications');
-            $router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\MappingController@updateNotifications');
+            $router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\MappingController@fetchNotifications');
             $router->post('markets/panda-black/remove-notification', 'PandaBlack\Controllers\MappingController@removeNotification');
+            $router->post('markets/panda-black/admin-notifications', 'PandaBlack\Controllers\MappingController@adminNotification');
         });
     }
 }
