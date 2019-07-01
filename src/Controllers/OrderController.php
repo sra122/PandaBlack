@@ -62,16 +62,16 @@ class OrderController extends Controller
                 {
                     $orderItems[] = [
                         'typeId' => 1,
-                        'itemVariationId' => $productDetails['itemVariationId'],
-                        'quantity' => $productDetails['quantity'],
-                        'orderItemName' => $productDetails['productTitle'],
+                        'itemVariationId' => /*$productDetails['itemVariationId'],*/ 1030,
+                        'quantity' => /*$productDetails['quantity']*/ 1,
+                        'orderItemName' => /*$productDetails['productTitle']*/'Zweisitzer Paradise Now',
                         'amounts' => [
                             0 => [
                                 'isSystemCurrency' => true,
                                 'isNet' => true,
                                 'exchangeRate' => 1,
                                 'currency' => 'EUR',
-                                'priceOriginalGross' => $productDetails['price']
+                                'priceOriginalGross' => /*$productDetails['price']*/ 1311
                             ]
                         ]
                     ];
