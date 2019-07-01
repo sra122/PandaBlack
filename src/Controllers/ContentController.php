@@ -256,7 +256,7 @@ class ContentController extends Controller
         }
         $adminNotification = $app->authenticate('pandaBlack_notifications');
         $notifications = $this->settings->get(SettingsHelper::NOTIFICATION);
-        $productStatus['unfulfilledProducts']['admin'] = isset(($notifications)['admin']) ? $notifications['admin'] : $adminNotification;
+        $productStatus['unfulfilledProducts']['admin'] = (isset($notifications['admin']) && !empty($notifications['admin'])) ? $notifications['admin'] : $adminNotification;
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
     }
 
