@@ -56,7 +56,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             //Notification
             $router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\MappingController@fetchNotifications');
             $router->post('markets/panda-black/remove-notification', 'PandaBlack\Controllers\MappingController@removeNotification');
-            $router->post('markets/panda-black/admin-notifications', 'PandaBlack\Controllers\MappingController@adminNotifications');
+            $router->get('markets/panda-black/admin-notifications', 'PandaBlack\Controllers\MappingController@adminNotifications');
         });
     }
 }
