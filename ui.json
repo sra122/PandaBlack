@@ -9,16 +9,16 @@
       "entryPoint": "index.html?action=itools"
     },
     {
-      "label": "Produkt-Status",
-      "menu": "system/markets/PANDA.BLACK",
-      "urlKey": "status",
-      "entryPoint": "index.html?action=status"
-    },
-    {
       "label": "Mapping",
       "menu": "system/markets/PANDA.BLACK",
       "urlKey": "mapping",
       "entryPoint": "index.html?action=mapping"
+    },
+    {
+      "label": "Produkt-Status",
+      "menu": "system/markets/PANDA.BLACK",
+      "urlKey": "status",
+      "entryPoint": "index.html?action=status"
     }
   ]
 }

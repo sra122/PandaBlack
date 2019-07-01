@@ -9,6 +9,6 @@ class CategoriesAndAttributesUpdateCron extends Cron
 {
     public function __construct(AttributeController $attributeController)
     {
-        $attributeController->updatePBAttributeInPM();
+        $attributeController->updatePBCategoriesAttributesInPM();
     }
 }

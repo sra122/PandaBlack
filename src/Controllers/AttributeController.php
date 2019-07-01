@@ -147,7 +147,7 @@ class AttributeController extends Controller
     }
 
 
-    public function updatePBAttributeInPM()
+    public function updatePBCategoriesAttributesInPM()
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
