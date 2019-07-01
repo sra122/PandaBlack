@@ -19,6 +19,12 @@
       "menu": "system/markets/PANDA.BLACK",
       "urlKey": "mapping",
       "entryPoint": "index.html?action=mapping"
+    },
+    {
+      "label": "Kategoriezuordnung",
+      "menu": "system/markets/PANDA.BLACK",
+      "urlKey": "stats-view",
+      "entryPoint": "index.html?action=stats-view"
     }
   ]
 }
