@@ -304,6 +304,6 @@ class MappingController extends Controller
 
         $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
 
-        return $pbNotifications;
+        return $notification;
     }
 }
