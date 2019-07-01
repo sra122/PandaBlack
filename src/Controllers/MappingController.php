@@ -306,4 +306,10 @@ class MappingController extends Controller
 
         return $notification;
     }
+
+
+    public function test()
+    {
+        return 'test';
+    }
 }
