@@ -306,11 +306,4 @@ class MappingController extends Controller
 
         return $pbNotifications;
     }
-
-
-    public function adminNotifications()
-    {
-        $app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_notifications');
-    }
 }
