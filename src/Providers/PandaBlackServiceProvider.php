@@ -27,15 +27,8 @@ class PandaBlackServiceProvider extends ServiceProvider
      */
     public function boot(CronContainer $container, EventProceduresService $eventProceduresService)
     {
-        /*$container->add(CronContainer::HOURLY, ItemExportCron::class);
-        $container->add(CronContainer::HOURLY, OrdersCron::class);*/
-        //$container->add(CronContainer::HOURLY, CategoriesUpdateCron::class);
+        $container->add(CronContainer::HOURLY, ItemExportCron::class);
+        $container->add(CronContainer::HOURLY, OrdersCron::class);
         $container->add(CronContainer::HOURLY, CategoriesAndAttributesUpdateCron::class);
-
-
-        $eventProceduresService->registerProcedure('pandablack', ProcedureEntry::PROCEDURE_GROUP_SHIPPING, [
-            'de' => 'Versandbestätigung an PandaBlack senden',
-            'en' => 'Send shipping notification to PandaBlack'
-        ], 'PandaBlack\\Procedures\\ShippingNotificationEventProcedure@run');
     }
 }
