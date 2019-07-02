@@ -1,5 +1,9 @@
 # Release notes for PANDA.BLACK
 
+## v1.0.9
+
+Adopting Properties instead of Attributes.
+
 ## v1.0.8
 
 Adaption of the documentation

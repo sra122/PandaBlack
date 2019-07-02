@@ -1,5 +1,9 @@
 # Release Notes für PANDA.BLACK
 
+## v1.0.9
+
+Nutzung von Eigenschaften anstatt Attributen.
+
 ## v1.0.8
 Anpassung der Dokumentation
 
