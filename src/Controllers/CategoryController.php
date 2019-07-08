@@ -217,10 +217,4 @@ class CategoryController extends Controller
             $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $this->getPBCategoriesAsDropdown());
         }
     }
-
-
-    public function saveProperty()
-    {
-        return $this->getPBCategoriesAsDropdown();
-    }
 }

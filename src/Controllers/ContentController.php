@@ -364,4 +364,11 @@ class ContentController extends Controller
             }
         }
     }
+
+
+    public function saveProperty()
+    {
+        $categoryRepo = pluginApp(CategoryController::class);
+        return $categoryRepo->getPBCategoriesAsDropdown();
+    }
 }
