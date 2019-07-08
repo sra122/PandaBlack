@@ -193,15 +193,18 @@ class CategoryController extends Controller
     {
         $settingsHelper = pluginApp(SettingsHelper::class);
 
-        $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
-
-        if(!empty($categoriesList)) {
-            return $categoriesList;
-        } else {
-            $this->getPBCategoriesAsDropdown();
-            $this->savePBCategoriesInPM();
+        try {
             $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
-            return $categoriesList;
+            if(!empty($categoriesList)) {
+                return $categoriesList;
+            } else {
+                $this->getPBCategoriesAsDropdown();
+                $this->savePBCategoriesInPM();
+                $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+                return $categoriesList;
+            }
+        } catch(\Exception $e) {
+            return $e->getMessage();
         }
     }
 
