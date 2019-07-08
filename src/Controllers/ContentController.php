@@ -196,8 +196,7 @@ class ContentController extends Controller
             }
         }
 
-        return $propertyInfos;
-
+        return $pbMapping;
 
         /*foreach($pbMapping['property'] as $key => $mappedProperty)
         {
