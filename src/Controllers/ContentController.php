@@ -221,20 +221,24 @@ class ContentController extends Controller
             foreach($attributeDetails as $attributeName => $attributeDetail)
             {
                 $matched = false;
-                foreach($pbAttributes as $pbAttribute)
+                $check = [];
+                foreach($pbAttributes as $key => $pbAttribute)
                 {
-                    if($pbAttribute['required'] && ($pbAttribute['values'] !== null) && ($pbAttribute['name'] == $attributeName))
-                    {
-                        foreach($pbAttribute['values'] as $pbAttributeValue)
+                    if($key == $categoryId) {
+                        if($pbAttribute['required'] && ($pbAttribute['values'] !== null) && ($pbAttribute['name'] == $attributeName))
                         {
-                            if($pbAttributeValue === $attributeDetail) {
-                                $matched = true;
+                            foreach($pbAttribute['values'] as $pbAttributeValue)
+                            {
+                                if($pbAttributeValue === $attributeDetail) {
+                                    $matched = true;
+                                    array_push($check, $attributeDetail);
+                                }
                             }
                         }
                     }
                 }
 
-                $test = $pbAttributes;
+                $test = $check;
 
                 return $test;
 
