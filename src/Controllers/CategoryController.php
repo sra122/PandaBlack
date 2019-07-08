@@ -191,7 +191,7 @@ class CategoryController extends Controller
 
     public function getCategoriesList()
     {
-        try {
+        /*try {
             $settingsHelper = pluginApp(SettingsHelper::class);
             $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
             if(!empty($categoriesList)) {
@@ -204,7 +204,11 @@ class CategoryController extends Controller
             }
         } catch(\Exception $e) {
             return $e->getMessage();
-        }
+        }*/
+
+        $app = pluginApp(AppController::class);
+
+        return $app->authenticate('pandaBlack_categories');
     }
 
     public function savePBCategoriesInPM()
