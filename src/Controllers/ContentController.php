@@ -101,7 +101,7 @@ class ContentController extends Controller
                 }
                 $textArray = $variation['item']->texts;
                 $variation['texts'] = $textArray->toArray();
-                $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
+                $categoryId = $variation['properties'];//$this->categoryIdFromSettingsRepo($variation['properties']);
                 $this->exportData[$variation['id']] = array(
                     'parent_product_id' => $variation['mainVariationId'],
                     'product_id' => $variation['id'],
