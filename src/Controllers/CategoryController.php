@@ -206,9 +206,9 @@ class CategoryController extends Controller
             return $e->getMessage();
         }*/
 
-        $app = pluginApp(AppController::class);
+        $settingsHelper = pluginApp(SettingsHelper::class);
 
-        return $app->authenticate('pandaBlack_categories');
+        return $settingsHelper->getSettingProperty();
     }
 
     public function savePBCategoriesInPM()
