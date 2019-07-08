@@ -162,18 +162,25 @@ class ContentController extends Controller
     {
         $attributeDetails = [];
         $pbAttributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[$categoryId];
+
+
         // In case, if attributes are not saved in Settings.
         if(empty($pbAttributes)) {
             $pbApiHelper = pluginApp(PBApiHelper::class);
             $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES);
             $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-            $this->settings->set(SettingsHelper::ATTRIBUTES, $attributes);
-            $pbAttributes = $attributes[$categoryId];
+            if(!empty($attributes[$categoryId])) {
+                $this->settings->set(SettingsHelper::ATTRIBUTES, $attributes);
+                $pbAttributes = $attributes[$categoryId];
+            }
         }
+
         $pbMapping = $this->settings->get(SettingsHelper::MAPPING_INFO);
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyLists = $propertiesRepo->listProperties(1, 50, [], [], 0);
         $propertyInfos = [];
+
+
         foreach($propertyLists as $propertyList)
         {
             foreach($properties as $property)
@@ -188,6 +195,8 @@ class ContentController extends Controller
                 }
             }
         }
+
+
         foreach($pbMapping['property'] as $key => $mappedProperty)
         {
             foreach($propertyInfos as $id => $propertyInfo)
@@ -207,6 +216,8 @@ class ContentController extends Controller
                 }
             }
         }
+
+
         // Check the Attributes that are mapped are present in PB attributes list of the selected Category.
         if(!empty($attributeDetails)) {
             foreach($attributeDetails as $attributeName => $attributeDetail)
@@ -229,8 +240,12 @@ class ContentController extends Controller
                 }
             }
         }
-        return $attributeDetails;
+
+
+        return $pbAttributes;
     }
+
+
     public function getPropertyNameInDE($names)
     {
         $propertyName = '';
@@ -250,7 +265,7 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
         $productDetails = $this->productDetails();
-        //$productStatus = $this->productStatus($productDetails);
+        $productStatus = $this->productStatus($productDetails);
 
         return $productDetails;
         /*if(!empty($productStatus['validProductDetails'])) {
