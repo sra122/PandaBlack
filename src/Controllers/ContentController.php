@@ -113,7 +113,7 @@ class ContentController extends Controller
                     'category' => $categoryId,
                     'short_description' => $variation['item']['texts'][0]['description'],
                     'image_url' => $variation['images'][0]['url'],
-                    'color' => $this->categoriesAsProperties(),
+                    'color' => '',
                     'size' => '',
                     'content_supplier' => $manufacturer['name'],
                     'product_type' => '',
@@ -217,7 +217,6 @@ class ContentController extends Controller
             }
         }
 
-
         // Check the Attributes that are mapped are present in PB attributes list of the selected Category.
         if(!empty($attributeDetails)) {
             foreach($attributeDetails as $attributeName => $attributeDetail)
@@ -240,7 +239,6 @@ class ContentController extends Controller
                 }
             }
         }
-
 
         return $attributeDetails;
     }
@@ -265,7 +263,6 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
         $productDetails = $this->productDetails();
-        return $productDetails;
         /*$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
