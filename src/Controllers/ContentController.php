@@ -263,6 +263,7 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
         $productDetails = $this->productDetails();
+        return $productDetails;
         /*$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
