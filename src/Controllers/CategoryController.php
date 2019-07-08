@@ -129,6 +129,7 @@ class CategoryController extends Controller
             return json_encode($pbCategoryTree);
         }
     }
+
     private function getPBChildCategories($pbCategories, $parentId)
     {
         $pbChildCategoryTree = [];
@@ -199,6 +200,8 @@ class CategoryController extends Controller
         } else {
             $this->getPBCategoriesAsDropdown();
             $this->savePBCategoriesInPM();
+            $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+            return $categoriesList;
         }
     }
 
