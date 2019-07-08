@@ -221,7 +221,6 @@ class ContentController extends Controller
             foreach($attributeDetails as $attributeName => $attributeDetail)
             {
                 $matched = false;
-                $check = [];
                 foreach($pbAttributes[$categoryId] as $key => $pbAttribute)
                 {
                     if($pbAttribute['required'])
@@ -232,22 +231,16 @@ class ContentController extends Controller
                                 $matched = true;
                             }
                         }
-
-                        array_push($check, $attributeName);
                     }
                 }
 
-                $test = $pbAttributes[$categoryId];
-
-                return $test;
-
-                /*if(!$matched) {
+                if(!$matched) {
                     unset($attributeDetails[$attributeName]);
-                }*/
+                }
             }
         }
 
-        //return $attributeDetails;
+        return $attributeDetails;
     }
 
 
