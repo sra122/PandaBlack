@@ -5,17 +5,18 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
+use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
 Class PropertyController extends Controller
 {
     /** @var SettingsHelper */
-    protected $Settings;
+    protected $settings;
 
     public function __construct(SettingsHelper $SettingsHelper)
     {
-        $this->Settings = $SettingsHelper;
+        $this->settings = $SettingsHelper;
     }
 
     public function createCategoryAsProperty(Request $request)
@@ -24,7 +25,7 @@ Class PropertyController extends Controller
 
         $propertyRepo = pluginApp(PropertyRepositoryContract::class);
         $propertySelectionRepo = pluginApp(PropertySelectionRepositoryContract::class);
-        $propertyId = $this->Settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
+        $propertyId = $this->getPBPropertyAsCategory();
 
         $pbCategoryExist = false;
 
@@ -39,7 +40,7 @@ Class PropertyController extends Controller
                  }
              }
 
-             $categoriesList = $this->Settings->get(SettingsHelper::CATEGORIES_LIST);
+             $categoriesList = $this->settings->get(SettingsHelper::CATEGORIES_LIST);
 
              if(in_array($pbCategoryName, $categoriesList)) {
                  if(!$pbCategoryExist) {
@@ -66,5 +67,26 @@ Class PropertyController extends Controller
                  return 'categoryNameChanged'; //TODO Change the error return status
              }
         }
+    }
+
+
+
+    private function getPBPropertyAsCategory()
+    {
+        if(empty($this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
+
+            $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+
+            $properties = $propertyNameRepository->listNames();
+
+            foreach($properties as $property)
+            {
+                if($property->name === SettingsHelper::PB_KATEGORIE_PROPERTY) {
+                    $this->settings->set(SettingsHelper::CATEGORIES_AS_PROPERTIES, $property->propertyId);
+                }
+            }
+        }
+
+        return $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
     }
 }

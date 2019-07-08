@@ -387,33 +387,17 @@ class ContentController extends Controller
     private function categoriesAsProperties()
     {
         if(empty($this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
-            /** @var PropertyRepositoryContract $propertyRepository */
-            $propertyRepository = pluginApp(PropertyRepositoryContract::class);
 
-            /** @var PropertyNameRepositoryContract $propertyNameRepository */
             $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
 
-            $propertyData = [
-                'cast' => 'selection',
-                'typeIdentifier' => 'item',
-                'position' => 0,
-                'names' => [
-                    [
-                        'lang' => 'de',
-                        'name' => 'PandaBlack Kategorie',
-                        'description' => 'PandaBlack Kategorie als Eigenschaften'
-                    ]
-                ]
-            ];
+            $properties = $propertyNameRepository->listNames();
 
-            $property = $propertyRepository->createProperty($propertyData);
-
-            foreach ($propertyData['names'] as $propertyName) {
-                $propertyName['propertyId'] = $property->id;
-                $propertyName = $propertyNameRepository->createName($propertyName);
+            foreach($properties as $property)
+            {
+                if($property->name === SettingsHelper::PB_KATEGORIE_PROPERTY) {
+                    $this->settings->set(SettingsHelper::CATEGORIES_AS_PROPERTIES, $property->propertyId);
+                }
             }
-
-            $this->settings->set(SettingsHelper::CATEGORIES_AS_PROPERTIES, $property->id);
         }
 
         return $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
