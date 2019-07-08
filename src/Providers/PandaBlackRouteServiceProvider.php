@@ -22,7 +22,6 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->post('markets/panda-black/session', 'PandaBlack\Controllers\AuthController@sessionCreation');
             $router->get('markets/panda-black/expire-time', 'PandaBlack\Controllers\AuthController@tokenExpireTime');
 
-            //$router->get('markets/panda-black/vendor-categories', 'PandaBlack\Controllers\CategoryController@getCategoriesList');
             $router->get('markets/panda-black/vendor-categories', 'PandaBlack\Controllers\CategoryController@getCategoriesList');
 
             //Attribute Actions

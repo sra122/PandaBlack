@@ -197,10 +197,10 @@ class CategoryController extends Controller
             if(!empty($categoriesList)) {
                 return $categoriesList;
             } else {
-                $this->getPBCategoriesAsDropdown();
-                $this->savePBCategoriesInPM();
-                $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
-                return $categoriesList;
+                //$this->getPBCategoriesAsDropdown();
+                //$this->savePBCategoriesInPM();
+                //$categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+                return $this->getPBCategoriesAsDropdown();
             }
         } catch(\Exception $e) {
             return $e->getMessage();
