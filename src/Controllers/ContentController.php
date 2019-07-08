@@ -113,7 +113,7 @@ class ContentController extends Controller
                     'category' => $categoryId,
                     'short_description' => $variation['item']['texts'][0]['description'],
                     'image_url' => $variation['images'][0]['url'],
-                    'color' => '',
+                    'color' => $this->categoriesAsProperties(),
                     'size' => '',
                     'content_supplier' => $manufacturer['name'],
                     'product_type' => '',
@@ -265,14 +265,15 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
         $productDetails = $this->productDetails();
-        $productStatus = $this->productStatus($productDetails);
+        return $productDetails;
+        /*$productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
         $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
-        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
+        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);*/
     }
 
     private function productStatus($productDetails)
