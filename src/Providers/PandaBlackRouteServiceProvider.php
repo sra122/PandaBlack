@@ -46,7 +46,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->post('markets/panda-black/remove-notification', 'PandaBlack\Controllers\MappingController@removeNotification');
 
 
-            //Category
+           /* //Category
             $router->get('markets/panda-black/parent-categories', 'PandaBlack\Controllers\CategoryController@all');
             $router->get('markets/panda-black/parent-categories/{id}', 'PandaBlack\Controllers\CategoryController@get');
             $router->get('markets/panda-black/child-categories/{id}', 'PandaBlack\Controllers\CategoryController@getChild');
@@ -56,7 +56,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->post('markets/panda-black/create-correlation', 'PandaBlack\Controllers\CategoryController@saveCorrelation');
             $router->delete('markets/panda-black/correlations/delete', 'PandaBlack\Controllers\CategoryController@deleteAllCorrelations');
             $router->delete('markets/panda-black/correlation/delete/{id}', 'PandaBlack\Controllers\CategoryController@deleteCorrelation');
-            $router->get('markets/panda-black/vendor-categories1', 'PandaBlack\Controllers\CategoryController@getCategoriesList');
+            $router->get('markets/panda-black/vendor-categories1', 'PandaBlack\Controllers\CategoryController@getCategoriesList');*/
 
         });
     }
