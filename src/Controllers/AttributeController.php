@@ -61,17 +61,6 @@ class AttributeController extends Controller
         }
     }
 
-
-    /**
-     * DeletePBProperties Method
-     */
-    public function deletePBProperties()
-    {
-        $settingRepo = pluginApp(SettingsRepositoryContract::class);
-        $settingRepo->deleteAll('PandaBlack', 'property');
-    }
-
-
     /**
      * GetPMProperties Method
      *
