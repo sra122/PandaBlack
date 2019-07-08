@@ -231,6 +231,8 @@ class ContentController extends Controller
                             {
                                 if($pbAttributeValue === $attributeDetail) {
                                     $matched = true;
+
+                                } else {
                                     array_push($check, $attributeDetail);
                                 }
                             }
