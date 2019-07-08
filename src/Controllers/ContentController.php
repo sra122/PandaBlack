@@ -2,6 +2,7 @@
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
+use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
@@ -101,7 +102,7 @@ class ContentController extends Controller
                 }
                 $textArray = $variation['item']->texts;
                 $variation['texts'] = $textArray->toArray();
-                $categoryId = $variation['properties'];//$this->categoryIdFromSettingsRepo($variation['properties']);
+                $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
                 $this->exportData[$variation['id']] = array(
                     'parent_product_id' => $variation['mainVariationId'],
                     'product_id' => $variation['id'],
@@ -112,7 +113,7 @@ class ContentController extends Controller
                     'category' => $categoryId,
                     'short_description' => $variation['item']['texts'][0]['description'],
                     'image_url' => $variation['images'][0]['url'],
-                    'color' => $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES),
+                    'color' => '',
                     'size' => '',
                     'content_supplier' => $manufacturer['name'],
                     'product_type' => '',
@@ -266,13 +267,12 @@ class ContentController extends Controller
         $productDetails = $this->productDetails();
         $productStatus = $this->productStatus($productDetails);
 
-        return $productDetails;
-        /*if(!empty($productStatus['validProductDetails'])) {
+        if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
         $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
-        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);*/
+        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
     }
 
     private function productStatus($productDetails)
@@ -358,7 +358,7 @@ class ContentController extends Controller
 
     private function categoryIdFromSettingsRepo($properties)
     {
-        $categoryPropertyId = $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
+        $categoryPropertyId = $this->categoriesAsProperties();
         foreach($properties as $property)
         {
             if($property['propertyId'] == (int)$categoryPropertyId) {
@@ -381,6 +381,42 @@ class ContentController extends Controller
         }
 
         return $categoryPropertyId;
+    }
+
+
+    private function categoriesAsProperties()
+    {
+        if(empty($this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
+            /** @var PropertyRepositoryContract $propertyRepository */
+            $propertyRepository = pluginApp(PropertyRepositoryContract::class);
+
+            /** @var PropertyNameRepositoryContract $propertyNameRepository */
+            $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+
+            $propertyData = [
+                'cast' => 'selection',
+                'typeIdentifier' => 'item',
+                'position' => 0,
+                'names' => [
+                    [
+                        'lang' => 'de',
+                        'name' => 'PandaBlack Kategorie',
+                        'description' => 'PandaBlack Kategorie als Eigenschaften'
+                    ]
+                ]
+            ];
+
+            $property = $propertyRepository->createProperty($propertyData);
+
+            foreach ($propertyData['names'] as $propertyName) {
+                $propertyName['propertyId'] = $property->id;
+                $propertyName = $propertyNameRepository->createName($propertyName);
+            }
+
+            $this->settings->set(SettingsHelper::CATEGORIES_AS_PROPERTIES, $property->id);
+        }
+
+        return $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
     }
 
 
