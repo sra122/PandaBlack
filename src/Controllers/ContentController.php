@@ -224,17 +224,16 @@ class ContentController extends Controller
                 $check = [];
                 foreach($pbAttributes as $key => $pbAttribute)
                 {
-                    if($pbAttribute['required'] && ($pbAttribute['values'] !== null) && ($pbAttribute['name'] == $attributeName))
+                    if($pbAttribute['required'] && ($pbAttribute['name'] == $attributeName))
                     {
                         foreach($pbAttribute['values'] as $pbAttributeValue)
                         {
                             if($pbAttributeValue === $attributeDetail) {
                                 $matched = true;
-
-                            } else {
-                                array_push($check, $pbAttributeValue);
                             }
                         }
+
+                        array_push($check, $attributeName);
                     }
                 }
 
