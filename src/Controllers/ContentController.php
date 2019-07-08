@@ -234,11 +234,7 @@ class ContentController extends Controller
                     }
                 }
 
-                $test = [
-                    'matched' => $matched,
-                    'attributeDetail' => $attributeDetail,
-                    'attributeName' => $attributeName
-                ];
+                $test = $pbAttributes;
 
                 return $test;
 
