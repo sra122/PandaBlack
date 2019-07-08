@@ -208,6 +208,8 @@ class CategoryController extends Controller
 
         $settingsHelper = pluginApp(SettingsHelper::class);
 
+        $settingsHelper->set('testing', 123);
+
         return $settingsHelper->getSettingProperty();
     }
 
