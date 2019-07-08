@@ -191,9 +191,8 @@ class CategoryController extends Controller
 
     public function getCategoriesList()
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-
         try {
+            $settingsHelper = pluginApp(SettingsHelper::class);
             $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
             if(!empty($categoriesList)) {
                 return $categoriesList;
