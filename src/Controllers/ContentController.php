@@ -112,7 +112,7 @@ class ContentController extends Controller
                     'category' => $categoryId,
                     'short_description' => $variation['item']['texts'][0]['description'],
                     'image_url' => $variation['images'][0]['url'],
-                    'color' => '',
+                    'color' => $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES),
                     'size' => '',
                     'content_supplier' => $manufacturer['name'],
                     'product_type' => '',
