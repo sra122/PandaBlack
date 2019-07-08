@@ -224,7 +224,7 @@ class ContentController extends Controller
                 $check = [];
                 foreach($pbAttributes as $key => $pbAttribute)
                 {
-                    if($pbAttribute['required'] && ($pbAttribute['name'] == $attributeName))
+                    if($pbAttribute['required'])
                     {
                         foreach($pbAttribute['values'] as $pbAttributeValue)
                         {
@@ -237,7 +237,7 @@ class ContentController extends Controller
                     }
                 }
 
-                $test = $check;
+                $test = $pbAttributes;
 
                 return $test;
 
