@@ -234,7 +234,7 @@ class ContentController extends Controller
                     }
                 }
 
-                return $matched;
+                return $pbAttributes;
 
                 /*if(!$matched) {
                     unset($attributeDetails[$attributeName]);
