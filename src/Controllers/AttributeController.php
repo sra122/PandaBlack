@@ -52,13 +52,18 @@ class AttributeController extends Controller
         $pbApiHelper = pluginApp(PBApiHelper::class);
 
         $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+        $categories = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
-        if(isset($attributes[$categoryId])) {
-            return $attributes[$categoryId];
-        } else {
-            $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+        if(isset($categories[$categoryId])) {
+            if(isset($attributes[$categoryId])) {
+                return $attributes[$categoryId];
+            } else {
+                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
+                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+                return $attributes[$categoryId];
+            }
         }
+
     }
 
     /**

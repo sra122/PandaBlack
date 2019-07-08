@@ -216,11 +216,9 @@ class MappingController extends Controller
     {
         $this->mappingInfo = $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
 
-        if(empty($this->mappingInfo)) {
-            $this->settingsHelper->set(SettingsHelper::MAPPING_INFO, []);
+        if(!empty($this->mappingInfo)) {
+            return $this->mappingInfo;
         }
-
-        return $this->mappingInfo;
     }
 
 

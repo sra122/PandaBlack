@@ -64,8 +64,9 @@ class CategoryController extends Controller
             if(!empty($categoriesList)) {
                 return $categoriesList;
             } else {
-                $this->getPBCategoriesAsDropdown();
+                $categoriesData = $this->getPBCategoriesAsDropdown();
                 $this->savePBCategoriesInPM();
+                return $categoriesData;
             }
         } catch(\Exception $e) {
             return $e->getMessage();
