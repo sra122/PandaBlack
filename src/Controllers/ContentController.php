@@ -162,7 +162,7 @@ class ContentController extends Controller
     private function attributesInfo($properties, $categoryId)
     {
         $attributeDetails = [];
-        $pbAttributes = $this->settings->get(SettingsHelper::ATTRIBUTES);
+        $pbAttributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[$categoryId];
 
         // In case, if attributes are not saved in Settings.
         if(empty($pbAttributes)) {
