@@ -13,6 +13,7 @@ Class PropertyController extends Controller
 {
     /** @var SettingsHelper */
     protected $settings;
+    protected $propertySelectionId;
 
     public function __construct(SettingsHelper $SettingsHelper)
     {
@@ -37,6 +38,7 @@ Class PropertyController extends Controller
 
                  if($selectionInfo['relation']['relationValues'][0]['value'] === $pbCategoryName) {
                      $pbCategoryExist = true;
+                     $this->propertySelectionId = $selectionInfo['id'];
                  }
              }
 
@@ -65,7 +67,7 @@ Class PropertyController extends Controller
                          return $propertySelection->id;
                      }
                  } else {
-                     return $selectionInfo;
+                     return $this->propertySelectionId;
                  }
              }
         }
