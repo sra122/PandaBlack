@@ -61,7 +61,9 @@ Class PropertyController extends Controller
 
                      $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
-                     return $propertySelection->id;
+                     if(!empty($propertySelection->id)) {
+                         return $propertySelection->id;
+                     }
                  }
              } else {
                  return 'categoryNameChanged'; //TODO Change the error return status

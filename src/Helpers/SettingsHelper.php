@@ -39,17 +39,16 @@ class SettingsHelper
         $this->CredentialsRepositoryContract = $CredentialsRepositoryContract;
     }
 
-    public function getSettingProperty()
+    public function getSettingProperty($key = '', $value = '')
     {
-        if ($this->hasSettingProperty === null) {
-            /** @var Settings[] $properties */
-            $properties = $this->SettingsRepositoryContract->find('PandaBlack', 'property');
+        /** @var Settings[] $properties */
+        $properties = $this->SettingsRepositoryContract->find('PandaBlack', 'property');
 
-            if (empty($properties)) {
-                $this->hasSettingProperty = false;
-            } else {
-                $this->hasSettingProperty = true;
-                $this->settingProperty = $properties[0];
+        if(!empty($properties)) {
+            $this->settingProperty = $properties[0];
+        } else {
+            if(($key !== '') && ($value !== '')) {
+                $this->settingProperty = $this->SettingsRepositoryContract->create('PandaBlack', 'property', [$key => $value]);
             }
         }
 
@@ -89,21 +88,20 @@ class SettingsHelper
 
     public function set($key, $value)
     {
-        $settingProperty = $this->getSettingProperty();
-        if ($settingProperty === null) {
-            $this->settingProperty = $this->SettingsRepositoryContract->create('PandaBlack', 'property', [$key => $value]);
-            $this->hasSettingProperty = true;
-        } else {
+        if(!empty($key) && !empty($value)) {
+            $this->getSettingProperty($key, $value);
+
             if($this->settingProperty->settings === null) {
                 $this->SettingsRepositoryContract->update([$key => $value], $this->settingProperty->id);
-            } else if(($key !== null) && ($value !== null) && ($this->settingProperty->settings !== null)) {
+            } else  {
                 $combinedArray = array_merge($this->settingProperty->settings, [$key => $value]);
                 if($combinedArray !== null) {
                     $this->SettingsRepositoryContract->update($combinedArray, $this->settingProperty->id);
                 }
             }
-            $this->hasSettingProperty = null;
         }
+
+        return false;
     }
 
     public function getCredential($key)
