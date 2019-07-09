@@ -65,8 +65,6 @@ Class PropertyController extends Controller
                          return $propertySelection->id;
                      }
                  }
-             } else if(empty($categoriesList)) {
-                 return false;
              }
         }
     }
