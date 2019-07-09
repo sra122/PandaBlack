@@ -221,7 +221,7 @@ class ContentController extends Controller
             foreach($attributeDetails as $attributeName => $attributeDetail)
             {
                 $matched = false;
-                foreach($pbAttributes[$categoryId] as $key => $pbAttribute)
+                foreach($pbAttributes as $key => $pbAttribute)
                 {
                     if($pbAttribute['required'])
                     {
