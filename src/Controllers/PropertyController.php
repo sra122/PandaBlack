@@ -42,7 +42,7 @@ Class PropertyController extends Controller
 
              $categoriesList = $this->settings->get(SettingsHelper::CATEGORIES_LIST);
 
-             if(in_array($pbCategoryName, $categoriesList)) {
+             if(!empty($categoriesList) && in_array($pbCategoryName, $categoriesList)) {
                  if(!$pbCategoryExist) {
                      $selectionData = [
                          'propertyId' => $propertyId,
@@ -65,8 +65,8 @@ Class PropertyController extends Controller
                          return $propertySelection->id;
                      }
                  }
-             } else {
-                 return 'categoryNameChanged'; //TODO Change the error return status
+             } else if(empty($categoriesList)) {
+                 return false;
              }
         }
     }
