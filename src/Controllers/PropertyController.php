@@ -70,6 +70,7 @@ Class PropertyController extends Controller
                      return $this->propertySelectionId;
                  }
              }
+             return $categoriesList;
         }
     }
 
