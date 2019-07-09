@@ -64,6 +64,8 @@ Class PropertyController extends Controller
                      if(!empty($propertySelection->id)) {
                          return $propertySelection->id;
                      }
+                 } else {
+                     return $selectionInfo;
                  }
              }
         }
