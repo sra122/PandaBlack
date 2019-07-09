@@ -64,16 +64,13 @@ Class PropertyController extends Controller
                      $propertySelection = $propertySelectionRepo->createPropertySelection($selectionData);
 
                      if(!empty($propertySelection->id)) {
-                         //return $propertySelection->id;
-                         return memory_get_usage($this->settings);
+                         return $propertySelection->id;
                      }
                  } else {
-                     //return $this->propertySelectionId;
-                     return memory_get_usage($this->settings);
+                     return $this->propertySelectionId;
                  }
              }
-             //return $categoriesList;
-            return memory_get_usage($this->settings);
+             return $categoriesList;
         }
     }
 
