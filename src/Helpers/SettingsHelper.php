@@ -96,14 +96,13 @@ class SettingsHelper
         } else {
             if($this->settingProperty->settings === null) {
                 $this->SettingsRepositoryContract->update([$key => $value], $this->settingProperty->id);
-            } else {
+            } else if(($key !== null) && ($value !== null) && ($this->settingProperty->settings !== null)) {
                 $combinedArray = array_merge($this->settingProperty->settings, [$key => $value]);
                 if($combinedArray !== null) {
                     $this->SettingsRepositoryContract->update($combinedArray, $this->settingProperty->id);
                 }
             }
             $this->hasSettingProperty = null;
-            $this->settingProperty = null;
         }
     }
 
