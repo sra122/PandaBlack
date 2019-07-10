@@ -30,7 +30,7 @@ Class PropertyController extends Controller
 
         $pbCategoryExist = false;
 
-        /*if(!empty($propertyId)) {
+        if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
 
              foreach($propertyInfo['selections'] as $selection) {
@@ -71,26 +71,21 @@ Class PropertyController extends Controller
                  }
              }
              return $categoriesList;
-        }*/
-
-        return $propertyId;
+        }
     }
 
 
 
     private function getPBPropertyAsCategory()
     {
-        if(empty($this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
+        $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
 
-            $propertyNameRepository = pluginApp(PropertyNameRepositoryContract::class);
+        $properties = $propertyNameRepository->listNames();
 
-            $properties = $propertyNameRepository->listNames();
-
-            foreach($properties as $property)
-            {
-                if($property->name === SettingsHelper::PB_KATEGORIE_PROPERTY) {
-                    $this->settings->set(SettingsHelper::CATEGORIES_AS_PROPERTIES, $property->propertyId);
-                }
+        foreach($properties as $property)
+        {
+            if($property->name === SettingsHelper::PB_KATEGORIE_PROPERTY) {
+                $this->settings->set(SettingsHelper::CATEGORIES_AS_PROPERTIES, $property->propertyId);
             }
         }
 
