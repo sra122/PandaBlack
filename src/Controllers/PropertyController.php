@@ -30,7 +30,7 @@ Class PropertyController extends Controller
 
         $pbCategoryExist = false;
 
-        if(!empty($propertyId)) {
+        /*if(!empty($propertyId)) {
              $propertyInfo = $propertyRepo->getProperty($propertyId, ['selections'])->toArray();
 
              foreach($propertyInfo['selections'] as $selection) {
@@ -71,7 +71,9 @@ Class PropertyController extends Controller
                  }
              }
              return $categoriesList;
-        }
+        }*/
+
+        return $propertyId;
     }
 
 
