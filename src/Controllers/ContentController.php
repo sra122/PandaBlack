@@ -346,11 +346,6 @@ class ContentController extends Controller
             }
         }
         $unfulfilledProducts = [
-            'emptyAttributeProducts' => $emptyAttributeProducts,
-            'missingAttributeProducts' => $missingAttributeProducts,
-            'wrongAttributeMapping' => $wrongAttributeMapping,
-            'noStockProducts' => $noStockProducts,
-            'noAsinProducts' => $noASINProducts,
             'errorProducts' => $errorProducts,
             'errorProductAttributes' => $errorProductAttributes
         ];
