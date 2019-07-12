@@ -351,7 +351,8 @@ class ContentController extends Controller
             'wrongAttributeMapping' => $wrongAttributeMapping,
             'noStockProducts' => $noStockProducts,
             'noAsinProducts' => $noASINProducts,
-            'errorProducts' => $errorProducts
+            'errorProducts' => $errorProducts,
+            'errorProductAttributes' => $errorProductAttributes
         ];
 
         $productStatus = [
