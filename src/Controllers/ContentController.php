@@ -20,6 +20,10 @@ class ContentController extends Controller
         $this->settings = $SettingsHelper;
     }
 
+    /**
+     * @param null $filterVariation
+     * @param int $hours
+     */
     private function productsExtraction($filterVariation = null, $hours = 1)
     {
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
@@ -132,14 +136,15 @@ class ContentController extends Controller
     }
 
     /**
+     * @param int $hours
      * @return array
      */
-    public function productDetails()
+    public function productDetails($hours = 1)
     {
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
         foreach($filterVariations as $filterVariation)
         {
-            $this->productsExtraction($filterVariation);
+            $this->productsExtraction($filterVariation, $hours);
         }
         $templateData = array(
             'exportData' => $this->exportData
@@ -258,11 +263,11 @@ class ContentController extends Controller
 
 
 
-    public function sendProductDetails()
+    public function sendProductDetails($hours = 1)
     {
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
-        $productDetails = $this->productDetails();
+        $productDetails = $this->productDetails($hours);
         $productStatus = $this->productStatus($productDetails);
 
         if(!empty($productStatus['validProductDetails'])) {

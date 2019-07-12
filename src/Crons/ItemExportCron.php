@@ -9,6 +9,6 @@ class ItemExportCron extends Cron
 {
     public function __construct(ContentController $contentController)
     {
-        $contentController->sendProductDetails();
+        $contentController->sendProductDetails(24);
     }
 }
