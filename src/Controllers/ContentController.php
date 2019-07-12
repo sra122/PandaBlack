@@ -280,20 +280,14 @@ class ContentController extends Controller
 
     private function productStatus($productDetails)
     {
-        $emptyAttributeProducts = [];
         $errorProductAttributes = [];
         $missingAttributeProducts = [];
-        $wrongAttributeMapping = [];
-        $noStockProducts = [];
-        $noASINProducts = [];
         $errorProducts = [];
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
             $unfulfilledData = false;
             // Attributes Check
             if(empty($productDetail['attributes'])) {
-                array_push($emptyAttributeProducts, $productDetail['product_id']);
-                $unfulfilledData = true;
                 if(empty($errorProducts[$productDetail['product_id']])) {
                     $errorProducts[$productDetail['product_id']] = ['emptyAttributeProduct'];
                 } else {
@@ -322,8 +316,7 @@ class ContentController extends Controller
             }
             // Stock Check
             if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
-                array_push($noStockProducts, $productDetail['product_id']);
-                $unfulfilledData = true;
+
                 if(empty($errorProducts[$productDetail['product_id']])) {
                     $errorProducts[$productDetail['product_id']] = ['No-Stock'];
                 } else {
@@ -332,8 +325,7 @@ class ContentController extends Controller
             }
             //ASIN Check
             if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
-                array_push($noASINProducts, $productDetail['product_id']);
-                $unfulfilledData = true;
+
                 if(empty($errorProducts[$productDetail['product_id']])) {
                     $errorProducts[$productDetail['product_id']] = ['No-Asin'];
                 } else {
