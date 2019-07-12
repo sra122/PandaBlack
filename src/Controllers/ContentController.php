@@ -20,7 +20,7 @@ class ContentController extends Controller
         $this->settings = $SettingsHelper;
     }
 
-    private function productsExtraction($filterVariation = null)
+    private function productsExtraction($filterVariation = null, $hours = 1)
     {
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
         $itemRepository->setSearchParams([
@@ -55,7 +55,7 @@ class ContentController extends Controller
 
         $itemRepository->setFilters([
             'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
-            $filterVariation => time()-3600
+            $filterVariation => time()-(3600*$hours)
         ]);
 
         $resultItems = $itemRepository->search();
@@ -280,6 +280,7 @@ class ContentController extends Controller
         $wrongAttributeMapping = [];
         $noStockProducts = [];
         $noASINProducts = [];
+        $errorProducts = [];
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
             $unfulfilledData = false;
@@ -287,6 +288,12 @@ class ContentController extends Controller
             if(empty($productDetail['attributes'])) {
                 array_push($emptyAttributeProducts, $productDetail['product_id']);
                 $unfulfilledData = true;
+                if(empty($errorProducts[$productDetail['product_id']])) {
+                    $errorProducts[$productDetail['product_id']] = ['emptyAttributeProduct'];
+                } else {
+                    $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], ['emptyAttributeProduct']);
+                }
+
             } else {
                 $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
                 $count = 0;
@@ -298,17 +305,36 @@ class ContentController extends Controller
                         }
                     }
                 }
+                if(isset($missingAttributeProducts[$productDetail['product_id']])) {
+                    if(empty($errorProducts[$productDetail['product_id']])) {
+                        $errorProducts[$productDetail['product_id']] = $missingAttributeProducts[$productDetail['product_id']];
+                    } else {
+                        $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], $missingAttributeProducts[$productDetail['product_id']]);
+                    }
+                }
+
             }
             // Stock Check
             if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
                 array_push($noStockProducts, $productDetail['product_id']);
                 $unfulfilledData = true;
+                if(empty($errorProducts[$productDetail['product_id']])) {
+                    $errorProducts[$productDetail['product_id']] = ['No-Stock'];
+                } else {
+                    $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], ['No-Stock']);
+                }
             }
             //ASIN Check
             if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
                 array_push($noASINProducts, $productDetail['product_id']);
                 $unfulfilledData = true;
+                if(empty($errorProducts[$productDetail['product_id']])) {
+                    $errorProducts[$productDetail['product_id']] = ['No-Asin'];
+                } else {
+                    $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], ['No-Asin']);
+                }
             }
+
             if($unfulfilledData) {
                 unset($productDetails['exportData'][$key]);
             }
@@ -318,8 +344,10 @@ class ContentController extends Controller
             'missingAttributeProducts' => $missingAttributeProducts,
             'wrongAttributeMapping' => $wrongAttributeMapping,
             'noStockProducts' => $noStockProducts,
-            'noAsinProducts' => $noASINProducts
+            'noAsinProducts' => $noASINProducts,
+            'errorProducts' => $errorProducts
         ];
+
         $productStatus = [
             'validProductDetails' => $productDetails['exportData'],
             'unfulfilledProducts' => $unfulfilledProducts
