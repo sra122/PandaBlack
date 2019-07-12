@@ -281,6 +281,7 @@ class ContentController extends Controller
     private function productStatus($productDetails)
     {
         $emptyAttributeProducts = [];
+        $errorProductAttributes = [];
         $missingAttributeProducts = [];
         $wrongAttributeMapping = [];
         $noStockProducts = [];
@@ -311,10 +312,10 @@ class ContentController extends Controller
                     }
                 }
                 if(isset($missingAttributeProducts[$productDetail['product_id']])) {
-                    if(empty($errorProducts[$productDetail['product_id']]['missingAttributes'])) {
-                        $errorProducts[$productDetail['product_id']]['missingAttributes'] = $missingAttributeProducts[$productDetail['product_id']];
+                    if(empty($errorProductAttributes)) {
+                        $errorProductAttributes[$productDetail['product_id']] = $missingAttributeProducts[$productDetail['product_id']];
                     } else {
-                        $errorProducts[$productDetail['product_id']]['missingAttributes'] = array_merge($errorProducts[$productDetail['product_id']], $missingAttributeProducts[$productDetail['product_id']]);
+                        $errorProductAttributes[$productDetail['product_id']] = array_merge($errorProductAttributes, $missingAttributeProducts[$productDetail['product_id']]);
                     }
                 }
 
