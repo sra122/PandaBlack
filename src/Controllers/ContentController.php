@@ -311,10 +311,10 @@ class ContentController extends Controller
                     }
                 }
                 if(isset($missingAttributeProducts[$productDetail['product_id']])) {
-                    if(empty($errorProducts[$productDetail['product_id']])) {
-                        $errorProducts[$productDetail['product_id']] = $missingAttributeProducts[$productDetail['product_id']];
+                    if(empty($errorProducts[$productDetail['product_id']]['missingAttributes'])) {
+                        $errorProducts[$productDetail['product_id']]['missingAttributes'] = $missingAttributeProducts[$productDetail['product_id']];
                     } else {
-                        $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], $missingAttributeProducts[$productDetail['product_id']]);
+                        $errorProducts[$productDetail['product_id']]['missingAttributes'] = array_merge($errorProducts[$productDetail['product_id']], $missingAttributeProducts[$productDetail['product_id']]);
                     }
                 }
 
