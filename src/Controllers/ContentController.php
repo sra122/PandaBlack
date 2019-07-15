@@ -2,6 +2,7 @@
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
+use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
@@ -274,7 +275,9 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
 
-        return $this->settings->get(SettingsHelper::ORDER_REFERRER);
+        $orderReferrerRepositoryContract = pluginApp(OrderReferrerRepositoryContract::class);
+
+        return $orderReferrerRepositoryContract->getList();
         /*$productDetails = $this->productDetails($hours);
         $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
