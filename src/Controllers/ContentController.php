@@ -277,11 +277,9 @@ class ContentController extends Controller
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
 
-        $orderReferrerRepositoryContract = pluginApp(OrderReferrerRepositoryContract::class);
-
-        return $orderReferrerRepositoryContract->getList();
-        /*$productDetails = $this->productDetails($hours);
-        $productStatus = $this->productStatus($productDetails);
+        $productDetails = $this->productDetails($hours);
+        return $productDetails;
+        /*$productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
