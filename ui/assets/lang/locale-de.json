@@ -22,9 +22,10 @@
     "authenticate-button": "Authentifizieren"
   },
   "mapping": {
-    "category-selection": "Kategorieauswahl",
+    "category-selection": "1.Kategorieauswahl",
     "category-selection-placeholder": "Bitte wählen Sie eine PANDA.BLACK Kategorie aus.",
-    "property-mapping": "Eigenschaftszuordnung",
+    "property-mapping": "2.Eigenschaftszuordnung",
+    "property-mapping-placeholder": "Eigenschaftszuordnung",
     "edit-propertyValues": " Eigenschaftswerte zuordnen",
     "map-propertyValues": "Bitte ordnen Sie die Eigenschaftswerte zu.",
     "map-propertyValues-placeholder": "Eigenschaftswert auswählen",
