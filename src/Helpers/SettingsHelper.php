@@ -134,7 +134,7 @@ class SettingsHelper
 
         foreach($orderReferrerRepositoryContract->getList() as $orderReferrer)
         {
-            if($orderReferrer->backendName === 'PandaBlack') {
+            if($orderReferrer->backendName === 'PandaBlack' && $orderReferrer->name === 'PandaBlack') {
                 $this->set(SettingsHelper::ORDER_REFERRER, $orderReferrer->id);
             }
         }
