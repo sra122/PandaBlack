@@ -15,5 +15,14 @@
     "deleteCategoryMapping": "Kategorienzuordnung löschen",
     "productsNotSentMessage": "Produkte werden nicht an PANDA.BLACK gesendet",
     "property" : "Eigenschaften"
+  },
+  "itool": {
+    "token-expiration": "Ihr Token läuft an folgendem Datum aus: ",
+    "authenticate-plugin": "Bitte authentifizieren Sie sich bei Panda Black.",
+    "authenticate-button": "Authentifizieren"
+  },
+  "mapping": {
+    "category-selection": "Kategorieauswahl",
+    "category-selection-placeholder": "Bitte wählen Sie eine Kategorie aus."
   }
 }

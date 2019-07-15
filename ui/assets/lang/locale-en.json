@@ -15,5 +15,10 @@
     "deleteCategoryMapping": "Delete Category Mapping",
     "productsNotSentMessage": "Products are not sent to PANDA.BLACK",
     "property" : "property"
+  },
+  "itool": {
+    "token-expiration": "Your token will be expired by: ",
+    "authenticate-plugin": "Please authenticate to Panda Black.",
+    "authenticate-button": "Authenticate"
   }
 }
