@@ -24,10 +24,18 @@
   "mapping": {
     "category-selection": "Kategorieauswahl",
     "category-selection-placeholder": "Bitte wählen Sie eine PANDA.BLACK Kategorie aus.",
+    "property-mapping": "Eigenschaftszuordnung",
     "edit-propertyValues": " Eigenschaftswerte zuordnen",
     "map-propertyValues": "Bitte ordnen Sie die Eigenschaftswerte zu.",
     "map-propertyValues-placeholder": "Eigenschaftswert auswählen",
     "save-propertyValues": "Abspeichern",
     "create-automatically": "Automatisch erstellen"
+  },
+  "status": {
+    "variationId": "Varianten-ID",
+    "stock": "Verfügbarer Bestand",
+    "Asin": "ASIN vorhanden",
+    "related-Properties": "Eigenschaftszuordnung vorhanden",
+    "admin-notification": "Wichtige Benachrichtigungen"
   }
 }
