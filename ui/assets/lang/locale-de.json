@@ -38,6 +38,7 @@
   },
   "status": {
     "variationId": "Varianten-ID",
+    "missing-properties": "Fehlende Eigenschaften",
     "stock": "Verfügbarer Bestand",
     "Asin": "ASIN vorhanden",
     "related-Properties": "Eigenschaftszuordnung vorhanden",

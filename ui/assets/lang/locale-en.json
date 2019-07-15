@@ -22,9 +22,10 @@
     "authenticate-button": "Authenticate"
   },
   "mapping": {
-    "category-selection": "Category Selection",
+    "category-selection": "1.Category Selection",
     "category-selection-placeholder": "Please Choose a PANDA.BLACK Categories",
-    "property-mapping": "Property Mapping",
+    "property-mapping": "2.Property Mapping",
+    "property-mapping-placeholder": "Property Mapping",
     "edit-propertyValues": " Mapping Property Value",
     "map-propertyValues": "Property Values Mapping",
     "map-propertyValues-placeholder": "Property Value",
@@ -37,6 +38,7 @@
   },
   "status": {
     "variationId": "Varianten-ID",
+    "missing-properties": "Missing Properties",
     "stock": "Verfügbarer Bestand",
     "Asin": "ASIN vorhanden",
     "related-Properties": "Eigenschaftszuordnung vorhanden",
