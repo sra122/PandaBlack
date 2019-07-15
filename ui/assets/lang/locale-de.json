@@ -29,7 +29,11 @@
     "map-propertyValues": "Bitte ordnen Sie die Eigenschaftswerte zu.",
     "map-propertyValues-placeholder": "Eigenschaftswert auswählen",
     "save-propertyValues": "Abspeichern",
-    "create-automatically": "Automatisch erstellen"
+    "create-automatically": "Automatisch erstellen",
+    "pb-properties": "PANDA.BLACK Eigenschaften",
+    "pm-properties": "Plentymarkets Eigenschaften zuordnen",
+    "pb-propertyValues": "Eigenschaftswerte von PANDA.BLACK",
+    "pm-propertyValues": "Plentymarkets Eigenschaftswerte zuordnen"
   },
   "status": {
     "variationId": "Varianten-ID",

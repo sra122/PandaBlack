@@ -29,7 +29,9 @@
     "map-propertyValues": "Property Values Mapping",
     "map-propertyValues-placeholder": "Property Value",
     "save-propertyValues": " Save",
-    "create-automatically": "Create Automatically"
+    "create-automatically": "Create Automatically",
+    "pb-properties": "PANDA.BLACK Properties",
+    "pm-properties": "Plentymarkets Properties"
   },
   "status": {
     "variationId": "Varianten-ID",
