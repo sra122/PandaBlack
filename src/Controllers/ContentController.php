@@ -27,8 +27,6 @@ class ContentController extends Controller
      */
     private function productsExtraction($filterVariation = null, $hours = 1)
     {
-        $this->settings->getReferrerId();
-
         $marketId = $this->settings->get('orderReferrerId');
 
         if(empty($marketId)) {
@@ -278,14 +276,13 @@ class ContentController extends Controller
         $mapping = pluginApp(MappingController::class);
 
         $productDetails = $this->productDetails($hours);
-        return $productDetails;
-        /*$productStatus = $this->productStatus($productDetails);
+        $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
         }
         $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
-        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);*/
+        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
     }
 
     private function productStatus($productDetails)
