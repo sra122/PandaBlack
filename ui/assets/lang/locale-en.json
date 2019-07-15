@@ -31,7 +31,9 @@
     "save-propertyValues": " Save",
     "create-automatically": "Create Automatically",
     "pb-properties": "PANDA.BLACK Properties",
-    "pm-properties": "Plentymarkets Properties"
+    "pm-properties": "Plentymarkets Properties",
+    "pb-propertyValues": "PANDA.BLACK PropertyValues",
+    "pm-propertyValues": "Plentymarkets PropertyValues"
   },
   "status": {
     "variationId": "Varianten-ID",
