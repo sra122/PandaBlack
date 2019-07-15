@@ -267,6 +267,8 @@ class ContentController extends Controller
     {
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $settingsHelper->getReferrerId();
         $productDetails = $this->productDetails($hours);
         $productStatus = $this->productStatus($productDetails);
 

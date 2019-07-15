@@ -6,6 +6,7 @@ use Plenty\Modules\Market\Credentials\Contracts\CredentialsRepositoryContract;
 use Plenty\Modules\Market\Credentials\Models\Credentials;
 use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Market\Settings\Models\Settings;
+use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 
 class SettingsHelper
 {
@@ -124,6 +125,14 @@ class SettingsHelper
         } else {
             $this->CredentialsRepositoryContract->update($this->get('pb_credentials_id'), array_merge($this->credentialProperty->data, [$key => $value]));
         }
+    }
+
+
+    public function getReferrerId()
+    {
+        $orderReferrerRepositoryContract = pluginApp(OrderReferrerRepositoryContract::class);
+
+        return $orderReferrerRepositoryContract->getList();
     }
 
 }
