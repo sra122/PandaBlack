@@ -64,7 +64,7 @@ class ContentController extends Controller
         ]);
 
         $itemRepository->setFilters([
-            'referrerId' => $this->settings->get(SettingsHelper::ORDER_REFERRER),
+            'referrerId' => (int)$this->settings->get(SettingsHelper::ORDER_REFERRER),
             $filterVariation => time()-(3600*$hours)
         ]);
 
@@ -96,7 +96,7 @@ class ContentController extends Controller
                 if(count($variation['variationSkus']) > 0) {
                     foreach($variation['variationSkus'] as $skuInformation)
                     {
-                        if($skuInformation['marketId'] === $this->settings->get('orderReferrerId')) {
+                        if($skuInformation['marketId'] === $this->settings->get(SettingsHelper::ORDER_REFERRER)) {
                             $sku = $skuInformation['sku'];
                         }
                     }
@@ -273,10 +273,10 @@ class ContentController extends Controller
     {
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
-        $productDetails = $this->productDetails($hours);
 
-        return $productDetails;
-        /*$productStatus = $this->productStatus($productDetails);
+        return $this->settings->get(SettingsHelper::ORDER_REFERRER);
+        /*$productDetails = $this->productDetails($hours);
+        $productStatus = $this->productStatus($productDetails);
         if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
