@@ -20,5 +20,14 @@
     "token-expiration": "Your token will be expired by: ",
     "authenticate-plugin": "Please authenticate to Panda Black.",
     "authenticate-button": "Authenticate"
+  },
+  "mapping": {
+    "category-selection": "Category Selection",
+    "category-selection-placeholder": "Please Choose a PANDA.BLACK Categories",
+    "edit-propertyValues": " Mapping Property Value",
+    "map-propertyValues": "Property Values Mapping",
+    "map-propertyValues-placeholder": "Property Value",
+    "save-propertyValues": " Save",
+    "create-automatically": "Create Automatically"
   }
 }
