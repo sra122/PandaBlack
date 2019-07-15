@@ -132,7 +132,11 @@ class SettingsHelper
     {
         $orderReferrerRepositoryContract = pluginApp(OrderReferrerRepositoryContract::class);
 
-        return $orderReferrerRepositoryContract->getList();
+        foreach($orderReferrerRepositoryContract->getList() as $orderReferrer)
+        {
+            if($orderReferrer->backendName === 'PandaBlack') {
+                $this->set(SettingsHelper::ORDER_REFERRER, $orderReferrer->id);
+            }
+        }
     }
-
 }

@@ -2,7 +2,6 @@
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
-use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
@@ -27,6 +26,12 @@ class ContentController extends Controller
      */
     private function productsExtraction($filterVariation = null, $hours = 1)
     {
+        $marketId = $this->settings->get('orderReferrerId');
+
+        if(empty($marketId)) {
+            $this->settings->getReferrerId();
+        }
+
         $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
         $itemRepository->setSearchParams([
             'with' => [
@@ -431,13 +436,5 @@ class ContentController extends Controller
     {
         $app = pluginApp(AppController::class);
         return $app->authenticate('pandaBlack_categories');
-    }
-
-
-    public function getReferrerId()
-    {
-        $orderReferrerRepositoryContract = pluginApp(OrderReferrerRepositoryContract::class);
-
-        return $orderReferrerRepositoryContract->getList();
     }
 }
