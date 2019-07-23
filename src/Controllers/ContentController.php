@@ -246,9 +246,9 @@ class ContentController extends Controller
                     }
                 }
 
-                if(!$matched) {
+                /*if(!$matched) {
                     unset($attributeDetails[$attributeName]);
-                }
+                }*/
             }
         }
 
