@@ -252,7 +252,7 @@ class ContentController extends Controller
             }
         }
 
-        return $pbMapping;
+        return $propertyLists;
     }
 
 
