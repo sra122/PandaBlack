@@ -278,7 +278,7 @@ class ContentController extends Controller
         $productDetails = $this->productDetails($hours);
         $productStatus = $this->productStatus($productDetails);
 
-        return $productDetails;
+        return $productStatus;
         /*if(!empty($productStatus['validProductDetails'])) {
             $validProductsWithSKU = $this->generateSKU($productStatus['validProductDetails']);
             $app->authenticate('products_to_pandaBlack', null, $validProductsWithSKU);
