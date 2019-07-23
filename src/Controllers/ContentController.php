@@ -220,7 +220,7 @@ class ContentController extends Controller
                         {
                             if($propertyInfo == $propertyValue)
                             {
-                                $attributeDetails[$key] = $propertyValueKey;
+                                $attributeDetails[$key] = (string)$propertyValueKey;
                             }
                         }
                     }
@@ -246,9 +246,9 @@ class ContentController extends Controller
                     }
                 }
 
-                /*if(!$matched) {
+                if(!$matched) {
                     unset($attributeDetails[$attributeName]);
-                }*/
+                }
             }
         }
 
