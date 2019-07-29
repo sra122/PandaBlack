@@ -39,6 +39,8 @@ class MappingController extends Controller
         $this->mapPropertyValues($mappingInfos, $categoryId);
 
         $this->saveMapping();
+
+        return $this->mappingInfo;
     }
 
     /**
