@@ -40,7 +40,7 @@ class MappingController extends Controller
 
         $this->saveMapping();
 
-        return $this->mappingInfo;
+        return $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
     }
 
     /**
