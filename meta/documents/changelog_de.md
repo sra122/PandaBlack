@@ -1,5 +1,8 @@
 # Release Notes für PANDA.BLACK
 
+## v1.0.10
+Modifzierung Plugin
+
 ## v1.0.9
 
 Nutzung von Eigenschaften anstatt Attributen.
