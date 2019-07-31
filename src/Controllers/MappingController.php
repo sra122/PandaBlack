@@ -39,8 +39,6 @@ class MappingController extends Controller
         $this->mapPropertyValues($mappingInfos, $categoryId);
 
         $this->saveMapping();
-
-        return $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
     }
 
     /**
@@ -223,26 +221,6 @@ class MappingController extends Controller
         }
     }
 
-
-    /** TODO */
-    private function propertyUnchanged($attributeName, $categoryId)
-    {
-        /** @var SettingsHelper $settingHelper */
-        $settingHelper = pluginApp(SettingsHelper::class);
-
-        $pbApiHelper = pluginApp(PBApiHelper::class);
-
-        $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
-
-        foreach($attributes as $attribute)
-        {
-            return $attribute->name;
-        }
-
-        return false;
-    }
-
-
     /**
      * @return mixed
      */
@@ -299,7 +277,6 @@ class MappingController extends Controller
         }
 
         $notification['admin'] = $adminNotification;
-
 
         $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
 

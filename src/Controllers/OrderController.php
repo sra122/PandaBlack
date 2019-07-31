@@ -36,6 +36,10 @@ class OrderController extends Controller
             $plentyId = $this->getPlentyPluginInfo();
             $billingAddressId = $this->Settings->get('pb_billing_address_id');
 
+            if(empty($billingAddressId)) {
+                $billingAddressId = $this->createBillingAddress();
+            }
+
             foreach($orders as $order)
             {
                 $data = [
@@ -106,5 +110,25 @@ class OrderController extends Controller
         ];
 
         return $this->AddressRepository->createAddress($deliveryAddress);
+    }
+
+
+    private function createBillingAddress()
+    {
+        $addressRepository = pluginApp(AddressRepositoryContract::class);
+
+        $billingAddress = [
+            'gender' => 'male',
+            'name1' => 'PANDA.BLACK GmbH',
+            'address1' => 'Friedrichstraße 123',
+            'postalCode' => '10711',
+            'town' => 'Berlin',
+            'countryId' => 1
+        ];
+
+        $address = $addressRepository->createAddress($billingAddress);
+        $this->Settings->set('pb_billing_address_id', $address->id);
+
+        return $address->id;
     }
 }
