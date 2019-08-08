@@ -94,7 +94,9 @@ class AttributeController extends Controller
             }
         }
 
-        return sort($propertiesList);
+        sort($propertiesList);
+
+        return array_values($propertiesList);
     }
 
 
@@ -137,7 +139,9 @@ class AttributeController extends Controller
             }
         }
 
-        return sort($propertyValues);
+        sort($propertyValues);
+
+        return $propertyValues;
     }
 
 
