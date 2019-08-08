@@ -94,7 +94,7 @@ class AttributeController extends Controller
             }
         }
 
-        sort($propertiesList);
+        natcasesort($propertiesList);
 
         return array_values($propertiesList);
     }
@@ -139,7 +139,7 @@ class AttributeController extends Controller
             }
         }
 
-        sort($propertyValues);
+        natcasesort($propertyValues);
 
         return $propertyValues;
     }
