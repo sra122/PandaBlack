@@ -1,5 +1,8 @@
 # Release notes for PANDA.BLACK
-##v1.0.10
+## v1.0.11
+Sorting Properties Alphabetical
+
+## v1.0.10
 Enhancement of the plugin
 
 ## v1.0.9
