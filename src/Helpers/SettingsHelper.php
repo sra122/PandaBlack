@@ -45,7 +45,7 @@ class SettingsHelper
         /** @var Settings[] $properties */
         $properties = $this->SettingsRepositoryContract->find('PandaBlack', 'property');
 
-        if(!empty($properties)) {
+        if(count($properties) > 0) {
             $this->settingProperty = $properties[0];
         } else {
             if(($key !== '') && ($value !== '')) {
