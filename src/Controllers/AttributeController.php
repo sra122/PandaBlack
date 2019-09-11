@@ -52,7 +52,7 @@ class AttributeController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
 
-        /*$attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
         $categories = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
         if(isset($categories[$categoryId])) {
@@ -63,25 +63,7 @@ class AttributeController extends Controller
                 $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
                 return $attributes[$categoryId];
             }
-        }*/
-
-
-        $libCall = pluginApp(LibraryCallContract::class);
-        $token = $settingsHelper->get('pbToken');
-
-        if ($token !== null) {
-            $response = $libCall->call(
-                'PandaBlack::pandaBlack_attributes',
-                [
-                    'token' => $token['token'],
-                    'category_id' => $categoryId
-                ]
-            );
-
-            return $response;
         }
-
-        return $token;
     }
 
     /**
