@@ -55,7 +55,7 @@ class AttributeController extends Controller
         $categories = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
         if(isset($categories[$categoryId])) {
-            if(isset($attributes[$categoryId])) {
+            if(isset($attributes[$categoryId]) && ($attributes[$categoryId] !== null)) {
                 return $attributes[$categoryId];
             } else {
                 $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
