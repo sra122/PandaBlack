@@ -1,4 +1,8 @@
 # Release notes for PANDA.BLACK
+
+## v1.0.12
+Optimized the SKU of item generation and items extraction
+
 ## v1.0.11
 Sorting Properties Alphabetical
 

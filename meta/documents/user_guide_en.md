@@ -37,7 +37,7 @@ Using the PANDA.BLACK plugin in plentymarkets requires the following steps:
 
 	<div class="alert alert-warning">
         To sell products through PANDA.BLACK, you need a PANDA.BLACK account.
-        <a href="https://pb.i-ways-network.org/register" target="_blank">Jetzt registrieren</a>
+        <a href="https://pb.i-ways-network.org/register" target="_blank">Register Now</a>
     </div>
     
     ![Description 1](https://cdnmp.plentymarkets.com/9470/meta/images/description_1.png?raw=true)
@@ -63,43 +63,59 @@ Using the PANDA.BLACK plugin in plentymarkets requires the following steps:
 
 8.  Click on „Authentication“
 
-    ![Description 5](https://cdnmp.plentymarkets.com/9470/meta/images/description_5.png?raw=true)
+    ![Description 5](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_3.png)
 
 9.  Now click on the "Authenticate" button. After clicking a login page will open where you enter the login data created
     in step # 1.
 
-    ![Description 6](https://cdnmp.plentymarkets.com/9470/meta/images/description_6.png?raw=true)
+    ![Description 6](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_5.png)
     
 10. After successful login, please click on "Authorize". Hereby you confirm that products of
     plentymarkets may be handed over to PANDA.BLACK.
     
-11. In order to transfer products to PANDA.BLACK, you first need to assign your categories to the existing PANDA.BLACK
-    categories. To do this, select on the left side the PANDA.BLACK category in which you have products want to sell.
-    On the right side, you select your own category, where the product is currently located.
+11. In order to transfer products to PANDA.BLACK, you first need to pick the category that your products fit with PANDA.BLACK
+    categories.
 
-    ![Description 7](https://cdnmp.plentymarkets.com/9470/meta/images/description_7.png?raw=true)
+    ![Description 7](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_8.png)
     
-12. Now click on "Create PANDA.BLACK mapping" to complete the assignment of this category.
+12. After selecting a category from the dropdown, you now have the option of assigning your product properties. The PANDA.BLACK properties shown are those product features we need for the transfer to the Chinese marketplaces. You can either select one of your existing product properties in the "Assign Plentymarkets Properties" section or, if not available, click on "Create automatically". We will then create this product feature for you.
 
-    ![Description 8](https://cdnmp.plentymarkets.com/9470/meta/images/description_8.png?raw=true)
+    ![Description 8](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_9.png)
     
-13. After the successful allocation of the categories, you can now go to the Products section to select products to
-    transfer to PANDA.BLACK.
+13. After you have assigned a product property, please click on "Assign Property Values".
+        
+     If you click on the button, a window opens in which you can assign the property values. The property values are the occurrences of a property.
     
-14. In the "Articles" section, you can now select the products that are in an assigned category to create them on
-    PANDA.BLACK. To do this, click on "Create Variation".
+     Example: Property "Color"
+    
+     Property values could be: blue, red, yellow.
+    
+     If you do not have the appropriate property value, click "Auto-create". We then create an appropriate value for this property value.
+     
+     ![Description 9](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_10.png)
+    
+14. If you have assigned all the property values for a product property, please click on the "Save" button.
 
-    ![Description 9](https://cdnmp.plentymarkets.com/9470/meta/images/description_9.png?raw=true)
+    ![Description 10](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_11.png)
 
-    ![Description 10](https://cdnmp.plentymarkets.com/9470/meta/images/description_10.png?raw=true)
+15. Review steps 11 - 15 for all product properties that belong to a category. 
+    
+16. Now click on articles and find the article you would like to hand over to the PANDA.BLACK plugin and for which you have already completed a product attribute assignment.
 
-15. After creating the variation for PANDA.BLACK, you will have to add the appropiate availability. Please choose "PANDA.BLACK" inside the availability dropdown.
+    ![Description 11](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_12.png)  
     
-    ![Description 11](https://cdnmp.plentymarkets.com/9470/meta/images/description_11.png?raw=true)
+    Click on the "Availability" tab in the article and select "PANDA.BLACK" for the markets.
     
-16. After completing the attribut- and categorymapping, you are able to transfer the products to PANDA.BLACK. By clicking on "Send products to PANDA.BLACK" you can check the status of your items. If we notice any issues with the mapping, you will be notified immediately.
+    ![Description 12](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_13.png)   
+    
+17. Those products which you have released for the marketplace "PANDA.BLACK" will now be transferred to PANDA.BLACK via the plug-in
 
-    ![Description 12](https://cdnmp.plentymarkets.com/9470/meta/images/description_12.png?raw=true)     
+18. In the area System / Markets / PANDA.BLACK / Reports you have the possibility to view those products, which could not be handed over due to errors. Possible sources of error could be:
+        
+     * Not all product properties have been assigned to the product. Columns: Missing Properties
     
-17. The created variations are then processed by plentymarkets and sent to PANDA.BLACK. When you sell a product, you
-    will receive a corresponding order confirmation in your order overview.
+     * The product was not handed over because the stock is 0. If you increase the stock, the product is automatically transferred.
+    
+     * The product does not have an ASIN (Amazon standard identification number).
+     
+     ![Description 13](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_14.png)

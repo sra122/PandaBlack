@@ -64,45 +64,58 @@ Für die Verwendung des PANDA.BLACK Plugins in plentymarkets sind die folgenden 
 
 8.  Klicken Sie auf „Authentifizierung“ bzw. „Authentication“
 
-    ![Beschreibung 5](https://cdnmp.plentymarkets.com/9470/meta/images/description_5.png?raw=true)
+    ![Beschreibung 5](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_3.png)
 
-9.  Klicken Sie nun auf den Button „Authentifizieren“ bzw. „Authenticate“. Nach Klick wird sich eine Login Seite öffnen,
-    in welche Sie bitte jene Zugangsdaten eingeben, welche Sie in Schritt #1 erstellt haben.
+9.  Klicken Sie nun auf den Button „Authentifizieren“ bzw. „Authenticate“. Nachdem Sie auf den Button “Authentifizieren” geklickt haben, öffnet sich ein Fenster, wo sie sich mit Ihren PANDA.BLACK Registrierungsdaten einloggen können. Diese haben Sie in Schritt 1 angelegt.
 
-    ![Beschreibung 6](https://cdnmp.plentymarkets.com/9470/meta/images/description_6.png?raw=true)
+    ![Beschreibung 6](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_5.png)
     
-10. Nach dem erfolgreichen Login, klicken Sie bitte auf „Autorisieren“. Hiermit bestätigen Sie, dass Produkte von
-    plentymarkets an PANDA.BLACK übergeben werden dürfen.
+10. Nachdem Sie sich angemeldet haben, klicken Sie auf “Zustimmen”. Hiermit stimmen Sie zu, dass das PANDA.BLACK Plugin ausgesuchte Produktdaten aus dem Plentymarkets-System importieren kann.
     
-11. Um Produkte zu PANDA.BLACK zu übergeben, bedarf es zunächst einer Zuordnung Ihrer Kategorien zu den bestehenden
-    PANDA.BLACK Kategorien. Hierfür wählen Sie auf der linken Seite jene PANDA.BLACK Kategorie, in welcher Sie Produkte
-    verkaufen wollen. Auf der rechten Seite wählen Sie Ihre eigene Kategorie an, wo sich das Produkt aktuell befindet.
+11. Nachdem Sie die Authentifizierung abgeschlossen haben, klicken Sie in der linken Navigation auf “Zuordnung”. Hier haben Sie die Möglichkeit jene Artikel auszuwählen, welche über das PANDA.BLACK Plug-in an die chinesischen Marktplätze übertragen werden. 
+    
+    Klicken Sie hierfür auf “1.Kategorieauswahl”. Im Dropdown finden Sie eine Übersicht aller PANDA.BLACK Kategorien. Sie können einer dieser Kategorien auswählen, um Ihre Produkte in diese Kategorien zu übertragen.  
+    
+    ![Beschreibung 7](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_8.png)
+    
+12. Nachdem Sie eine Kategorie aus dem Dropdown ausgewählt haben, haben Sie nun die Möglichkeit Ihre Produkteigenschaften zuzuordnen. Die dargestellten PANDA.BLACK Eigenschaften sind jene Produkteigenschaften, welche wir für die Übertragung auf die chinesischen Marktplätze benötigen. Sie können im Bereich “Plentymarkets Eigenschaften zuordnen” entweder einer Ihrer bestehenden Produkteigenschaften auswählen, oder wenn nicht vorhanden auf “Automatisch erstellen” klicken. Wir werden dann diese Produkteigenschaft für Sie anlegen. 
 
-    ![Beschreibung 7](https://cdnmp.plentymarkets.com/9470/meta/images/description_7.png?raw=true)
+    ![Beschreibung 8](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_9.png)
     
-12. Klicken Sie nun auf „PANDA.BLACK Zuordnung erstellen“, um die Zuteilung dieser Kategorie abzuschließen.
+13. Nachdem Sie eine Produkteigenschaft zugeordnet haben, klicken sie bitte auf “Eigenschaftswerte” zuordnen.
+    
+    Wenn Sie auf den Button klicken, öffnet sich ein Fenster, in welchem Sie die Eigenschaftswerte zuordnen können. Die Eigenschaftswerte sind die Ausprägungen einer Eigenschaft.
+    
+    Beispiel: Eigenschaft “Farbe”
+    
+    Eigenschaftswerte könnte sein: “Blau”, “Rot”, “Gelb”. 
+    
+    Wenn Sie keine passenden Eigenschaftswert haben, klicken Sie auf “Automatisch erstellen”. Wir erstellen dann für diesen Eigenschaftswert eine entsprechenden Wert.
+    
+    ![Beschreibung 9](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_10.png)
+    
+14. Wenn Sie alle Eigenschaftswerte für eine Produkteigenschaft zugeordnet haben, klicken Sie bitte auf den Button “Abspeichern”.
+    
+    ![Beschreibung 10](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_11.png)
+    
+15. Wieder Sie die Schritte 11 - 15 für alle Produkteigenschaften, welche zur einer Kategorie gehören. 
+    
+16. Klicken Sie nun auf Artikel und finden jenen Artikel, welche Sie gerne an das PANDA.BLACK Plugin übergeben wollen und für welchen Sie bereits eine Produkteigenschaftenzuweisung vollzogen haben. 
 
-    ![Beschreibung 8](https://cdnmp.plentymarkets.com/9470/meta/images/description_8.png?raw=true)
+    ![Beschreibung 11](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_12.png)
     
-13. Nach der erfolgreichen Zuteilung von den Kategorien, können Sie nun im Bereich „Produkte“ Artikel an PANDA.BLACK
-    übergeben.
+    Klicken im Artikel nun auf den Tab “Verfügbarkeit” und wählen bei Märkte “PANDA.BLACK” aus.
     
-14. Im Bereich „Artikel“ können Sie nun für jene Produkte, welche in der zugeordneten Kategorie sind, entsprechende
-    Artikel für PANDA.BLACK anlegen. Hierfür klicken Sie auf „Variation erstellen“.
-
-    ![Beschreibung 9](https://cdnmp.plentymarkets.com/9470/meta/images/description_9.png?raw=true)
-
-    ![Beschreibung 10](https://cdnmp.plentymarkets.com/9470/meta/images/description_10.png?raw=true)
+    ![Beschreibung 12](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_13.png)
     
-15. Nachdem Sie die Variation für PANDA.Black erstellt haben, klicken Sie bitte auf "Verfügbarkeit". Hier wählen Sie im Dropdown PANDA.BLACK aus. Dadurch erlauben Sie, dass die Variation an PANDA.BLACK  weitergegeben werden kann.
-
-     ![Beschreibung 11](https://cdnmp.plentymarkets.com/9470/meta/images/description_11.png?raw=true)
+17. Jene Produkte, welche Sie für den Marktplatz “PANDA.BLACK” freigegeben haben, werden nun über das Plug-in an PANDA.BLACK übergeben
     
-16.  Nachdem Sie alle notwendigen Attribut- bzw. Kategoriezuordnungen durchgeführt haben, können die Produkte an PANDA.BLACK übergeben werden.
-     
-     Hierfür klicken Sie auf "Send Products to PANDA.BLACK". Wenn es Probleme bei der Zuordnung gibt, dann erhalten Sie entsprechende Hinweise auf die Fehlerquelle.    
+18. Im Bereich System/Märkte/PANDA.BLACK/Reports haben Sie die Möglichkeit jene Produkte einzusehen, welche aufgrund von Fehlern nicht übergeben werden konnten. Mögliche Fehlerquellen könnten dabei sein: 
     
-     ![Beschreibung 12](https://cdnmp.plentymarkets.com/9470/meta/images/description_12.png?raw=true)
+    * Für das Produkt wurden nicht alle Produkteigenschaften zugeordnet. Spalten: “Fehlende Eigenschaften”
     
-17. Die erstellten Variationen werden dann von plentymarkets verarbeitet und an PANDA.BLACK übersandt. Beim Verkauf
-    eines Produkt erhalten Sie eine entsprechende Bestellbestätigung in Ihrer Bestellübersicht.
+    * Das Produkt wurde nicht übergeben, weil der Bestand 0 ist. Wenn Sie den Bestand erhöhen, wird das Produkt automatisch übergeben.
+    
+    * Das Produkt verfügt nicht über eine ASIN (Amazon-Standard-Identifikationsnummer).
+        
+    ![Beschreibung 13](https://cdn03.plentymarkets.com/3hag18jcluec/frontend/pb_14.png)
