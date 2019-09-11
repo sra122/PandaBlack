@@ -54,9 +54,7 @@ class AttributeController extends Controller
         $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
         $categories = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
 
-        return $attributes;
-
-        /*if(isset($categories[$categoryId])) {
+        if(isset($categories[$categoryId])) {
             if(isset($attributes[$categoryId])) {
                 return $attributes[$categoryId];
             } else {
@@ -64,7 +62,7 @@ class AttributeController extends Controller
                 $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
                 return $attributes[$categoryId];
             }
-        }*/
+        }
     }
 
     /**
