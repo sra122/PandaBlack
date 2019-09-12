@@ -42,7 +42,7 @@ class CategoryController extends Controller
                                         }
                                     }
 
-                                    if($set) {
+                                    if($set && ($l1Category['is_available'] && $l2Category['is_available'] && $l3Category['is_available'])) {
                                         $categoryTree[$l3] = $l1Category['name'] . ' > ' . $l2Category['name'] . ' > ' . $l3Category['name'];
                                     }
                                 }
