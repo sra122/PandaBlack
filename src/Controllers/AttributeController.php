@@ -5,10 +5,8 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
-use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
-use Plenty\Modules\Market\Settings\Contracts\SettingsRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 class AttributeController extends Controller
 {

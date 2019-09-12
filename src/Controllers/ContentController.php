@@ -2,14 +2,12 @@
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
-use Plenty\Modules\Order\Referrer\Contracts\OrderReferrerRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
 use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
 use Plenty\Modules\Item\Manufacturer\Contracts\ManufacturerRepositoryContract;
 use Plenty\Modules\Item\VariationMarketIdentNumber\Contracts\VariationMarketIdentNumberRepositoryContract;
-use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 class ContentController extends Controller
 {

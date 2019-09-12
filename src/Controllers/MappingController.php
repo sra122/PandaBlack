@@ -8,7 +8,6 @@
 
 namespace PandaBlack\Controllers;
 
-use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
