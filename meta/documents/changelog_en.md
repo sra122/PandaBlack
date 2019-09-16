@@ -1,5 +1,8 @@
 # Release notes for PANDA.BLACK
 
+## v1.0.13
+Author logo change
+
 ## v1.0.12
 Optimized the SKU of item generation and items extraction
 

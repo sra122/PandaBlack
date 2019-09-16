@@ -1,5 +1,8 @@
 # Release Notes für PANDA.BLACK
 
+## v1.0.13
+Änderung des Autorenlogos
+
 ## v1.0.12
 Die SKU der Artikelgenerierung und -extraktion wurde optimiert
 
