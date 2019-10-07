@@ -301,8 +301,10 @@ class ContentController extends Controller
                 $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
                 $count = 0;
                 foreach($attributes as $attributeKey => $attribute) {
+                    $errorProductCount = count($errorProducts[$productDetail['product_id']]);
                     if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required'] && ($attribute['values'] !== null)) {
                         if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
+                            $errorProducts[$productDetail['product_id']][$errorProductCount + 1] = $attribute['name'];
                             $missingAttributeProducts[$productDetail['product_id']][$count++] = $attribute['name'];
                             $unfulfilledData = true;
                         }
