@@ -262,7 +262,7 @@ class ContentController extends Controller
 
 
 
-    public function sendProductDetails($hours = 24)
+    public function sendProductDetails($hours = 1)
     {
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
@@ -277,6 +277,8 @@ class ContentController extends Controller
         }
         $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
+
+        return $productStatus;
     }
 
     private function productStatus($productDetails)
