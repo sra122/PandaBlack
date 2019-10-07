@@ -262,7 +262,7 @@ class ContentController extends Controller
 
 
 
-    public function sendProductDetails($hours = 1)
+    public function sendProductDetails($hours = 24)
     {
         $app = pluginApp(AppController::class);
         $mapping = pluginApp(MappingController::class);
