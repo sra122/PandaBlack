@@ -278,7 +278,7 @@ class ContentController extends Controller
         $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
         $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
 
-        return $productStatus;
+        return $productDetails;
     }
 
     private function productStatus($productDetails)
@@ -315,7 +315,6 @@ class ContentController extends Controller
                         $errorProductAttributes[$productDetail['product_id']] = array_merge($errorProductAttributes[$productDetail['product_id']], $missingAttributeProducts[$productDetail['product_id']]);
                     }
                 }
-
             }
             // Stock Check
             if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
