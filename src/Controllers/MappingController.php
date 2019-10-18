@@ -213,13 +213,11 @@ class MappingController extends Controller
      */
     public function fetchPropertiesInfo()
     {
-        /*$this->mappingInfo = $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
+        $this->mappingInfo = $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
 
         if(!empty($this->mappingInfo)) {
             return $this->mappingInfo;
-        }*/
-
-        return $this->settingsHelper->test();
+        }
     }
 
     /**
