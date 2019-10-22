@@ -43,6 +43,7 @@
     "Asin": "ASIN vorhanden",
     "related-Properties": "Eigenschaftszuordnung vorhanden",
     "admin-notification": "Wichtige Benachrichtigungen",
-    "valid-category": "Gültige Kategorie"
+    "valid-category": "Gültige Kategorie",
+    "missing-images": "Fehlende Bilder"
   }
 }
