@@ -32,7 +32,7 @@ class ShippingNotificationEventProcedure
 	 * @param ShippingHelper $shippingHelper
 	 * @param SettingsHelper $settingsHelper
 	 */
-	public function __construct(SettingsHelper $settingsHelper)
+	public function __construct(SettingsHelper $settingsHelper, ShippingHelper $shippingHelper)
 	{
 		$this->settingsHelper = $settingsHelper;
 	}
@@ -98,7 +98,7 @@ class ShippingNotificationEventProcedure
 
         if($parcelServicePreset instanceof ParcelServicePreset)
         {
-            return $this->shippingHelper->getCarrierCode($parcelServicePreset->parcelService->parcel_service_type);
+            return $parcelServicePreset->parcelService->parcel_service_type;
         }
 
 		return null;
@@ -112,7 +112,7 @@ class ShippingNotificationEventProcedure
 	private function getReferenceId($order)
     {
         $existingOrders = $this->settingsHelper->get(SettingsHelper::ORDERS);
-        if(!empty($existingOrders))
+        if(!empty($existingOrders) && $existingOrders !== null && is_array($existingOrders))
         {
             foreach($existingOrders as $existingOrder)
             {
