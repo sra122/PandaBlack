@@ -16,6 +16,6 @@ class PandaBlackOrders
 
     public function run()
     {
-        $this->Settings->set(SettingsHelper::ORDERS, []);
+        $this->Settings->set(SettingsHelper::ORDERS, '');
     }
 }
