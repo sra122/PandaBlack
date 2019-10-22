@@ -43,6 +43,7 @@ class OrderController extends Controller
             $existingOrders = $settingsHelper->get(SettingsHelper::ORDERS);
             if($existingOrders === null) {
                 $settingsHelper->set(SettingsHelper::ORDERS, []);
+                $existingOrders = $settingsHelper->get(SettingsHelper::ORDERS);
             }
 
             if(!empty($existingOrders) && $existingOrders !== null && is_array($existingOrders))
@@ -95,8 +96,8 @@ class OrderController extends Controller
                         }
 
                         $data['orderItems'] = $orderItems;
-                        $order = $this->OrderRepository->createOrder($data);
-                        $this->saveOrderData($order['reference_key'], $order->id);
+                        //$order = $this->OrderRepository->createOrder($data);
+                        //$this->saveOrderData($order['reference_key'], $order->id);
                     }
                 }
             }

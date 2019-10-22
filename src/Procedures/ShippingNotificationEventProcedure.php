@@ -112,6 +112,10 @@ class ShippingNotificationEventProcedure
 	private function getReferenceId($order)
     {
         $existingOrders = $this->settingsHelper->get(SettingsHelper::ORDERS);
+        if($existingOrders === null) {
+            $this->settingsHelper->set(SettingsHelper::ORDERS, []);
+            $existingOrders = $this->settingsHelper->get(SettingsHelper::ORDERS);
+        }
         if(!empty($existingOrders) && $existingOrders !== null && is_array($existingOrders))
         {
             foreach($existingOrders as $existingOrder)
