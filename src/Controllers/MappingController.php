@@ -281,4 +281,11 @@ class MappingController extends Controller
 
         return $notification;
     }
+
+
+    public function fetchProductErrors()
+    {
+        $app = pluginApp(AppController::class);
+        return $app->authenticate('pandaBlack_product_errors');
+    }
 }
