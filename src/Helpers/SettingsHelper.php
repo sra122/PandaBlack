@@ -78,11 +78,15 @@ class SettingsHelper
         return $this->credentialProperty;
     }
 
+    /**
+     * @param $key
+     * @return array|null
+     */
     public function get($key)
     {
         $settingProperty = $this->getSettingProperty();
         if ($settingProperty === null || !isset($settingProperty->settings[$key])) {
-            return [];
+            return null;
         }
 
         return $settingProperty->settings[$key];
@@ -93,6 +97,11 @@ class SettingsHelper
         return $this->getSettingProperty();
     }
 
+    /**
+     * @param $key
+     * @param $value
+     * @return bool
+     */
     public function set($key, $value)
     {
         if(!empty($key) && !empty($value)) {
