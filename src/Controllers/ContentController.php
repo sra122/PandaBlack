@@ -123,7 +123,14 @@ class ContentController extends Controller
                         'currency' => 'Euro',
                         'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
-                        'image_url' => $variation['images'][0]['url'],
+                        'image_url' => [
+                            0 => $variation['images'][0]['url'],
+                            1 => $variation['images'][1]['url'],
+                            2 => $variation['images'][2]['url'],
+                            3 => $variation['images'][3]['url'],
+                            4 => $variation['images'][4]['url'],
+                            5 => $variation['images'][5]['url'],
+                        ],
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
@@ -268,15 +275,10 @@ class ContentController extends Controller
         $mapping = pluginApp(MappingController::class);
 
         $productDetails = $this->productDetails($hours);
-        $productStatus = $this->productStatus($productDetails);
 
         if($hours === 24) {
-            if(!empty($productStatus['validProductDetails'])) {
-                $app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
-            }
+            $app->authenticate('products_to_pandaBlack', null, $productDetails);
         }
-        $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
-        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
     }
 
     private function productStatus($productDetails)
@@ -284,11 +286,20 @@ class ContentController extends Controller
         $errorProductAttributes = [];
         $missingAttributeProducts = [];
         $errorProducts = [];
+        $irrelevantCategory = [];
+        $categoriesController = pluginApp(CategoryController::class);
+        $categories = $categoriesController->getPBCategoriesAsDropdown();
+
         foreach($productDetails['exportData'] as $key => $productDetail)
         {
             $unfulfilledData = false;
+            //Category Check
+            if(!isset($categories[(int)$productDetail['category']])) {
+                $irrelevantCategory[$productDetail['product_id']] = ['irrelevantCategory'];
+            }
             // Attributes Check
             if(empty($productDetail['attributes'])) {
+                $unfulfilledData = true;
                 if(empty($errorProducts[$productDetail['product_id']])) {
                     $errorProducts[$productDetail['product_id']] = ['emptyAttributeProduct'];
                 } else {
@@ -307,6 +318,7 @@ class ContentController extends Controller
                     }
                 }
                 if(isset($missingAttributeProducts[$productDetail['product_id']])) {
+                    $unfulfilledData = true;
                     if(!isset($errorProductAttributes[$productDetail['product_id']]) && empty($errorProductAttributes[$productDetail['product_id']])) {
                         $errorProductAttributes[$productDetail['product_id']] = $missingAttributeProducts[$productDetail['product_id']];
                     } else {
@@ -316,7 +328,7 @@ class ContentController extends Controller
             }
             // Stock Check
             if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
-
+                $unfulfilledData = true;
                 if(empty($errorProducts[$productDetail['product_id']])) {
                     $errorProducts[$productDetail['product_id']] = ['No-Stock'];
                 } else {
@@ -325,7 +337,7 @@ class ContentController extends Controller
             }
             //ASIN Check
             if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
-
+                $unfulfilledData = true;
                 if(empty($errorProducts[$productDetail['product_id']])) {
                     $errorProducts[$productDetail['product_id']] = ['No-Asin'];
                 } else {
@@ -339,7 +351,9 @@ class ContentController extends Controller
         }
         $unfulfilledProducts = [
             'errorProducts' => $errorProducts,
-            'errorProductAttributes' => $errorProductAttributes
+            'errorProductAttributes' => $errorProductAttributes,
+            'missingAttributeProducts' => $missingAttributeProducts,
+            'irrelevantCategory' => $irrelevantCategory
         ];
 
         $productStatus = [

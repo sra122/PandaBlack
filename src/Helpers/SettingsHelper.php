@@ -17,6 +17,7 @@ class SettingsHelper
     const NOTIFICATION = 'pb_notification';
     const ORDER_REFERRER = 'orderReferrerId';
     const PB_KATEGORIE_PROPERTY = 'PandaBlack Kategorie';
+    const ORDERS = 'Orders';
 
 
     /** @var SettingsRepositoryContract */

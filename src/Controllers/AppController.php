@@ -15,7 +15,7 @@ class AppController extends Controller
         $this->Settings = $SettingsHelper;
     }
 
-    public function authenticate($apiCall, $params = null, $productDetails = null)
+    public function authenticate($apiCall, $params = null, $productDetails = null, $shippingInfo = null)
     {
         $libCall = pluginApp(LibraryCallContract::class);
         $token = $this->Settings->get('pbToken');
@@ -27,7 +27,8 @@ class AppController extends Controller
                     [
                         'token' => $token['token'],
                         'category_id' => $params,
-                        'product_details' => $productDetails
+                        'product_details' => $productDetails,
+                        'shipping_info' => $shippingInfo
                     ]
                 );
             } else if($token['refresh_token_expires_in'] > time()) {
