@@ -43,11 +43,7 @@ class OrderController extends Controller
             $existingOrders = $settingsHelper->get(SettingsHelper::ORDERS);
             if($existingOrders === null) {
                 $settingsHelper->set(SettingsHelper::ORDERS, []);
-                $existingOrders = $settingsHelper->get(SettingsHelper::ORDERS);
-            }
-
-            if(!empty($existingOrders) && $existingOrders !== null && is_array($existingOrders))
-            {
+            } else {
                 foreach($existingOrders as $existingOrder)
                 {
                     $ordersInfo[$existingOrder['referenceId']] = $existingOrder['plentyOrderId'];

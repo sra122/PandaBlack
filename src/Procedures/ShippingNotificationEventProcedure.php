@@ -51,13 +51,17 @@ class ShippingNotificationEventProcedure
 		$carrierName  = $this->getCarrierName($order);
 		$referenceId = $this->getReferenceId($order);
 
-        $app = pluginApp(AppController::class);
-        $shippingInfo = [
-            'trackingCode' => $trackingCode,
-            'carrierName' => $carrierName,
-            'referenceId' => $this->getReferenceId($order)
-        ];
-        $app->authenticate('pandaBlack_product_errors', null, null, $shippingInfo);
+		if($referenceId !== null)
+        {
+            $app = pluginApp(AppController::class);
+            $shippingInfo = [
+                'trackingCode' => $trackingCode,
+                'carrierName' => $carrierName,
+                'referenceId' => $this->getReferenceId($order)
+            ];
+            $app->authenticate('pandaBlack_product_errors', null, null, $shippingInfo);
+        }
+
 	}
 
 	/**
@@ -114,10 +118,7 @@ class ShippingNotificationEventProcedure
         $existingOrders = $this->settingsHelper->get(SettingsHelper::ORDERS);
         if($existingOrders === null) {
             $this->settingsHelper->set(SettingsHelper::ORDERS, []);
-            $existingOrders = $this->settingsHelper->get(SettingsHelper::ORDERS);
-        }
-        if(!empty($existingOrders) && $existingOrders !== null && is_array($existingOrders))
-        {
+        } else {
             foreach($existingOrders as $existingOrder)
             {
                 if($existingOrder['plentyOrderId'] === $order->id) {
