@@ -118,7 +118,7 @@ class ShippingNotificationEventProcedure
         $existingOrders = $this->settingsHelper->get(SettingsHelper::ORDERS);
         if($existingOrders === null) {
             $this->settingsHelper->set(SettingsHelper::ORDERS, []);
-        } else {
+        } else if (!is_null($existingOrders)) {
             foreach($existingOrders as $existingOrder)
             {
                 if($existingOrder['plentyOrderId'] === $order->id) {
