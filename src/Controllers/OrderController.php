@@ -41,9 +41,10 @@ class OrderController extends Controller
             $plentyId = $this->getPlentyPluginInfo();
             $ordersData = $settingsHelper = pluginApp(SettingsHelper::class);
             $existingOrders = $settingsHelper->get(SettingsHelper::ORDERS);
-            if($existingOrders === null) {
+            if(count($existingOrders) > 0) {
                 $settingsHelper->set(SettingsHelper::ORDERS, []);
             } else if(!is_null($existingOrders)) {
+                /**@var array $existingOrders */
                 foreach($existingOrders as $existingOrder)
                 {
                     $ordersInfo[$existingOrder['referenceId']] = $existingOrder['plentyOrderId'];

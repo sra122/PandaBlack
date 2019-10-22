@@ -82,7 +82,7 @@ class SettingsHelper
     {
         $settingProperty = $this->getSettingProperty();
         if ($settingProperty === null || !isset($settingProperty->settings[$key])) {
-            return null;
+            return [];
         }
 
         return $settingProperty->settings[$key];
