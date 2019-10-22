@@ -39,16 +39,16 @@ class OrderController extends Controller
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
             $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
             $plentyId = $this->getPlentyPluginInfo();
-            $ordersData = $settingsHelper = pluginApp(SettingsHelper::class);
+            $settingsHelper = pluginApp(SettingsHelper::class);
             $existingOrders = $settingsHelper->get(SettingsHelper::ORDERS);
             if(count($existingOrders) > 0) {
                 $settingsHelper->set(SettingsHelper::ORDERS, []);
             } else if(!is_null($existingOrders)) {
                 /**@var array $existingOrders */
-                foreach($existingOrders as $existingOrder)
+                /*foreach($existingOrders as $existingOrder)
                 {
                     $ordersInfo[$existingOrder['referenceId']] = $existingOrder['plentyOrderId'];
-                }
+                }*/
 
                 foreach($orders as $order)
                 {
