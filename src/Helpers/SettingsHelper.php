@@ -88,6 +88,11 @@ class SettingsHelper
         return $settingProperty->settings[$key];
     }
 
+    public function test()
+    {
+        return $this->getSettingProperty();
+    }
+
     public function set($key, $value)
     {
         if(!empty($key) && !empty($value)) {

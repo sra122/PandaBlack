@@ -290,4 +290,11 @@ class MappingController extends Controller
         $app = pluginApp(AppController::class);
         return $app->authenticate('pandaBlack_product_errors');
     }
+
+
+    public function test()
+    {
+        $settings = pluginApp(SettingsHelper::class);
+        return $settings->test();
+    }
 }
