@@ -5,6 +5,7 @@ namespace PandaBlack\Providers;
 use PandaBlack\Controllers\CategoryController;
 use PandaBlack\Crons\CategoriesAndAttributesUpdateCron;
 use PandaBlack\Crons\OrdersCron;
+use PandaBlack\Crons\PluginVersionCron;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Plugin\ServiceProvider;
@@ -29,6 +30,6 @@ class PandaBlackServiceProvider extends ServiceProvider
     {
         $container->add(CronContainer::DAILY, ItemExportCron::class);
         $container->add(CronContainer::HOURLY, OrdersCron::class);
-        $container->add(CronContainer::DAILY, CategoriesAndAttributesUpdateCron::class);
+        $container->add(CronContainer::DAILY, PluginVersionCron::class);
     }
 }

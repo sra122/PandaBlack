@@ -15,9 +15,13 @@ class ContentController extends Controller
     protected $settings;
     public $exportData = [];
     public $variationItems = [];
+    public $attributes;
+    public $categories;
     public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->settings = $SettingsHelper;
+        $this->attributes = pluginApp(AttributeController::class);
+        $this->categories = pluginApp(CategoryController::class);
     }
 
     /**
@@ -166,18 +170,8 @@ class ContentController extends Controller
     private function attributesInfo($properties, $categoryId)
     {
         $attributeDetails = [];
-        $pbAttributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[$categoryId];
-
-        // In case, if attributes are not saved in Settings.
-        if(empty($pbAttributes)) {
-            $pbApiHelper = pluginApp(PBApiHelper::class);
-            $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES);
-            $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-            if(!empty($attributes[$categoryId])) {
-                $this->settings->set(SettingsHelper::ATTRIBUTES, $attributes);
-                $pbAttributes = $attributes[$categoryId];
-            }
-        }
+        $attributes = pluginApp(AttributeController::class);
+        $pbAttributes = $attributes->getPBAttributes($categoryId);
 
         $pbMapping = $this->settings->get(SettingsHelper::MAPPING_INFO);
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
@@ -296,7 +290,7 @@ class ContentController extends Controller
                 }
 
             } else {
-                $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[(int)$productDetail['category']];
+                $attributes = $this->attributes->getPBAttributes((int)$productDetail['category']);
                 $count = 0;
                 foreach($attributes as $attributeKey => $attribute) {
                     if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required'] && ($attribute['values'] !== null)) {
@@ -356,7 +350,7 @@ class ContentController extends Controller
         foreach($properties as $property)
         {
             if($property['propertyId'] == (int)$categoryPropertyId) {
-                $categoriesList = $this->settings->get(SettingsHelper::CATEGORIES_LIST);
+                $categoriesList = $this->categories->getCategoriesList();
                 $propertyRepo = pluginApp(PropertyRepositoryContract::class);
                 $propertyLists = $propertyRepo->listProperties(1, 50, [], [], 0);
                 foreach($propertyLists as $propertyList)
@@ -378,6 +372,9 @@ class ContentController extends Controller
     }
 
 
+    /**
+     * @return |null
+     */
     private function categoriesAsProperties()
     {
         if(empty($this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES))) {
@@ -395,12 +392,5 @@ class ContentController extends Controller
         }
 
         return $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
-    }
-
-
-    public function saveProperty()
-    {
-        $app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_categories');
     }
 }

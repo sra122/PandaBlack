@@ -58,30 +58,7 @@ class CategoryController extends Controller
 
     public function getCategoriesList()
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
-        if(!empty($categoriesList)) {
-            return $categoriesList;
-        } else {
-            $categoriesData = $this->getPBCategoriesAsDropdown();
-            if(!empty($categoriesData)) {
-                $this->savePBCategoriesInPM();
-                return $categoriesData;
-            }
-        }
-    }
-
-    public function savePBCategoriesInPM()
-    {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-
-        $categoriesList = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
-
-        if(empty($categoriesList)) {
-            $categoriesListAsDropdown = $this->getPBCategoriesAsDropdown();
-            if(count($categoriesListAsDropdown) > 0) {
-                $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $categoriesListAsDropdown);
-            }
-        }
+        $app = pluginApp(AppController::class);
+        return $app->authenticate('pandaBlack_categories');
     }
 }

@@ -20,10 +20,12 @@ class MappingController extends Controller
 {
     public $mappingInfo = [];
     protected $settingsHelper;
+    protected $categories;
 
     public function __construct(SettingsHelper $settingsHelper)
     {
         $this->settingsHelper = $settingsHelper;
+        $this->categories = pluginApp(CategoryController::class);
     }
 
     public function mapping(Request $request)
@@ -270,7 +272,7 @@ class MappingController extends Controller
                 $adminNotification[$key] = $pbNotification;
                 $adminNotification[$key]['id'] = $key;
                 if($adminNotification[$key]['type'] !== 'info') {
-                    $adminNotification[$key]['categoryName'] = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST)[$pbNotification['values']['category_id']];
+                    $adminNotification[$key]['categoryName'] = $this->categories->getCategoriesList()[$pbNotification['values']['category_id']];
                 }
             }
         }

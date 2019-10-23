@@ -31,7 +31,7 @@ class AttributeController extends Controller
                     ];
                     $attributeInfo = $attributeRepo->create($attributeValueMap)->toArray();
                     foreach($attributeValueSet['values'] as $attributeKey => $attributeValue) {
-                        $attributeValueRepository->create(['backendName' => trim($attributeValue . '-PB-' . $attributeKey)], $attributeInfo['id']);
+                        $attributeValueRepository->create(['backendName' => trim($attributeValue)], $attributeInfo['id']);
                     }
                 }
             }
@@ -47,21 +47,8 @@ class AttributeController extends Controller
      */
     public function getPBAttributes($categoryId)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
-
-        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
-        $categories = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
-
-        if(isset($categories[$categoryId])) {
-            if(isset($attributes[$categoryId]) && ($attributes[$categoryId] !== null)) {
-                return $attributes[$categoryId];
-            } else {
-                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
-                return $attributes[$categoryId];
-            }
-        }
+        return $pbApiHelper->fetchPBAttributes($categoryId);
     }
 
     /**
@@ -140,27 +127,5 @@ class AttributeController extends Controller
         natcasesort($propertyValues);
 
         return $propertyValues;
-    }
-
-
-    public function updatePBCategoriesAttributesInPM()
-    {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $pbApiHelper = pluginApp(PBApiHelper::class);
-
-        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
-
-        $categoriesController = pluginApp(CategoryController::class);
-        $categories = $categoriesController->getPBCategoriesAsDropdown();
-
-        $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $categories);
-
-        foreach($categories as $categoryId => $category)
-        {
-            if (isset($attributes[$categoryId])) {
-                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
-            }
-        }
     }
 }
