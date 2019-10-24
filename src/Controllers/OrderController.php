@@ -37,26 +37,26 @@ class OrderController extends Controller
                 'reference_key' => 'uhui123lkj',
                 'products' => [
                     0 => [
-                        'itemVariationId' => 1032,
+                        'itemVariationId' => 1012,
                         'quantity' => 1,
-                        'price' => 17.99,
+                        'price' => 30,
                         'currency' => 'EUR',
                         'productTitle' => 'Remember Cereal Bowl Hexagon X 13.1 x 13.1 x 6.5 cm'
                     ]
                 ],
                 'billing_address' => [
-                    'gender' => 'Male',
+                    'gender' => 'male',
                     'name' => 'PB',
                     'address' => 'Kunfursterdamm 125',
-                    'postal_code' => 12345,
+                    'postal_code' => '12345',
                     'city' => 'Berlin',
                     'country_id' => 1
                 ],
                 'delivery_address' => [
-                    'gender' => 'Male',
+                    'gender' => 'male',
                     'name' => 'Test',
                     'address' => 'BalatonStraße 1',
-                    'postal_code' => 10319,
+                    'postal_code' => '10319',
                     'city' => 'Berlin',
                     'country_id' => 1
                 ],
