@@ -131,7 +131,7 @@ class ContentController extends Controller
                         'currency' => 'Euro',
                         'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
-                        'images' => $images->findByVariationId($variation['id']),
+                        'images' => '',
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
