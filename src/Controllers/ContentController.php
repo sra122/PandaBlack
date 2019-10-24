@@ -28,7 +28,7 @@ class ContentController extends Controller
      * @param null $filterVariation
      * @param int $hours
      */
-    public function productsExtraction($filterVariation = null, $hours = 1)
+    private function productsExtraction($filterVariation = null, $hours = 1)
     {
         $marketId = $this->settings->get('orderReferrerId');
 
