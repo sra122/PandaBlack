@@ -2,6 +2,7 @@
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
+use Plenty\Modules\Item\ItemImage\Contracts\ItemImageRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Variation\Contracts\VariationSearchRepositoryContract;
@@ -96,6 +97,9 @@ class ContentController extends Controller
                     } catch (\Exception $e) {
                         $asin = null;
                     }
+                    //Images
+                    $images = pluginApp(ItemImageRepositoryContract::class);
+
                     //SKU
                     $sku = null;
                     if(count($variation['variationSkus']) > 0) {
@@ -127,7 +131,7 @@ class ContentController extends Controller
                         'currency' => 'Euro',
                         'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
-                        'images' => $variation['images'],
+                        'images' => $images->findByVariationId($variation['id']),
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
