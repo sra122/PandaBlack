@@ -28,7 +28,7 @@ class ContentController extends Controller
      * @param null $filterVariation
      * @param int $hours
      */
-    private function productsExtraction($filterVariation = null, $hours = 1)
+    public function productsExtraction($filterVariation = null, $hours = 1)
     {
         $marketId = $this->settings->get('orderReferrerId');
 
@@ -127,7 +127,14 @@ class ContentController extends Controller
                         'currency' => 'Euro',
                         'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
-                        'images' => $variation['images'][0]['url'],
+                        'images' => [
+                            0 => $variation['images'][0]['url'],
+                            1 => $variation['images'][1]['url'],
+                            2 => $variation['images'][2]['url'],
+                            3 => $variation['images'][3]['url'],
+                            4 => $variation['images'][4]['url'],
+                            5 => $variation['images'][5]['url'],
+                        ],
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
@@ -147,6 +154,8 @@ class ContentController extends Controller
 
             }
         } while(!$resultItems->isLastPage());
+
+        return $this->exportData;
     }
 
     /**
