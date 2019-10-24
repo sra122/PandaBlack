@@ -127,7 +127,7 @@ class ContentController extends Controller
                         'currency' => 'Euro',
                         'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
-                        'images' => $variation['images'][0]['url'],
+                        'images' => $variation['images'],
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
@@ -157,6 +157,7 @@ class ContentController extends Controller
      */
     public function productDetails($hours = 1)
     {
+
         $filterVariations = ['updatedBetween', 'relatedUpdatedBetween'];
         foreach($filterVariations as $filterVariation)
         {
