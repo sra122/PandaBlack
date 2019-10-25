@@ -138,6 +138,7 @@ class ContentController extends Controller
                         'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
                         'images' => $imageUrls,
+                        'image_url' => $imageUrls[0],
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
@@ -268,93 +269,11 @@ class ContentController extends Controller
     }
 
 
-
-    public function sendProductDetails($hours = 1)
+    public function sendProductDetails($hours = 24)
     {
         $app = pluginApp(AppController::class);
-        $mapping = pluginApp(MappingController::class);
-
         $productDetails = $this->productDetails($hours);
-        $productStatus = $this->productStatus($productDetails);
-
-        if($hours === 24) {
-            if(!empty($productStatus['validProductDetails'])) {
-                $app->authenticate('products_to_pandaBlack', null, $productStatus['validProductDetails']);
-            }
-        }
-        $productStatus['unfulfilledProducts']['admin'] = $mapping->updateNotifications()['admin'];
-        $this->settings->set(SettingsHelper::NOTIFICATION, $productStatus['unfulfilledProducts']);
-    }
-
-    private function productStatus($productDetails)
-    {
-        $errorProductAttributes = [];
-        $missingAttributeProducts = [];
-        $errorProducts = [];
-        foreach($productDetails['exportData'] as $key => $productDetail)
-        {
-            $unfulfilledData = false;
-            // Attributes Check
-            if(empty($productDetail['attributes'])) {
-                if(empty($errorProducts[$productDetail['product_id']])) {
-                    $errorProducts[$productDetail['product_id']] = ['emptyAttributeProduct'];
-                } else {
-                    $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], ['emptyAttributeProduct']);
-                }
-
-            } else {
-                $attributes = $this->attributes->getPBAttributes((int)$productDetail['category']);
-                $count = 0;
-                foreach($attributes as $attributeKey => $attribute) {
-                    if(!array_key_exists($attribute['name'], $productDetail['attributes']) && $attribute['required'] && ($attribute['values'] !== null)) {
-                        if(!in_array($productDetail['product_id'], $missingAttributeProducts)) {
-                            $missingAttributeProducts[$productDetail['product_id']][$count++] = $attribute['name'];
-                            $unfulfilledData = true;
-                        }
-                    }
-                }
-                if(isset($missingAttributeProducts[$productDetail['product_id']])) {
-                    if(!isset($errorProductAttributes[$productDetail['product_id']]) && empty($errorProductAttributes[$productDetail['product_id']])) {
-                        $errorProductAttributes[$productDetail['product_id']] = $missingAttributeProducts[$productDetail['product_id']];
-                    } else {
-                        $errorProductAttributes[$productDetail['product_id']] = array_merge($errorProductAttributes[$productDetail['product_id']], $missingAttributeProducts[$productDetail['product_id']]);
-                    }
-                }
-
-            }
-            // Stock Check
-            if(!isset($productDetail['quantity']) || $productDetail['quantity'] <= 0) {
-
-                if(empty($errorProducts[$productDetail['product_id']])) {
-                    $errorProducts[$productDetail['product_id']] = ['No-Stock'];
-                } else {
-                    $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], ['No-Stock']);
-                }
-            }
-            //ASIN Check
-            if(!isset($productDetail['asin']) || empty($productDetail['asin'])) {
-
-                if(empty($errorProducts[$productDetail['product_id']])) {
-                    $errorProducts[$productDetail['product_id']] = ['No-Asin'];
-                } else {
-                    $errorProducts[$productDetail['product_id']] = array_merge($errorProducts[$productDetail['product_id']], ['No-Asin']);
-                }
-            }
-
-            if($unfulfilledData) {
-                unset($productDetails['exportData'][$key]);
-            }
-        }
-        $unfulfilledProducts = [
-            'errorProducts' => $errorProducts,
-            'errorProductAttributes' => $errorProductAttributes
-        ];
-
-        $productStatus = [
-            'validProductDetails' => $productDetails['exportData'],
-            'unfulfilledProducts' => $unfulfilledProducts
-        ];
-        return $productStatus;
+        $app->authenticate('products_to_pandaBlack', null, $productDetails);
     }
 
     private function categoryIdFromSettingsRepo($properties)
