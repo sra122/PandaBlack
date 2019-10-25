@@ -118,7 +118,7 @@ class AttributeController extends Controller
                     $propertyValue = $selectionProperty['relation']['relationValues'][0];
 
                     if(in_array($propertyValue['lang'], $lang) && !empty($propertyValue['value'])) {
-                        $propertyValues[$key++] = $propertyValue['value'] . '-' . $propertyName;
+                        $propertyValues[$key++] = $propertyValue['value'] . '§' . $propertyName;
                     }
                 }
             }
