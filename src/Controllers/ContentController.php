@@ -100,6 +100,11 @@ class ContentController extends Controller
                     //Images
                     $images = pluginApp(ItemImageRepositoryContract::class);
                     $imageDetails = $images->findByItemId($variation['itemId']);
+                    $imageUrls = [];
+                    foreach($imageDetails as $imageDetail)
+                    {
+                        array_push($imageUrls, $imageDetail['url']);
+                    }
 
                     //SKU
                     $sku = null;
@@ -132,7 +137,7 @@ class ContentController extends Controller
                         'currency' => 'Euro',
                         'category' => $categoryId,
                         'short_description' => $variation['item']['texts'][0]['description'],
-                        'images' => $imageDetails,
+                        'images' => $imageUrls,
                         'color' => '',
                         'size' => '',
                         'content_supplier' => $manufacturer['name'],
