@@ -228,6 +228,8 @@ class ContentController extends Controller
             }
         }
 
+        return $pbMapping;
+
         // Check the Attributes that are mapped are present in PB attributes list of the selected Category.
         /*if(!empty($attributeDetails)) {
             foreach($attributeDetails as $attributeName => $attributeDetail)
@@ -252,7 +254,7 @@ class ContentController extends Controller
             }
         }*/
 
-        return $attributeDetails;
+        //return $attributeDetails;
     }
 
 
