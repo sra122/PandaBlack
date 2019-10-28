@@ -28,7 +28,7 @@ class PandaBlackServiceProvider extends ServiceProvider
      */
     public function boot(CronContainer $container, EventProceduresService $eventProceduresService)
     {
-        $container->add(CronContainer::EVERY_FIFTEEN_MINUTES, ItemExportCron::class);
+        $container->add(CronContainer::DAILY, ItemExportCron::class);
         $container->add(CronContainer::HOURLY, OrdersCron::class);
         $container->add(CronContainer::DAILY, PluginVersionCron::class);
 
