@@ -273,8 +273,8 @@ class ContentController extends Controller
     {
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails($hours);
-        $app->authenticate('products_to_pandaBlack', null, $productDetails);
-        return $productDetails;
+        $response = $app->authenticate('products_to_pandaBlack', null, $productDetails);
+        return $response;
     }
 
     private function categoryIdFromSettingsRepo($properties)
