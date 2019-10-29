@@ -38,6 +38,7 @@ class OrderController extends Controller
             $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
             $settingsHelper = pluginApp(SettingsHelper::class);
             $ordersData = $settingsHelper->get(SettingsHelper::ORDER_DATA);
+            $settingsHelper->set('Test_Order', $orders);
             if($ordersData === null || !(is_array($ordersData))) {
                 $settingsHelper->set(SettingsHelper::ORDER_DATA, $ordersInfo);
             } else {
