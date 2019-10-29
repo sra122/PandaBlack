@@ -31,6 +31,8 @@ class OrderController extends Controller
     {
         $app = pluginApp(AppController::class);
         $orders = $app->authenticate('pandaBlack_orders');
+
+        return $orders;
         if(!empty($orders)) {
             $ordersInfo = [];
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
