@@ -62,7 +62,7 @@ class OrderController extends Controller
             }*/
         }
 
-        return $orders[0]->reference_key;
+        return $orders[0]['reference_key'];
     }
 
 
