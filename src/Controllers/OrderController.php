@@ -44,7 +44,9 @@ class OrderController extends Controller
                 $ordersInfo = $ordersData;
             }
 
-            if(is_array($ordersInfo))
+            return $orders[0];
+
+           /* if(is_array($ordersInfo))
             {
                 if(count($ordersInfo) <= 0) {
                     foreach($orders as $order)
@@ -59,10 +61,8 @@ class OrderController extends Controller
                         }
                     }
                 }
-            }
+            }*/
         }
-
-        return $orders;
     }
 
 
