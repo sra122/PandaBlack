@@ -66,6 +66,13 @@ class OrderController extends Controller
         return $orders;
     }
 
+
+    public function test()
+    {
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        return $settingsHelper->getSettingProperty();
+    }
+
     /**
      * @param $referenceKey
      * @param $orderDeliveryAddress
