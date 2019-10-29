@@ -33,7 +33,7 @@ class OrderController extends Controller
         $orders = $app->authenticate('pandaBlack_orders');
 
         return $orders;
-        if(!empty($orders)) {
+        /*if(!empty($orders)) {
             $ordersInfo = [];
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
             $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
@@ -61,7 +61,7 @@ class OrderController extends Controller
                     }
                 }
             }
-        }
+        }*/
     }
 
 
