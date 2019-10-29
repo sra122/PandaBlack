@@ -54,7 +54,7 @@ class OrderController extends Controller
                 } else {
                     foreach($orders as $order)
                     {
-                        if(!isset($order['reference_key'])) {
+                        if(!isset($ordersInfo[$order['reference_key']])) {
                             $this->saveOrder($order);
                         }
                     }
@@ -64,15 +64,6 @@ class OrderController extends Controller
 
         return $orders;
     }
-
-
-    public function test()
-    {
-        $app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_orders');
-    }
-
-
 
     /**
      * @param $referenceKey
