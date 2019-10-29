@@ -65,6 +65,7 @@ class ContentController extends Controller
                 ],
                 'stock' => true,
                 'images' => true,
+                'vatId' => true
             ]
         ]);
 

@@ -30,39 +30,7 @@ class OrderController extends Controller
     public function createOrder()
     {
         $app = pluginApp(AppController::class);
-        //$orders = $app->authenticate('pandaBlack_orders');
-
-        $orders = [
-            0 => [
-                'reference_key' => 'uhui123lkj',
-                'products' => [
-                    0 => [
-                        'itemVariationId' => 1012,
-                        'quantity' => 1,
-                        'price' => 30,
-                        'currency' => 'EUR',
-                        'productTitle' => 'Remember Cereal Bowl Hexagon X 13.1 x 13.1 x 6.5 cm'
-                    ]
-                ],
-                'billing_address' => [
-                    'gender' => 'male',
-                    'name' => 'PB',
-                    'address' => 'Kunfursterdamm 125',
-                    'postal_code' => '12345',
-                    'city' => 'Berlin',
-                    'country_id' => 1
-                ],
-                'delivery_address' => [
-                    'gender' => 'male',
-                    'name' => 'Test',
-                    'address' => 'BalatonStraße 1',
-                    'postal_code' => '10319',
-                    'city' => 'Berlin',
-                    'country_id' => 1
-                ],
-            ],
-        ];
-
+        $orders = $app->authenticate('pandaBlack_orders');
         if(!empty($orders)) {
             $ordersInfo = [];
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
