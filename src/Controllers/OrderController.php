@@ -38,7 +38,6 @@ class OrderController extends Controller
             $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
             $settingsHelper = pluginApp(SettingsHelper::class);
             $ordersData = $settingsHelper->get(SettingsHelper::ORDER_DATA);
-            $settingsHelper->set('Test_Order', $orders);
             if($ordersData === null || !(is_array($ordersData))) {
                 $settingsHelper->set(SettingsHelper::ORDER_DATA, $ordersInfo);
             } else {
@@ -55,7 +54,7 @@ class OrderController extends Controller
                 } else {
                     foreach($orders as $order)
                     {
-                        if(!isset($ordersInfo[$order['reference_key']])) {
+                        if(!isset($ordersInfo[$order->reference_key])) {
                             $this->saveOrder($order);
                         }
                     }
@@ -81,13 +80,13 @@ class OrderController extends Controller
     private function createDeliveryAddress($referenceKey, $orderDeliveryAddress)
     {
         $deliveryAddress = [
-            'gender' => $orderDeliveryAddress['gender'],
-            'name1' => $orderDeliveryAddress['name'],
-            'address1' => $orderDeliveryAddress['address'],
+            'gender' => $orderDeliveryAddress->gender,
+            'name1' => $orderDeliveryAddress->name,
+            'address1' => $orderDeliveryAddress->address,
             'address2' => 'Ref Id ' . $referenceKey,
-            'postalCode' => $orderDeliveryAddress['postal_code'],
-            'town' => $orderDeliveryAddress['city'],
-            'countryId' => $orderDeliveryAddress['country_id']
+            'postalCode' => $orderDeliveryAddress->postal_code,
+            'town' => $orderDeliveryAddress->city,
+            'countryId' => $orderDeliveryAddress->country_id
         ];
         return $this->AddressRepository->createAddress($deliveryAddress)->id;
     }
@@ -100,12 +99,12 @@ class OrderController extends Controller
     private function createBillingAddress($orderBillingAddress)
     {
         $billingAddress = [
-            'gender' => $orderBillingAddress['gender'],
-            'name1' => $orderBillingAddress['name'],
-            'address1' => $orderBillingAddress['address'],
-            'postalCode' => $orderBillingAddress['postal_code'],
-            'town' => $orderBillingAddress['city'],
-            'countryId' => $orderBillingAddress['country_id']
+            'gender' => $orderBillingAddress->gender,
+            'name1' => $orderBillingAddress->name,
+            'address1' => $orderBillingAddress->address,
+            'postalCode' => $orderBillingAddress->postal_code,
+            'town' => $orderBillingAddress->city,
+            'countryId' => $orderBillingAddress->country_id
         ];
         return $this->AddressRepository->createAddress($billingAddress)->id;
     }
@@ -124,11 +123,11 @@ class OrderController extends Controller
             'addressRelations' => [
                 [
                     'typeId' => self::BILLING_ADDRESS,
-                    'addressId' => $this->createBillingAddress($order['billing_address'])
+                    'addressId' => $this->createBillingAddress($order->billing_address)
                 ],
                 [
                     'typeId' => self::DELIVERY_ADDRESS,
-                    'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'])
+                    'addressId' => $this->createDeliveryAddress($order->reference_key, $order->delivery_address)
                 ]
             ]
         ];
@@ -138,16 +137,16 @@ class OrderController extends Controller
         {
             $orderItems[] = [
                 'typeId' => 1,
-                'itemVariationId' => $productDetails['itemVariationId'],
-                'quantity' => $productDetails['quantity'],
-                'orderItemName' => $productDetails['productTitle'],
+                'itemVariationId' => str_replace('U1-', '', $productDetails->itemVariationId),
+                'quantity' => $productDetails->quantity,
+                'orderItemName' => $productDetails->productTitle,
                 'amounts' => [
                     0 => [
                         'isSystemCurrency' => true,
                         'isNet' => true,
                         'exchangeRate' => 1,
                         'currency' => 'EUR',
-                        'priceOriginalGross' => $productDetails['price']
+                        'priceOriginalGross' => $productDetails->price
                     ]
                 ]
             ];
@@ -155,7 +154,7 @@ class OrderController extends Controller
 
         $data['orderItems'] = $orderItems;
         $orderData = $this->OrderRepository->createOrder($data);
-        $this->saveOrderData($order['reference_key'], $orderData->id);
+        $this->saveOrderData($order->reference_key, $orderData->id);
 
     }
 
