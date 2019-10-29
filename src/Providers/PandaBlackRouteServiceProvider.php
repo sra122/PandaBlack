@@ -33,7 +33,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             //Sending Content Actions
             $router->post('markets/panda-black/products-data', 'PandaBlack\Controllers\ContentController@sendProductDetails');
             //$router->get('markets/panda-black/products-status', 'PandaBlack\Controllers\ContentController@sendProductDetails');
-            $router->get('markets/panda-black/products-status', 'PandaBlack\Controllers\OrderController@test');
+            $router->get('markets/panda-black/products-status', 'PandaBlack\Controllers\ContentController@sendProductDetails');
 
             //PandaBlack Category as Property
             $router->post('markets/panda-black/create-category-as-property', 'PandaBlack\Controllers\PropertyController@createCategoryAsProperty');
