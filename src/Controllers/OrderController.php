@@ -65,7 +65,7 @@ class OrderController extends Controller
         foreach($orders['orders'] as $key => $order)
         {
             $test = [
-                'reference_key' => $order->reference_key,
+                'reference_key' => $order[0]->reference_key,
                 'previous_key' => $key
             ];
             return $test;
