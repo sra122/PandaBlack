@@ -130,7 +130,7 @@ class OrderController extends Controller
         {
             $orderItems[] = [
                 'typeId' => 1,
-                'itemVariationId' => str_replace('U1-', '', $productDetails['itemVariationId']),
+                'itemVariationId' => $productDetails['itemVariationId'],
                 'quantity' => $productDetails['quantity'],
                 'orderItemName' => $productDetails['productTitle'],
                 'amounts' => [
