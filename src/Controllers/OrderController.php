@@ -62,9 +62,13 @@ class OrderController extends Controller
             }*/
         }
 
-        foreach($orders as $order)
+        foreach($orders as $key => $order)
         {
-            return $order;
+            $test = [
+                'reference_key' => $order[0]->reference_key,
+                'previous_key' => $key
+            ];
+            return $test;
         }
 
         //return $orders;
