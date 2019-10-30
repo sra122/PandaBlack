@@ -62,7 +62,12 @@ class OrderController extends Controller
             }*/
         }
 
-        return $orders;
+        foreach($orders as $order)
+        {
+            return $order;
+        }
+
+        //return $orders;
     }
 
 
