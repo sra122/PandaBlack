@@ -1,4 +1,6 @@
 # Release Notes für PANDA.BLACK
+## v1.0.13
+Aktualisieren von Aufträgen und Produktstatusberichten
 
 ## v1.0.12
 Die SKU der Artikelgenerierung und -extraktion wurde optimiert

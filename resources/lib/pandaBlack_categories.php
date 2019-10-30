@@ -5,7 +5,7 @@ $client = new \GuzzleHttp\Client();
 
 $res = $client->request(
     'GET',
-    'https://pb.i-ways-network.org/category-api/categories',
+    'https://pb.i-ways-network.org/category-api/categories?version=2.0',
     [
         'headers' => [
             'APP-ID' => 'Lr7u9w86bUL5qsg7MJEVut8XYsqrZmTTxM67qFdH89f4NYQnHrkgKkMAsH9YLE4tjce4GtPSqrYScSt7w558USrVgXHB',

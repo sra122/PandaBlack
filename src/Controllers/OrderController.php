@@ -1,7 +1,5 @@
 <?php
-
 namespace PandaBlack\Controllers;
-
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
@@ -13,122 +11,170 @@ class OrderController extends Controller
     protected $OrderRepository;
     /** @var AddressRepositoryContract */
     protected $AddressRepository;
-
     const BILLING_ADDRESS = 1;
     const DELIVERY_ADDRESS = 2;
-
     /** @var SettingsHelper */
     protected $Settings;
+    protected $plentyId;
 
+    /**
+     * OrderController constructor.
+     * @param SettingsHelper $SettingsHelper
+     */
     public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->Settings = $SettingsHelper;
+        $this->plentyId = $this->getPlentyPluginInfo();
     }
+
 
     public function createOrder()
     {
         $app = pluginApp(AppController::class);
         $orders = $app->authenticate('pandaBlack_orders');
-
         if(!empty($orders)) {
+            $ordersInfo = [];
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
             $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
-            $plentyId = $this->getPlentyPluginInfo();
-            $billingAddressId = $this->Settings->get('pb_billing_address_id');
-
-            if(empty($billingAddressId)) {
-                $billingAddressId = $this->createBillingAddress();
+            $settingsHelper = pluginApp(SettingsHelper::class);
+            $ordersData = $settingsHelper->get(SettingsHelper::ORDER_DATA);
+            if($ordersData === null || !(is_array($ordersData))) {
+                $settingsHelper->set(SettingsHelper::ORDER_DATA, $ordersInfo);
+            } else {
+                $ordersInfo = $ordersData;
             }
-
-            foreach($orders as $order)
+            if(is_array($ordersInfo))
             {
-                $data = [
-                    'typeId' => 1, // sales order
-                    'methodOfPaymentId' => 1,
-                    'shippingProfileId' => 1,
-                    'paymentStatus' => 1,
-                    'statusId' => 5,
-                    'plentyId' => $plentyId,
-                    'addressRelations' => [
-                        [
-                            'typeId' => self::BILLING_ADDRESS,
-                            'addressId' => $billingAddressId
-                        ],
-                        [
-                            'typeId' => self::DELIVERY_ADDRESS,
-                            'addressId' => $this->createDeliveryAddress($order['reference_key'])->id
-                        ]
-                    ]
-                ];
-
-                $orderItems = [];
-                foreach($order['products'] as $productDetails)
-                {
-                    $orderItems[] = [
-                        'typeId' => 1,
-                        'itemVariationId' => $productDetails['itemVariationId'],
-                        'quantity' => $productDetails['quantity'],
-                        'orderItemName' => $productDetails['productTitle'],
-                        'amounts' => [
-                            0 => [
-                                'isSystemCurrency' => true,
-                                'isNet' => true,
-                                'exchangeRate' => 1,
-                                'currency' => 'EUR',
-                                'priceOriginalGross' => $productDetails['price']
-                            ]
-                        ]
-                    ];
+                if(count($ordersInfo) <= 0) {
+                    foreach($orders['orders'] as $order)
+                    {
+                        $this->saveOrder($order);
+                    }
+                } else {
+                    foreach($orders['orders'] as $order)
+                    {
+                        if(!isset($ordersInfo[$order['reference_key']])) {
+                            $this->saveOrder($order);
+                        }
+                    }
                 }
-
-                $data['orderItems'] = $orderItems;
-                $this->OrderRepository->createOrder($data);
             }
         }
     }
 
 
+
+    /**
+     * @param $referenceKey
+     * @param $orderDeliveryAddress
+     * @return mixed
+     */
+    private function createDeliveryAddress($referenceKey, $orderDeliveryAddress)
+    {
+        $deliveryAddress = [
+            'gender' => $orderDeliveryAddress['gender'],
+            'name1' => $orderDeliveryAddress['name'],
+            'address1' => $orderDeliveryAddress['address'],
+            'address2' => 'Ref Id ' . $referenceKey,
+            'postalCode' => (string)$orderDeliveryAddress['postal_code'],
+            'town' => $orderDeliveryAddress['city'],
+            'countryId' => $orderDeliveryAddress['country_id']
+        ];
+        return $this->AddressRepository->createAddress($deliveryAddress)->id;
+    }
+
+
+    /**
+     * @param $orderBillingAddress
+     * @return mixed
+     */
+    private function createBillingAddress($orderBillingAddress)
+    {
+        $billingAddress = [
+            'gender' => $orderBillingAddress['gender'],
+            'name1' => $orderBillingAddress['name'],
+            'address1' => $orderBillingAddress['address'],
+            'postalCode' => (string)$orderBillingAddress['postal_code'],
+            'town' => $orderBillingAddress['city'],
+            'countryId' => $orderBillingAddress['country_id']
+        ];
+        return $this->AddressRepository->createAddress($billingAddress)->id;
+    }
+
+
+    /**
+     * @param $order
+     */
+    private function saveOrder($order)
+    {
+        $data = [
+            'typeId' => 1, // sales order
+            'methodOfPaymentId' => 1,
+            'shippingProfileId' => 1,
+            'paymentStatus' => 1,
+            'statusId' => 5,
+            'plentyId' => $this->plentyId,
+            'addressRelations' => [
+                [
+                    'typeId' => self::BILLING_ADDRESS,
+                    'addressId' => $this->createBillingAddress($order['billing_address'])
+                ],
+                [
+                    'typeId' => self::DELIVERY_ADDRESS,
+                    'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'])
+                ]
+            ]
+        ];
+        $orderItems = [];
+        foreach($order['products'] as $productDetails)
+        {
+            $orderItems[] = [
+                'typeId' => 1,
+                'itemVariationId' => str_replace('U1-', '', $productDetails['itemVariationId']),
+                'quantity' => $productDetails['quantity'],
+                'orderItemName' => $productDetails['productTitle'],
+                'amounts' => [
+                    0 => [
+                        'isSystemCurrency' => true,
+                        'isNet' => true,
+                        'exchangeRate' => 1,
+                        'currency' => 'EUR',
+                        'priceOriginalGross' => $productDetails['price']
+                    ]
+                ]
+            ];
+        }
+        $data['orderItems'] = $orderItems;
+        $orderData = $this->OrderRepository->createOrder($data);
+        $this->saveOrderData($order['reference_key'], $orderData->id);
+    }
+
+    /**
+     * @return int
+     */
     private function getPlentyPluginInfo()
     {
         /** @var Application $plentyId */
         $plentyId = pluginApp(Application::class);
-
         return $plentyId->getPlentyId();
     }
 
 
-    private function createDeliveryAddress($referenceKey)
+
+    /**
+     * @param $referenceId
+     * @param $plentyOrderId
+     */
+    private function saveOrderData($referenceId, $plentyOrderId)
     {
-        $deliveryAddress = [
-            'gender' => 'male',
-            'name1' => 'PANDA.BLACK GmbH',
-            'address1' => 'Friedrichstraße 123',
-            'address2' => 'Ref Id ' . $referenceKey,
-            'postalCode' => '10711',
-            'town' => 'Berlin',
-            'countryId' => 1
+        $settingsHelper = pluginApp(SettingsHelper::class);
+        $orderData = [
+            $referenceId => $plentyOrderId
         ];
-
-        return $this->AddressRepository->createAddress($deliveryAddress);
-    }
-
-
-    private function createBillingAddress()
-    {
-        $addressRepository = pluginApp(AddressRepositoryContract::class);
-
-        $billingAddress = [
-            'gender' => 'male',
-            'name1' => 'PANDA.BLACK GmbH',
-            'address1' => 'Friedrichstraße 123',
-            'postalCode' => '10711',
-            'town' => 'Berlin',
-            'countryId' => 1
-        ];
-
-        $address = $addressRepository->createAddress($billingAddress);
-        $this->Settings->set('pb_billing_address_id', $address->id);
-
-        return $address->id;
+        if($settingsHelper->get(SettingsHelper::ORDER_DATA) === null) {
+            $settingsHelper->set(SettingsHelper::ORDER_DATA, $orderData);
+        } else {
+            $settingsHelper->set(SettingsHelper::ORDER_DATA, array_merge($orderData, $settingsHelper->get(SettingsHelper::ORDER_DATA)));
+        }
     }
 }

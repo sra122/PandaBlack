@@ -37,11 +37,13 @@
     "pm-propertyValues": "Plentymarkets PropertyValues"
   },
   "status": {
-    "variationId": "Varianten-ID",
+    "variationId": "Variation Id",
     "missing-properties": "Missing Properties",
-    "stock": "Verfügbarer Bestand",
-    "Asin": "ASIN vorhanden",
-    "related-Properties": "Eigenschaftszuordnung vorhanden",
-    "admin-notification": "Wichtige Benachrichtigungen"
+    "stock": "Stock Available",
+    "Asin": "ASIN Available",
+    "related-Properties": "Property Mapping Exists",
+    "admin-notification": "Important News",
+    "valid-category": "Valid Category",
+    "missing-images": "Missing Images"
   }
 }

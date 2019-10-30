@@ -42,6 +42,8 @@
     "stock": "Verfügbarer Bestand",
     "Asin": "ASIN vorhanden",
     "related-Properties": "Eigenschaftszuordnung vorhanden",
-    "admin-notification": "Wichtige Benachrichtigungen"
+    "admin-notification": "Wichtige Benachrichtigungen",
+    "valid-category": "Gültige Kategorie",
+    "missing-images": "Fehlende Bilder"
   }
 }

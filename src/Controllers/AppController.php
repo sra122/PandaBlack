@@ -46,4 +46,39 @@ class AppController extends Controller
             }
         }
     }
+
+
+    public function shippingNotification($trackingNumber = null, $carrier = null, $referenceId = null)
+    {
+        $libCall = pluginApp(LibraryCallContract::class);
+        $token = $this->Settings->get('pbToken');
+        if ($token !== null) {
+            if ($token['expires_in'] > time()) {
+                $response = $libCall->call(
+                    'PandaBlack::pandaBlack_order_shipping',
+                    [
+                        'token' => $token['token'],
+                        'tracking_number' => $trackingNumber,
+                        'carrier' => $carrier,
+                        'reference_id' => $referenceId
+                    ]
+                );
+            } else {
+                if ($token['refresh_token_expires_in'] > time()) {
+                    $response = $libCall->call(
+                        'PandaBlack::pandaBlack_order_shipping',
+                        [
+                            'token' => $token['token'],
+                            'tracking_number' => $trackingNumber,
+                            'carrier' => $carrier,
+                            'reference_id' => $referenceId
+                        ]
+                    );
+                }
+            }
+            if (\is_array($response) && isset($response['Response'])) {
+                return $response['Response'];
+            }
+        }
+    }
 }
