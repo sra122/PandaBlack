@@ -101,10 +101,12 @@ class CategoryController extends Controller
 
             $categoryRepo->createCategory($categoryData);
         }
+
+        return $this->getCategories();
     }
 
 
-    public function getCatetgories()
+    public function getCategories()
     {
         $categoryRepo = pluginApp(CategoryRepository::class);
 
