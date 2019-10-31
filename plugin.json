@@ -18,6 +18,8 @@
     "PandaBlack\\Migrations\\PandaBlackOrderReferrer",
     "PandaBlack\\Migrations\\PandaBlackAddress",
     "PandaBlack\\Migrations\\PandaBlackCategories",
-    "PandaBlack\\Migrations\\CreateCategoriesTable"
+    "PandaBlack\\Migrations\\CreateCategoriesTable",
+    "PandaBlack\\Migrations\\CreateAttributesTable",
+    "PandaBlack\\Migrations\\CreateAttributeValuesTable"
   ]
 }
