@@ -52,73 +52,66 @@ class AttributeController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
 
-        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
+        $attributesRepo = pluginApp(AttributeRepository::class);
+        $attributeValueRepo = pluginApp(AttributeValueRepository::class);
 
-        if(isset($attributes[$categoryId]) && ($attributes[$categoryId] !== null)) {
-            return $attributes[$categoryId];
-        } else {
-            $attributesRepo = pluginApp(AttributeRepository::class);
-            $attributeValueRepo = pluginApp(AttributeValueRepository::class);
-            $attributes = $attributesRepo->getAttributeForCategory($categoryId);
-            $attributesInfo = [];
-            if(count($attributes) <= 0) {
-                $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
+        $attributes = $attributesRepo->getAttributeForCategory($categoryId);
+        $attributesInfo = [];
+        if(count($attributes) <= 0) {
+            $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
 
-                foreach($attributes as $attributeId => $attribute)
-                {
-                    if($attribute->required) {
-                        $attributeData = [
-                            'categoryId' => (int)$categoryId,
-                            'attributeName' => $attribute->name,
-                            'attributeId' => (int)$attributeId
-                        ];
-                        $attributesRepo->createAttribute($attributeData);
+            foreach($attributes as $attributeId => $attribute)
+            {
+                if($attribute->required) {
+                    $attributeData = [
+                        'categoryId' => (int)$categoryId,
+                        'attributeName' => $attribute->name,
+                        'attributeId' => (int)$attributeId
+                    ];
+                    $attributesRepo->createAttribute($attributeData);
 
-                        $values = [];
-
-                        foreach($attribute->values as $attributeValue)
-                        {
-                            $attributeValueData = [
-                                'categoryId' => (int)$categoryId,
-                                'attributeId' => (int)$attributeId,
-                                'attributeValueName' => $attributeValue
-                            ];
-
-                            $attributeValueRepo->createAttributeValue($attributeValueData);
-                            array_push($values, $attributeValue);
-                        }
-
-                        $attributesInfo[$attributeId] = [
-                            'category_id' => $categoryId,
-                            'name' => $attribute->name,
-                            'values' => $values
-                        ];
-                    }
-                }
-            } else {
-                foreach($attributes as $attribute)
-                {
                     $values = [];
-                    $attributeValues = $attributeValueRepo->getAttributeValuesForAttribute($attribute->attribute_identifier);
 
-                    foreach($attributeValues as $attributeValue)
+                    foreach($attribute->values as $attributeValue)
                     {
-                        array_push($values, $attributeValue->name);
+                        $attributeValueData = [
+                            'categoryId' => (int)$categoryId,
+                            'attributeId' => (int)$attributeId,
+                            'attributeValueName' => $attributeValue
+                        ];
+
+                        $attributeValueRepo->createAttributeValue($attributeValueData);
+                        array_push($values, $attributeValue);
                     }
 
-                    $attributesInfo[$attribute->identifier] = [
-                        'categoryId' => $categoryId,
+                    $attributesInfo[$attributeId] = [
+                        'category_id' => $categoryId,
                         'name' => $attribute->name,
                         'values' => $values
                     ];
                 }
             }
+        } else {
+            foreach($attributes as $attribute)
+            {
+                $values = [];
+                $attributeValues = $attributeValueRepo->getAttributeValuesForAttribute($attribute->attribute_identifier);
 
-            $attributes[$categoryId] = $attributesInfo;
-            $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+                foreach($attributeValues as $attributeValue)
+                {
+                    array_push($values, $attributeValue->name);
+                }
 
-            return $attributes[$categoryId];
+                $attributesInfo[$attribute->identifier] = [
+                    'categoryId' => $categoryId,
+                    'name' => $attribute->name,
+                    'values' => $values
+                ];
+            }
         }
+
+        return $attributesInfo;
+
     }
 
     /**
