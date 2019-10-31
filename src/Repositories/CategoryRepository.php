@@ -86,7 +86,7 @@ class CategoryRepository implements CategoriesRepositoryContract
 
     public function getCategories()
     {
-        $categoryData = $this->database->query(Categories::class)->orderBy('category_identifier')->limit(100);
+        $categoryData = $this->database->query(Categories::class)->where('id' , '!=', 'null')->get();
 
         return $categoryData;
     }
