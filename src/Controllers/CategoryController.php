@@ -87,29 +87,10 @@ class CategoryController extends Controller
     }
 
 
-    public function saveCategoriesInDb()
-    {
-        $categoryRepo = pluginApp(CategoryRepository::class);
-        $categories = $this->getPBCategoriesAsDropdown();
-
-        foreach($categories as $key => $category)
-        {
-            $categoryData = [
-                'categoryId' => $key,
-                'treePath' => $category
-            ];
-
-            $categoryRepo->createCategory($categoryData);
-        }
-
-        return $this->getCategories();
-    }
-
-
     public function getCategories()
     {
         $categoryRepo = pluginApp(CategoryRepository::class);
 
-        return $categoryRepo->getCategory(54);
+        return $categoryRepo->getCategories();
     }
 }
