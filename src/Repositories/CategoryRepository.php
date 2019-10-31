@@ -86,8 +86,15 @@ class CategoryRepository implements CategoriesRepositoryContract
 
     public function getCategories()
     {
-        $categoryData = $this->database->query(Categories::class)->where('id' , '!=', 'null')->get();
+        $categoryTree = [];
 
-        return $categoryData;
+        $categories = $this->database->query(Categories::class)->where('id' , '!=', 'null')->get();
+
+        foreach($categories as $category)
+        {
+            $categoryTree[$category['category_identifier']] = $category['tree_path'];
+        }
+
+        return $categoryTree;
     }
 }
