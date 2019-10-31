@@ -84,7 +84,7 @@ class AttributeController extends Controller
                         array_push($values, $attributeValue);
                     }
 
-                    $attributesInfo[$attributeId] = [
+                    $attributesInfo[(int)$attributeId] = [
                         'category_id' => $categoryId,
                         'name' => $attribute->name,
                         'values' => $values
@@ -111,7 +111,7 @@ class AttributeController extends Controller
         }
 
         $test = [
-            'attributes' => $pbApiHelper->fetchPBAttributes($categoryId),
+            'attributes' => $pbApiHelper->fetchPBAttributes($categoryId)[1]->required,
             'test' => $attributesInfo
         ];
 
