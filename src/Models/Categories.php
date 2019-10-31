@@ -15,5 +15,11 @@ class Categories extends Model
      * @var string
      */
     public $tree_path;
+
+
+    public function getTableName(): string
+    {
+        return 'PandaBlack::Categories';
+    }
 }
 
