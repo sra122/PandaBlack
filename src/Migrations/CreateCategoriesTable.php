@@ -1,11 +1,10 @@
 <?php
 namespace PandaBlack\Migrations;
-use PandaBlack\Models\Categories;
 use Plenty\Modules\Plugin\DataBase\Contracts\Migrate;
-class CreatePBCategoriesTable
+class CreateCategoriesTable
 {
     public function run(Migrate $migrate)
     {
-        $migrate->createTable(Categories::class);
+        $migrate->createTable('PandaBlack\Models\Categories');
     }
 }
