@@ -3,6 +3,7 @@
 namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\SettingsHelper;
+use PandaBlack\Repositories\CategoryRepository;
 use Plenty\Plugin\Controller;
 
 /**
@@ -83,5 +84,30 @@ class CategoryController extends Controller
                 $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $categoriesListAsDropdown);
             }
         }
+    }
+
+
+    public function saveCategoriesInDb()
+    {
+        $categoryRepo = pluginApp(CategoryRepository::class);
+        $categories = $this->getPBCategoriesAsDropdown();
+
+        foreach($categories as $key => $category)
+        {
+            $categoryData = [
+                'categoryId' => $key,
+                'treePath' => $category
+            ];
+
+            $categoryRepo->createCategory($categoryData);
+        }
+    }
+
+
+    public function getCatetgories()
+    {
+        $categoryRepo = pluginApp(CategoryRepository::class);
+
+        return $categoryRepo->getCategories();
     }
 }

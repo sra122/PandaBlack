@@ -17,6 +17,7 @@
     "PandaBlack\\Migrations\\MergePandaBlackSettings",
     "PandaBlack\\Migrations\\PandaBlackOrderReferrer",
     "PandaBlack\\Migrations\\PandaBlackAddress",
-    "PandaBlack\\Migrations\\PandaBlackCategories"
+    "PandaBlack\\Migrations\\PandaBlackCategories",
+    "PandaBlack\\Migrations\\CreatePbCategoriesTable"
   ]
 }
