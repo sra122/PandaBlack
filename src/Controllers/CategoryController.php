@@ -101,8 +101,6 @@ class CategoryController extends Controller
 
             $categoryRepo->createCategory($categoryData);
         }
-
-        return $this->getCategories();
     }
 
 
@@ -110,6 +108,6 @@ class CategoryController extends Controller
     {
         $categoryRepo = pluginApp(CategoryRepository::class);
 
-        return $categoryRepo->getCategories();
+        return $categoryRepo->getCategory(54);
     }
 }
