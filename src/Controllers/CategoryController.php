@@ -101,6 +101,8 @@ class CategoryController extends Controller
 
             $categoryRepo->createCategory($categoryData);
         }
+
+        return $this->getCategories();
     }
 
 
