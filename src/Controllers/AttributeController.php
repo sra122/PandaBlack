@@ -2,9 +2,10 @@
 
 namespace PandaBlack\Controllers;
 
-use PandaBlack\Contracts\AttributesRepositoryContract;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
+use PandaBlack\Repositories\AttributeRepository;
+use PandaBlack\Repositories\AttributeValueRepository;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
@@ -56,8 +57,8 @@ class AttributeController extends Controller
         if(isset($attributes[$categoryId]) && ($attributes[$categoryId] !== null)) {
             return $attributes[$categoryId];
         } else {
-            $attributesRepo = pluginApp(AttributesRepositoryContract::class);
-            $attributeValueRepo = pluginApp(AttributeValueRepositoryContract::class);
+            $attributesRepo = pluginApp(AttributeRepository::class);
+            $attributeValueRepo = pluginApp(AttributeValueRepository::class);
             $attributes = $attributesRepo->getAttributeForCategory($categoryId);
             $attributesInfo = [];
             if(count($attributes) <= 0) {
