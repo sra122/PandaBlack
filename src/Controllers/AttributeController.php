@@ -116,6 +116,8 @@ class AttributeController extends Controller
 
             $attributes[$categoryId] = $attributesInfo;
             $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
+
+            return $attributes[$categoryId];
         }
     }
 
