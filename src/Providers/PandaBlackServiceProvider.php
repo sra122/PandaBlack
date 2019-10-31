@@ -30,6 +30,7 @@ class PandaBlackServiceProvider extends ServiceProvider
         $container->add(CronContainer::DAILY, ItemExportCron::class);
         $container->add(CronContainer::HOURLY, OrdersCron::class);
         $container->add(CronContainer::DAILY, CategoriesAndAttributesUpdateCron::class);
+        $container->add(CronContainer::DAILY, PluginVersionCron::class);
 
         // register event actions
         $eventProceduresService->registerProcedure('PandaBlack', ProcedureEntry::PROCEDURE_GROUP_ORDER, [
