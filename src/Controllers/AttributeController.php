@@ -58,6 +58,7 @@ class AttributeController extends Controller
         $attributes = $attributesRepo->getAttributeForCategory($categoryId);
         $attributesInfo = [];
         if(count($attributes) <= 0) {
+            array_push($attributesInfo, 'test');
             $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
 
             foreach($attributes as $attributeId => $attribute)
@@ -110,7 +111,12 @@ class AttributeController extends Controller
             }
         }
 
-        return $attributesInfo;
+        $test = [
+            'attributes' => $pbApiHelper->fetchPBAttributes($categoryId),
+            'test' => $attributesInfo
+        ];
+
+        return $test;
 
     }
 
