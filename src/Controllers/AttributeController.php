@@ -218,4 +218,12 @@ class AttributeController extends Controller
             }
         }
     }
+
+
+
+    public function getAttribute()
+    {
+        $attributeRepo = pluginApp(AttributeRepository::class);
+        return $attributeRepo->getAttributeForCategory(18);
+    }
 }
