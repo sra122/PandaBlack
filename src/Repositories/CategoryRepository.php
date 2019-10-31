@@ -95,6 +95,6 @@ class CategoryRepository implements CategoriesRepositoryContract
             $categoryTree[$category['category_identifier']] = $category['tree_path'];
         }*/
 
-        return count($categories);
+        return $categories[0]->tree_path;
     }
 }
