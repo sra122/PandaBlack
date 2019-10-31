@@ -84,9 +84,9 @@ class CategoryRepository implements CategoriesRepositoryContract
     }
 
 
-    public function getCategories(): Query
+    public function getCategories()
     {
-        $categoryData = $this->database->query(Categories::class)->where('category_identifier')->forPage(1);
+        $categoryData = $this->database->query(Categories::class)->where('category_identifier');
 
         return $categoryData;
     }

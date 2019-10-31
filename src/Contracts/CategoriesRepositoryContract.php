@@ -39,5 +39,5 @@ interface CategoriesRepositoryContract
     /**
      * @return array
      */
-    public function getCategories() :Query;
+    public function getCategories();
 }
