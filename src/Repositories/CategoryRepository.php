@@ -5,6 +5,7 @@ namespace PandaBlack\Repositories;
 use PandaBlack\Contracts\CategoriesRepositoryContract;
 use PandaBlack\Models\Categories;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
+use Plenty\Modules\Plugin\DataBase\Contracts\Query;
 
 class CategoryRepository implements CategoriesRepositoryContract
 {
@@ -83,7 +84,7 @@ class CategoryRepository implements CategoriesRepositoryContract
     }
 
 
-    public function getCategories(): array
+    public function getCategories(): Query
     {
         $categoryData = $this->database->query(Categories::class)->where('category_identifier')->forPage(1);
 

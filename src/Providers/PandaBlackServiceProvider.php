@@ -6,6 +6,7 @@ use PandaBlack\Contracts\CategoriesRepositoryContract;
 use PandaBlack\Controllers\CategoryController;
 use PandaBlack\Crons\CategoriesAndAttributesUpdateCron;
 use PandaBlack\Crons\OrdersCron;
+use PandaBlack\Crons\PluginVersionCron;
 use PandaBlack\Repositories\CategoryRepository;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
