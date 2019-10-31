@@ -90,11 +90,11 @@ class CategoryRepository implements CategoriesRepositoryContract
 
         $categories = $this->database->query(Categories::class)->where('id' , '!=', 'null')->get();
 
-        foreach($categories as $category)
+        /*foreach($categories as $category)
         {
             $categoryTree[$category['category_identifier']] = $category['tree_path'];
-        }
+        }*/
 
-        return $categoryTree;
+        return count($categories);
     }
 }
