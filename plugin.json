@@ -19,9 +19,7 @@
     "PandaBlack\\Migrations\\PandaBlackAddress",
     "PandaBlack\\Migrations\\PandaBlackCategories",
     "PandaBlack\\Migrations\\CreateCategoriesTable",
-    "PandaBlack\\Migrations\\CreateAttributesTable",
-    "PandaBlack\\Migrations\\CreateAttributeValuesTable",
-    "PandaBlack\\Migrations\\DeleteAttributesTable",
-    "PandaBlack\\Migrations\\DeleteAttributeValuesTable"
+    "PandaBlack\\Migrations\\CreateAttributes",
+    "PandaBlack\\Migrations\\CreateAttributeValues"
   ]
 }
