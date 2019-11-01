@@ -88,7 +88,7 @@ class AttributeController extends Controller
                     }
 
                     $attributesInfo[(int)$attributeId] = [
-                        'category_id' => $categoryId,
+                        'categoryId' => $categoryId,
                         'name' => $attribute['name'],
                         'values' => $values
                     ];
