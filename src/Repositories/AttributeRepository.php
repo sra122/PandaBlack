@@ -42,6 +42,8 @@ class AttributeRepository implements AttributesRepositoryContract
             $this->database->save($attribute);
 
             return $attribute;
+        } else {
+            return $attributeData[0];
         }
     }
 

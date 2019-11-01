@@ -7,6 +7,9 @@ use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\AttributeRepository;
 use PandaBlack\Repositories\AttributeValueRepository;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
+use Plenty\Modules\Item\Attribute\Models\Attribute;
+use Plenty\Modules\Item\Attribute\Models\AttributeValue;
+use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
@@ -49,7 +52,7 @@ class AttributeController extends Controller
      */
     public function getPBAttributes($categoryId)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
+        /*$settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
 
         $attributesRepo = pluginApp(AttributeRepository::class);
@@ -72,12 +75,13 @@ class AttributeController extends Controller
 
                     $values = [];
 
-                    foreach($attribute['values'] as $attributeValue)
+                    foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
                     {
                         $attributeValueData = [
                             'categoryId' => (int)$categoryId,
                             'attributeId' => (int)$attributeId,
-                            'attributeValueName' => $attributeValue
+                            'attributeValueName' => $attributeValue,
+                            'attributeValueIdentifier' => $attributeValueIdentifier
                         ];
 
                         $attributeValueRepo->createAttributeValue($attributeValueData);
@@ -108,7 +112,7 @@ class AttributeController extends Controller
                     'values' => $values
                 ];
             }
-        }
+        }*/
 
         return $attributesInfo;
     }

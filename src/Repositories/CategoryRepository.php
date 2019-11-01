@@ -39,6 +39,8 @@ class CategoryRepository implements CategoriesRepositoryContract
             $this->database->save($category);
 
             return $category;
+        } else {
+            return $categoryData[0];
         }
     }
 

@@ -40,10 +40,13 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
             $attributeValue->category_identifier = $data['categoryId'];
             $attributeValue->attribute_identifier = $data['attributeId'];
             $attributeValue->name = $data['attributeValueName'];
+            $attributeValue->attribute_value_identifier = $data['attributeValueIdentifier'];
 
             $this->database->save($attributeValue);
 
             return $attributeValue;
+        } else {
+            return $attributeValueData[0];
         }
     }
 
