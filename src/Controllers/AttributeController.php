@@ -70,7 +70,7 @@ class AttributeController extends Controller
                         'attributeId' => (int)$attributeId,
                         'attributeName' => $attribute['name']
                     ];
-                    //$attributesRepo->createAttribute($attributeData);
+                    $attributesRepo->createAttribute($attributeData);
 
                     $values = [];
 
@@ -83,8 +83,8 @@ class AttributeController extends Controller
                             'attributeValueIdentifier' => (int)$attributeValueIdentifier
                         ];
 
-                        //$attributeValueRepo->createAttributeValue($attributeValueData);
-                        array_push($values, $attributeValueData);
+                        $attributeValueRepo->createAttributeValue($attributeValueData);
+                        $values[(int)$attributeValueIdentifier] = $attributeValue;
                     }
 
                     $attributesInfo[(int)$attributeId] = [
@@ -102,7 +102,7 @@ class AttributeController extends Controller
 
                 foreach($attributeValues as $attributeValue)
                 {
-                    array_push($values, $attributeValue->name);
+                    $values[$attributeValue->attribute_value_identifier] = $attributeValue->name;
                 }
 
                 $attributesInfo[$attribute->attribute_identifier] = [
