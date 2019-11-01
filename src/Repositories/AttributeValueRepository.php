@@ -31,7 +31,7 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
     {
         $attributeValue = pluginApp(AttributeValues::class);
 
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('name', '=', $data['attributeValueName'])->where('attribute_identifier', '=', $data['attributeId'])->where('attribute_value_identifier', '=', $data['attributeValueId'])>get();
+        $attributeValueData = $this->database->query(AttributeValues::class)->where('name', '=', $data['attributeValueName'])->where('attribute_identifier', '=', $data['attributeId'])->where('attribute_value_identifier', '=', $data['attributeValueId'])->get();
 
         if(count($attributeValueData) <= 0 || $attributeValueData === null) {
             $attributeValue->category_identifier = $data['categoryId'];
