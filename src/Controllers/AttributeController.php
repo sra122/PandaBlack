@@ -62,17 +62,17 @@ class AttributeController extends Controller
 
             foreach($attributes as $attributeId => $attribute)
             {
-                if($attribute->required) {
+                if($attribute['required']) {
                     $attributeData = [
                         'categoryId' => (int)$categoryId,
-                        'attributeName' => $attribute->name,
-                        'attributeId' => (int)$attributeId
+                        'attributeId' => (int)$attributeId,
+                        'attributeName' => $attribute['name']
                     ];
                     $attributesRepo->createAttribute($attributeData);
 
                     $values = [];
 
-                    foreach($attribute->values as $attributeValue)
+                    foreach($attribute['values'] as $attributeValue)
                     {
                         $attributeValueData = [
                             'categoryId' => (int)$categoryId,
@@ -86,7 +86,7 @@ class AttributeController extends Controller
 
                     $attributesInfo[(int)$attributeId] = [
                         'category_id' => $categoryId,
-                        'name' => $attribute->name,
+                        'name' => $attribute['name'],
                         'values' => $values
                     ];
                 }
@@ -102,7 +102,7 @@ class AttributeController extends Controller
                     array_push($values, $attributeValue->name);
                 }
 
-                $attributesInfo[$attribute->identifier] = [
+                $attributesInfo[$attribute->attribute_identifier] = [
                     'categoryId' => $categoryId,
                     'name' => $attribute->name,
                     'values' => $values
@@ -111,7 +111,6 @@ class AttributeController extends Controller
         }
 
         $test = [
-            'attributes' => $pbApiHelper->fetchPBAttributes($categoryId)[1]['required'],
             'test' => $attributesInfo
         ];
 
