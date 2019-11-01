@@ -52,6 +52,20 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
     }
 
 
+
+    public function getAttributeValue($id)
+    {
+        $attributeValueData = $this->database->query(AttributeValues::class)
+            ->where('attribute_value_identifier', '=', $id)->get();
+
+        if(count($attributeValueData) > 0) {
+            return $attributeValueData[0];
+        } else {
+            return false;
+        }
+    }
+
+
     /**
      * @param $id
      * @return array

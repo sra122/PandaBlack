@@ -49,42 +49,54 @@ class AttributeRepository implements AttributesRepositoryContract
 
     /**
      * @param $id
-     * @return array
+     * @return array|mixed
      */
-    public function getAttributeForCategory($id): array
+    public function getAttributeForCategory($id)
     {
         $attributeData = $this->database->query(Attributes::class)->where('category_identifier', '=', $id)->get();
 
-        return $attributeData;
+        if(count($attributeData) > 0) {
+            return $attributeData;
+        } else {
+            return false;
+        }
     }
 
 
     /**
      * @param $id
-     * @return Attributes
+     * @return mixed
      */
-    public function getAttribute($id): Attributes
+    public function getAttribute($id)
     {
-        $attributeData = $this->database->query(Attributes::class)->where('id', '=', $id)->get();
+        $attributeData = $this->database->query(Attributes::class)->where('attribute_identifier', '=', $id)->get();
 
-        return $attributeData[0];
+        if(count($attributeData) > 0) {
+            return $attributeData[0];
+        } else {
+            return false;
+        }
     }
 
 
     /**
      * @param $id
      * @param $attributeName
-     * @return Attributes
+     * @return mixed
      */
-    public function updateAttribute($id, $attributeName): Attributes
+    public function updateAttribute($id, $attributeName)
     {
-        $attributeData = $this->database->query(Attributes::class)->where('id', '=', $id)->get();
+        $attributeData = $this->database->query(Attributes::class)->where('attribute_identifier', '=', $id)->get();
 
-        $attribute = $attributeData[0];
-        $attribute->name = $attributeName;
-        $this->database->save($attribute);
+        if(count($attributeData) > 0) {
+            $attribute = $attributeData[0];
+            $attribute->name = $attributeName;
+            $this->database->save($attribute);
 
-        return $attribute;
+            return $attribute;
+        } else {
+            return false;
+        }
     }
 
 
@@ -94,7 +106,7 @@ class AttributeRepository implements AttributesRepositoryContract
      */
     public function deleteAttribute($id): Attributes
     {
-        $attributeData = $this->database->query(Attributes::class)->where('id', '=', $id)->get();
+        $attributeData = $this->database->query(Attributes::class)->where('attribute_identifier', '=', $id)->get();
 
         $attribute = $attributeData[0];
         $this->database->delete($attribute);
@@ -115,5 +127,24 @@ class AttributeRepository implements AttributesRepositoryContract
         {
             $this->database->delete($attribute);
         }
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getUniqueCategories(): array
+    {
+        $categoriesInfo = [];
+        $categories = $this->database->query(Attributes::class)->where('id' , '!=', null)->get();
+
+        foreach($categories as $category)
+        {
+            if(!isset($categoriesInfo[$category->category_identifier])) {
+                $categoriesInfo[$category->category_identifier] = $category->category_identifier;
+            }
+        }
+
+        return $categoriesInfo;
     }
 }

@@ -7,29 +7,32 @@ use PandaBlack\Models\Attributes;
 interface AttributesRepositoryContract
 {
 
+    /**
+     * @param array $data
+     * @return Attributes
+     */
     public function createAttribute(array $data): Attributes;
 
 
     /**
      * @param $id
-     * @return array
+     * @return mixed
      */
-    public function getAttributeForCategory($id): array;
+    public function getAttributeForCategory($id);
 
 
     /**
      * @param $id
-     * @param $categoryTreePath
-     * @return Attributes
+     * @return mixed
      */
-    public function getAttribute($id): Attributes;
+    public function getAttribute($id);
 
     /**
      * @param $id
      * @param $attributeName
-     * @return Attributes
+     * @return mixed
      */
-    public function updateAttribute($id, $attributeName): Attributes;
+    public function updateAttribute($id, $attributeName);
 
     /**
      * @param $id
@@ -42,4 +45,9 @@ interface AttributesRepositoryContract
      * @return mixed
      */
     public function deleteAttributeForCategory($categoryId);
+
+    /**
+     * @return array
+     */
+    public function getUniqueCategories(): array;
 }

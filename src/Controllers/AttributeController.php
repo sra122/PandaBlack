@@ -216,11 +216,40 @@ class AttributeController extends Controller
         }
     }
 
-
-
     public function getAttribute()
     {
         $attributeRepo = pluginApp(AttributeRepository::class);
         return $attributeRepo->getAttributeForCategory(18);
+    }
+
+
+    public function updateAttributes()
+    {
+        $attributeRepo = pluginApp(AttributeRepository::class);
+        $attributeValueRepo = pluginApp(AttributeValueRepository::class);
+        $pbApiHelper = pluginApp(PBApiHelper::class);
+        $categories = $attributeRepo->getUniqueCategories();
+
+        foreach($categories as $categoryId => $category)
+        {
+            $attributes = $pbApiHelper->fetchPBAttributes($category);
+
+            foreach($attributes as $attributeIdentifier => $attribute)
+            {
+                $attributeData = $attributeRepo->getAttribute((int)$attributeIdentifier);
+
+                if($attributeData) {
+                    foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
+                    {
+                        $attributeValueData = $attributeValueRepo->getAttributeValuesForAttribute((int)$attributeValueIdentifier);
+                        if($attributeValueData){
+                            if($attributeValueData->name !== $attributeValue) {
+                                $attributeValueRepo->updateAttributeValue((int)$attributeValueIdentifier, $attributeValue);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

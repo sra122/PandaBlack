@@ -16,6 +16,12 @@ interface AttributeValuesRepositoryContract
 
     /**
      * @param $id
+     * @return mixed
+     */
+    public function getAttributeValue($id);
+
+    /**
+     * @param $id
      * @return array
      */
     public function getAttributeValuesForAttribute($id): array;
