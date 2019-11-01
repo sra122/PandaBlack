@@ -80,7 +80,7 @@ class AttributeController extends Controller
                             'categoryId' => (int)$categoryId,
                             'attributeId' => (int)$attributeId,
                             'attributeValueName' => $attributeValue,
-                            'attributeValueIdentifier' => (int)$attributeValueIdentifier
+                            'attributeValueId' => (int)$attributeValueIdentifier
                         ];
 
                         $attributeValueRepo->createAttributeValue($attributeValueData);
