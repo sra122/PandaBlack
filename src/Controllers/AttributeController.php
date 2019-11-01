@@ -110,10 +110,12 @@ class AttributeController extends Controller
             }
         }
 
-        foreach($pbApiHelper->fetchPBAttributes($categoryId) as $attributesData) {
-            return $attributesData;
-        }
-        //return $test;
+        $test = [
+            'attributes' => $pbApiHelper->fetchPBAttributes($categoryId)[1]['required'],
+            'test' => $attributesInfo
+        ];
+
+        return $test;
     }
 
     /**
