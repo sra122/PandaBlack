@@ -49,7 +49,7 @@ class AttributeController extends Controller
      */
     public function getPBAttributes($categoryId)
     {
-        /*$settingsHelper = pluginApp(SettingsHelper::class);
+        $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
 
         $attributesRepo = pluginApp(AttributeRepository::class);
@@ -59,7 +59,7 @@ class AttributeController extends Controller
         $attributesInfo = [];
         if(count($attributes) <= 0) {
             $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
-
+            array_push($attributesInfo, 'test');
             foreach($attributes as $attributeId => $attribute)
             {
                 if($attribute['required']) {
@@ -108,9 +108,9 @@ class AttributeController extends Controller
                     'values' => $values
                 ];
             }
-        }*/
+        }
 
-        return 'test';
+        return $attributesInfo;
     }
 
     /**
