@@ -30,7 +30,9 @@ class AttributeRepository implements AttributesRepositoryContract
     {
         $attribute = pluginApp(Attributes::class);
 
-        $attributeData = $this->database->query(Attributes::class)->where('name', '=', $data['attributeName'])->where('category_identifier', '=', $data['categoryId'])->get();
+        $attributeData = $this->database->query(Attributes::class)
+            ->where('name', '=', $data['attributeName'])
+            ->where('category_identifier', '=', $data['categoryId'])->get();
 
         if(count($attributeData) <= 0 || $attributeData === null) {
             $attribute->category_identifier = $data['categoryId'];

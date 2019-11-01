@@ -29,7 +29,8 @@ class CategoryRepository implements CategoriesRepositoryContract
     {
         $category = pluginApp(Categories::class);
 
-        $categoryData = $this->database->query(Categories::class)->where('category_identifier', '=', $data['categoryId'])->get();
+        $categoryData = $this->database->query(Categories::class)
+            ->where('category_identifier', '=', $data['categoryId'])->get();
 
         if(count($categoryData) <= 0 || $categoryData === null) {
             $category->category_identifier = $data['categoryId'];
@@ -51,7 +52,8 @@ class CategoryRepository implements CategoriesRepositoryContract
      */
     public function updateCategory($id, $categoryTreePath): Categories
     {
-        $categoryData = $this->database->query(Categories::class)->where('category_identifier', '=', $id)->get();
+        $categoryData = $this->database->query(Categories::class)
+            ->where('category_identifier', '=', $id)->get();
         $category = $categoryData[0];
 
         $category->tree_path = $categoryTreePath;
@@ -67,7 +69,8 @@ class CategoryRepository implements CategoriesRepositoryContract
      */
     public function getCategory($id): array
     {
-        $categoryData = $this->database->query(Categories::class)->where('category_identifier', '=', $id)->get();
+        $categoryData = $this->database->query(Categories::class)
+            ->where('category_identifier', '=', $id)->get();
 
         return $categoryData;
     }
@@ -76,7 +79,8 @@ class CategoryRepository implements CategoriesRepositoryContract
 
     public function deleteCategory($id): Categories
     {
-        $categoryData = $this->database->query(Categories::class)->where('category_identifier', '=', $id)->get();
+        $categoryData = $this->database->query(Categories::class)
+            ->where('category_identifier', '=', $id)->get();
 
         $category = $categoryData[0];
         $this->database->delete($category);
@@ -89,7 +93,8 @@ class CategoryRepository implements CategoriesRepositoryContract
     {
         $categoryTree = [];
 
-        $categories = $this->database->query(Categories::class)->where('id' , '!=', 'null')->get();
+        $categories = $this->database->query(Categories::class)
+            ->where('id' , '!=', 'null')->get();
 
         foreach($categories as $category)
         {

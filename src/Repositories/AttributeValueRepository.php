@@ -31,7 +31,11 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
     {
         $attributeValue = pluginApp(AttributeValues::class);
 
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('name', '=', $data['attributeValueName'])->where('attribute_identifier', '=', $data['attributeId'])->where('attribute_value_identifier', '=', $data['attributeValueId'])->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)
+            ->where('name', '=', $data['attributeValueName'])
+            ->where('attribute_identifier', '=', $data['attributeId'])
+            ->where('attribute_value_identifier', '=', $data['attributeValueId'])
+            ->get();
 
         if(count($attributeValueData) <= 0 || $attributeValueData === null) {
             $attributeValue->category_identifier = $data['categoryId'];
@@ -54,7 +58,8 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function getAttributeValuesForAttribute($id): array
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('attribute_identifier', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)
+            ->where('attribute_identifier', '=', $id)->get();
 
         return $attributeValueData;
     }
@@ -66,7 +71,8 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function getAttributeValueForCategory($id): array
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('category_identifier', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)
+            ->where('category_identifier', '=', $id)->get();
 
         return $attributeValueData;
     }
@@ -77,7 +83,8 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function getAttributeValueForAttributeId($id): AttributeValues
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('attribute_value_identifier', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)
+            ->where('attribute_value_identifier', '=', $id)->get();
 
         return $attributeValueData[0];
     }
@@ -90,7 +97,8 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function updateAttributeValue($id, $attributeValueName): AttributeValues
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('attribute_value_identifier', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)
+            ->where('attribute_value_identifier', '=', $id)->get();
 
         $attributeValue = $attributeValueData[0];
         $attributeValue->name = $attributeValueName;
@@ -106,7 +114,8 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function deleteAttributeValue($id): AttributeValues
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('attribute_value_identifier', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)
+            ->where('attribute_value_identifier', '=', $id)->get();
 
         $attributeValue = $attributeValueData[0];
         $this->database->delete($attributeValue);
@@ -121,7 +130,8 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function deleteAttributeValueForAttribute($attributeId)
     {
-        $attributeValues = $this->database->query(AttributeValues::class)->where('attribute_identifier', '=', $attributeId)->get();
+        $attributeValues = $this->database->query(AttributeValues::class)
+            ->where('attribute_identifier', '=', $attributeId)->get();
 
         foreach($attributeValues as $attributeValue)
         {
@@ -135,7 +145,8 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function deleteAttributeValueForCategory($categoryId)
     {
-        $attributeValues = $this->database->query(AttributeValues::class)->where('category_identifier', '=', $categoryId)->get();
+        $attributeValues = $this->database->query(AttributeValues::class)
+            ->where('category_identifier', '=', $categoryId)->get();
 
         foreach($attributeValues as $attributeValue)
         {
