@@ -3,11 +3,9 @@
 namespace PandaBlack\Repositories;
 
 use PandaBlack\Contracts\AttributesRepositoryContract;
-use PandaBlack\Contracts\CategoriesRepositoryContract;
 use PandaBlack\Models\Attributes;
 use PandaBlack\Models\Categories;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
-use Plenty\Modules\Plugin\DataBase\Contracts\Query;
 
 class AttributeRepository implements AttributesRepositoryContract
 {
@@ -38,7 +36,6 @@ class AttributeRepository implements AttributesRepositoryContract
             $attribute->category_identifier = $data['categoryId'];
             $attribute->name = $data['attributeName'];
             $attribute->attribute_identifier = $data['attributeId'];
-
             $this->database->save($attribute);
 
             return $attribute;
@@ -101,5 +98,20 @@ class AttributeRepository implements AttributesRepositoryContract
         $this->database->delete($attribute);
 
         return $attribute;
+    }
+
+
+    /**
+     * @param $id
+     * @return mixed|void
+     */
+    public function deleteAttributeForCategory($id)
+    {
+        $attributes = $this->database->query(Attributes::class)->where('category_identifier', '=', $id)->get();
+
+        foreach($attributes as $attribute)
+        {
+            $this->database->delete($attribute);
+        }
     }
 }

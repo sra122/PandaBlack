@@ -1,10 +1,10 @@
 <?php
 namespace PandaBlack\Migrations;
 use Plenty\Modules\Plugin\DataBase\Contracts\Migrate;
-class DeleteAttributeValuesTable
+class CreateAttributes
 {
     public function run(Migrate $migrate)
     {
-        $migrate->deleteTable('PandaBlack\Models\AttributeValues');
+        $migrate->createTable('PandaBlack\Models\Attributes');
     }
 }

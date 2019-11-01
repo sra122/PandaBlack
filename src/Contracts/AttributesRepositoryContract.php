@@ -24,6 +24,12 @@ interface AttributesRepositoryContract
      */
     public function getAttribute($id): Attributes;
 
+    /**
+     * @param $id
+     * @param $attributeName
+     * @return Attributes
+     */
+    public function updateAttribute($id, $attributeName): Attributes;
 
     /**
      * @param $id
@@ -31,11 +37,9 @@ interface AttributesRepositoryContract
      */
     public function deleteAttribute($id): Attributes;
 
-
     /**
-     * @param $id
-     * @param $attributeName
-     * @return Attributes
+     * @param $categoryId
+     * @return mixed
      */
-    public function updateAttribute($id, $attributeName): Attributes;
+    public function deleteAttributeForCategory($categoryId);
 }

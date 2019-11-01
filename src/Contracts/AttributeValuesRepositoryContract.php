@@ -25,7 +25,7 @@ interface AttributeValuesRepositoryContract
      * @param $categoryTreePath
      * @return Attributes
      */
-    public function getAttributeValue($id): AttributeValues;
+    public function getAttributeValueForAttributeId($id): AttributeValues;
 
     /**
      * @param $id
@@ -35,14 +35,27 @@ interface AttributeValuesRepositoryContract
 
     /**
      * @param $id
+     * @param $attributeName
+     * @return Attributes
+     */
+    public function updateAttributeValue($id, $attributeName): AttributeValues;
+
+    /**
+     * @param $id
      * @return Attributes
      */
     public function deleteAttributeValue($id): AttributeValues;
 
     /**
-     * @param $id
-     * @param $attributeName
-     * @return Attributes
+     * @param $attributeId
+     * @return mixed
      */
-    public function updateAttributeValue($id, $attributeName): AttributeValues;
+    public function deleteAttributeValueForAttribute($attributeId);
+
+    /**
+     * @param $categoryId
+     * @return mixed
+     */
+    public function deleteAttributeValueForCategory($categoryId);
+
 }

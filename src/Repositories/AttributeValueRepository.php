@@ -2,14 +2,11 @@
 
 namespace PandaBlack\Repositories;
 
-use PandaBlack\Contracts\AttributesRepositoryContract;
 use PandaBlack\Contracts\AttributeValuesRepositoryContract;
-use PandaBlack\Contracts\CategoriesRepositoryContract;
 use PandaBlack\Models\Attributes;
 use PandaBlack\Models\AttributeValues;
 use PandaBlack\Models\Categories;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
-use Plenty\Modules\Plugin\DataBase\Contracts\Query;
 
 class AttributeValueRepository implements AttributeValuesRepositoryContract
 {
@@ -34,13 +31,13 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
     {
         $attributeValue = pluginApp(AttributeValues::class);
 
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('name', '=', $data['attributeValueName'])->where('attribute_identifier', '=', $data['attributeId'])->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)->where('name', '=', $data['attributeValueName'])->where('attribute_identifier', '=', $data['attributeId'])->where('attribute_value_identifier', '=', $data['attributeValueId'])>get();
 
         if(count($attributeValueData) <= 0 || $attributeValueData === null) {
             $attributeValue->category_identifier = $data['categoryId'];
             $attributeValue->attribute_identifier = $data['attributeId'];
             $attributeValue->name = $data['attributeValueName'];
-            //$attributeValue->attribute_value_identifier = $data['attributeValueIdentifier'];
+            $attributeValue->attribute_value_identifier = $data['attributeValueId'];
 
             $this->database->save($attributeValue);
 
@@ -78,9 +75,9 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      * @param $id
      * @return AttributeValues
      */
-    public function getAttributeValue($id): AttributeValues
+    public function getAttributeValueForAttributeId($id): AttributeValues
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('id', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)->where('attribute_value_identifier', '=', $id)->get();
 
         return $attributeValueData[0];
     }
@@ -93,7 +90,7 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function updateAttributeValue($id, $attributeValueName): AttributeValues
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('id', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)->where('attribute_value_identifier', '=', $id)->get();
 
         $attributeValue = $attributeValueData[0];
         $attributeValue->name = $attributeValueName;
@@ -109,11 +106,40 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
      */
     public function deleteAttributeValue($id): AttributeValues
     {
-        $attributeValueData = $this->database->query(AttributeValues::class)->where('id', '=', $id)->get();
+        $attributeValueData = $this->database->query(AttributeValues::class)->where('attribute_value_identifier', '=', $id)->get();
 
         $attributeValue = $attributeValueData[0];
         $this->database->delete($attributeValue);
 
         return $attributeValue;
+    }
+
+
+    /**
+     * @param $attributeId
+     * @return mixed|void
+     */
+    public function deleteAttributeValueForAttribute($attributeId)
+    {
+        $attributeValues = $this->database->query(AttributeValues::class)->where('attribute_identifier', '=', $attributeId)->get();
+
+        foreach($attributeValues as $attributeValue)
+        {
+            $this->database->delete($attributeValue);
+        }
+    }
+
+    /**
+     * @param $categoryId
+     * @return mixed|void
+     */
+    public function deleteAttributeValueForCategory($categoryId)
+    {
+        $attributeValues = $this->database->query(AttributeValues::class)->where('category_identifier', '=', $categoryId)->get();
+
+        foreach($attributeValues as $attributeValue)
+        {
+            $this->database->delete($attributeValue);
+        }
     }
 }

@@ -5,7 +5,6 @@ namespace PandaBlack\Repositories;
 use PandaBlack\Contracts\CategoriesRepositoryContract;
 use PandaBlack\Models\Categories;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
-use Plenty\Modules\Plugin\DataBase\Contracts\Query;
 
 class CategoryRepository implements CategoriesRepositoryContract
 {

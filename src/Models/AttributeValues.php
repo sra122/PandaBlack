@@ -16,6 +16,12 @@ class AttributeValues extends Model
      * @var int
      */
     public $category_identifier;
+
+    /**
+     * @var int
+     */
+    public $attribute_value_identifier;
+
     /**
      * @var string
      */
