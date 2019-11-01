@@ -62,7 +62,6 @@ class AttributeController extends Controller
         $attributesInfo = [];
         if(count($attributes) <= 0) {
             $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
-            array_push($attributesInfo, 'test');
             foreach($attributes as $attributeId => $attribute)
             {
                 if($attribute['required']) {
@@ -71,7 +70,7 @@ class AttributeController extends Controller
                         'attributeId' => (int)$attributeId,
                         'attributeName' => $attribute['name']
                     ];
-                    $attributesRepo->createAttribute($attributeData);
+                    //$attributesRepo->createAttribute($attributeData);
 
                     $values = [];
 
@@ -84,8 +83,8 @@ class AttributeController extends Controller
                             'attributeValueIdentifier' => (int)$attributeValueIdentifier
                         ];
 
-                        $attributeValueRepo->createAttributeValue($attributeValueData);
-                        array_push($values, $attributeValue);
+                        //$attributeValueRepo->createAttributeValue($attributeValueData);
+                        array_push($values, $attributeValueData);
                     }
 
                     $attributesInfo[(int)$attributeId] = [
