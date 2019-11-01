@@ -20,6 +20,8 @@
     "PandaBlack\\Migrations\\PandaBlackCategories",
     "PandaBlack\\Migrations\\CreateCategoriesTable",
     "PandaBlack\\Migrations\\CreateAttributesTable",
-    "PandaBlack\\Migrations\\CreateAttributeValuesTable"
+    "PandaBlack\\Migrations\\CreateAttributeValuesTable",
+    "PandaBlack\\Migrations\\DeleteAttributesTable",
+    "PandaBlack\\Migrations\\DeleteAttributeValuesTable"
   ]
 }
