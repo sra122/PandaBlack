@@ -114,7 +114,7 @@ class AttributeController extends Controller
             }
         }*/
 
-        return $attributesInfo;
+        return '';
     }
 
     /**
