@@ -49,7 +49,7 @@ class AttributeController extends Controller
      */
     public function getPBAttributes($categoryId)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
+        /*$settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
 
         $attributesRepo = pluginApp(AttributeRepository::class);
@@ -108,9 +108,9 @@ class AttributeController extends Controller
                     'values' => $values
                 ];
             }
-        }
+        }*/
 
-        return $attributesInfo;
+        return 'test';
     }
 
     /**
