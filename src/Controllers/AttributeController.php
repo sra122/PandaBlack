@@ -110,11 +110,7 @@ class AttributeController extends Controller
             }
         }
 
-        $test = [
-            'test' => $attributesInfo
-        ];
-
-        return $test;
+        return $attributesInfo;
     }
 
     /**

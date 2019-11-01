@@ -39,7 +39,7 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
         if(count($attributeValueData) <= 0 || $attributeValueData === null) {
             $attributeValue->category_identifier = $data['categoryId'];
             $attributeValue->attribute_identifier = $data['attributeId'];
-            $attributeValue->name = $data['attributeName'];
+            $attributeValue->name = $data['attributeValueName'];
 
             $this->database->save($attributeValue);
 
