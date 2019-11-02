@@ -55,11 +55,7 @@ class AttributeRepository implements AttributesRepositoryContract
     {
         $attributeData = $this->database->query(Attributes::class)->where('category_identifier', '=', $id)->get();
 
-        if(count($attributeData) > 0) {
-            return $attributeData;
-        } else {
-            return false;
-        }
+        return $attributeData;
     }
 
 
