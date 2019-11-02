@@ -18,7 +18,7 @@ interface AttributesRepositoryContract
      * @param $id
      * @return mixed
      */
-    public function getAttributeForCategory($id): Attributes;
+    public function getAttributeForCategory($id);
 
 
     /**

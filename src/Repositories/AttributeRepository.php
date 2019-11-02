@@ -46,12 +46,11 @@ class AttributeRepository implements AttributesRepositoryContract
         }
     }
 
-
     /**
      * @param $id
-     * @return Attributes
+     * @return mixed
      */
-    public function getAttributeForCategory($id): Attributes
+    public function getAttributeForCategory($id)
     {
         $attributeData = $this->database->query(Attributes::class)->where('category_identifier', '=', $id)->get();
 
