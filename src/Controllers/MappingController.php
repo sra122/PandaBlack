@@ -124,7 +124,30 @@ class MappingController extends Controller
      */
     private function saveMapping()
     {
-        $this->settingsHelper->set(SettingsHelper::MAPPING_INFO, $this->mappingInfo);
+        $propertyRepo = pluginApp(PropertiesRepository::class);
+
+        // Property
+        foreach($this->mappingInfo['property'] as $property)
+        {
+            $propertyData = [
+                'type' => self::PROPERTY,
+                'value' => $property
+            ];
+
+            $propertyRepo->createProperty($propertyData);
+        }
+
+        // PropertyValue
+        foreach($this->mappingInfo['propertyValue'] as $propertyValue)
+        {
+            $propertyValueData = [
+                'type' => self::PROPERTY_VALUE,
+                'value' => $propertyValue
+            ];
+
+            $propertyRepo->createProperty($propertyValueData);
+        }
+        //$this->settingsHelper->set(SettingsHelper::MAPPING_INFO, $this->mappingInfo);
     }
 
 
