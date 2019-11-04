@@ -16,11 +16,11 @@ use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 class AttributeController extends Controller
 {
     /**
-     * CreatePBAttributes Method
+     * CreatePMAttributes Method
      *
      * @param $categoryId
      */
-    public function createPBAttributes($categoryId)
+    public function createPMAttributes($categoryId)
     {
         $app = pluginApp(AppController::class);
         $attributeValueSets = $app->authenticate('pandaBlack_attributes', $categoryId);
@@ -236,16 +236,44 @@ class AttributeController extends Controller
 
             foreach($attributes as $attributeIdentifier => $attribute)
             {
-                $attributeData = $attributeRepo->getAttribute((int)$attributeIdentifier);
+                if($attribute['required']) {
+                    $attributeData = $attributeRepo->getAttribute((int)$attributeIdentifier);
 
-                if($attributeData) {
-                    foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
-                    {
-                        $attributeValueData = $attributeValueRepo->getAttributeValuesForAttribute((int)$attributeValueIdentifier);
-                        if($attributeValueData){
-                            if($attributeValueData->name !== $attributeValue) {
-                                $attributeValueRepo->updateAttributeValue((int)$attributeValueIdentifier, $attributeValue);
+                    if(count($attributeData) > 0) {
+                        foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
+                        {
+                            $attributeValueData = $attributeValueRepo->getAttributeValuesForAttribute((int)$attributeValueIdentifier);
+                            if(count($attributeValueData) > 0) {
+                                if($attributeValueData->name !== $attributeValue) {
+                                    $attributeValueRepo->updateAttributeValue((int)$attributeValueIdentifier, $attributeValue);
+                                }
+                            } else {
+                                $attributeValueCreateData = [
+                                    'categoryId' => (int)$categoryId,
+                                    'attributeId' => (int)$attributeIdentifier,
+                                    'attributeValueName' => $attributeValue,
+                                    'attributeValueId' => (int)$attributeValueIdentifier
+                                ];
+                                $attributeValueRepo->createAttributeValue($attributeValueCreateData);
                             }
+                        }
+                    } else {
+                        $attributeCreateData = [
+                            'categoryId' => (int)$categoryId,
+                            'attributeId' => (int)$attributeIdentifier,
+                            'attributeName' => $attribute['name']
+                        ];
+                        $attributeRepo->createAttribute($attributeCreateData);
+
+                        foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
+                        {
+                            $attributeValueCreateData = [
+                                'categoryId' => (int)$categoryId,
+                                'attributeId' => (int)$attributeIdentifier,
+                                'attributeValueName' => $attributeValue,
+                                'attributeValueId' => (int)$attributeValueIdentifier
+                            ];
+                            $attributeValueRepo->createAttributeValue($attributeValueCreateData);
                         }
                     }
                 }
@@ -258,6 +286,6 @@ class AttributeController extends Controller
     {
         $attributeRepo = pluginApp(AttributeRepository::class);
 
-        return $attributeRepo->getAttribute(845);
+        return $attributeRepo->getAttributeForCategory(17);
     }
 }
