@@ -65,7 +65,8 @@ class PropertiesRepository implements PropertiesRepositoryContract
         $propertyData = [];
         $propertyValueData = [];
 
-        $properties = $this->database->query(Properties::class)->where('value' ,'!=', 'null')->get();
+        $properties = $this->database->query(Properties::class)
+            ->where('value' ,'!=', 'null')->get();
 
         foreach($properties as $property)
         {
@@ -81,6 +82,6 @@ class PropertiesRepository implements PropertiesRepositoryContract
             self::PROPERTY_VALUE => $propertyValueData
         ];
 
-        return $propertiesData;
+        return $properties;
     }
 }
