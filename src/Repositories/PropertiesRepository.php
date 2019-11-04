@@ -74,21 +74,21 @@ class PropertiesRepository implements PropertiesRepositoryContract
 
         $properties = $this->database->query(Properties::class)->get();
 
-        /*foreach($properties as $property)
+        foreach($properties as $property)
         {
-            if($property['type'] === self::PROPERTY) {
-                array_push($propertyData, $property['value']);
+            if($property->type === self::PROPERTY) {
+                array_push($propertyData, $property->value);
             } else {
-                array_push($propertyValueData, $property['value']);
+                array_push($propertyValueData, $property->value);
             }
         }
 
         $propertiesData = [
             'property' => $propertyData,
             'propertyValue' => $propertyValueData
-        ];*/
+        ];
 
-        return $properties;
+        return $propertiesData;
     }
 
 
