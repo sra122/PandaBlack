@@ -60,13 +60,13 @@ class AttributeRepository implements AttributesRepositoryContract
 
     /**
      * @param $id
-     * @return Attributes
+     * @return array
      */
-    public function getAttribute($id): Attributes
+    public function getAttribute($id): array
     {
         $attributeData = $this->database->query(Attributes::class)->where('attribute_identifier', '=', $id)->get();
 
-        return $attributeData[0];
+        return $attributeData;
     }
 
 

@@ -22,9 +22,9 @@ interface AttributesRepositoryContract
 
     /**
      * @param $id
-     * @return Attributes
+     * @return array
      */
-    public function getAttribute($id): Attributes;
+    public function getAttribute($id): array;
 
     /**
      * @param $id
