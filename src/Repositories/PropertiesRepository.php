@@ -65,9 +65,9 @@ class PropertiesRepository implements PropertiesRepositoryContract
 
 
     /**
-     * @return array
+     * @return false|mixed|string
      */
-    public function getProperties(): array
+    public function getProperties()
     {
         $propertyData = [];
         $propertyValueData = [];
