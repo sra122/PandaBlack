@@ -295,7 +295,7 @@ class MappingController extends Controller
 
     public function getProperties()
     {
-        $propertyRepo = pluginApp(PropertiesRepository::class);
-        return $propertyRepo->getProperties();
+        $settings = pluginApp(SettingsHelper::class);
+        return $settings->get(SettingsHelper::MAPPING_INFO);
     }
 }
