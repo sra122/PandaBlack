@@ -32,7 +32,7 @@ class MappingController extends Controller
 
     public function mapping(Request $request)
     {
-        $this->fetchPropertiesInfo();
+        //$this->fetchPropertiesInfo();
 
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
@@ -319,6 +319,6 @@ class MappingController extends Controller
     public function getProperties()
     {
         $propertyRepo = pluginApp(PropertiesRepository::class);
-        return $propertyRepo->getSingleProperty(1);
+        return $propertyRepo->getProperties();
     }
 }

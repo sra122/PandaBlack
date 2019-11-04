@@ -39,7 +39,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
 
             //mapping
             $router->post('markets/panda-black/mapping', 'PandaBlack\Controllers\MappingController@mapping');
-            $router->get('markets/panda-black/mapping-data', 'PandaBlack\Controllers\MappingController@fetchPropertiesInfo');
+            $router->get('markets/panda-black/mapping-data', 'PandaBlack\Controllers\MappingController@getProperties');
 
             //Notification
             $router->get('markets/panda-black/product-errors', 'PandaBlack\Controllers\MappingController@fetchProductErrors');
