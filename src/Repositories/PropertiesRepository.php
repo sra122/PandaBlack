@@ -88,7 +88,7 @@ class PropertiesRepository implements PropertiesRepositoryContract
             'propertyValue' => $propertyValueData
         ];
 
-        return $propertiesData;
+        return json_encode($propertiesData, true);
     }
 
 
