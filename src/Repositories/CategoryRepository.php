@@ -75,8 +75,10 @@ class CategoryRepository implements CategoriesRepositoryContract
         return $categoryData;
     }
 
-
-
+    /**
+     * @param $id
+     * @return Categories
+     */
     public function deleteCategory($id): Categories
     {
         $categoryData = $this->database->query(Categories::class)
@@ -89,6 +91,9 @@ class CategoryRepository implements CategoriesRepositoryContract
     }
 
 
+    /**
+     * @return array
+     */
     public function getCategories()
     {
         $categoryTree = [];

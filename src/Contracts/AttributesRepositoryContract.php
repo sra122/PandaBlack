@@ -16,23 +16,22 @@ interface AttributesRepositoryContract
 
     /**
      * @param $id
-     * @return mixed
+     * @return array
      */
-    public function getAttributeForCategory($id);
-
+    public function getAttributeForCategory($id): array;
 
     /**
      * @param $id
      * @return mixed
      */
-    public function getAttribute($id);
+    public function getAttribute($id): Attributes;
 
     /**
      * @param $id
      * @param $attributeName
-     * @return mixed
+     * @return Attributes
      */
-    public function updateAttribute($id, $attributeName);
+    public function updateAttribute($id, $attributeName): Attributes;
 
     /**
      * @param $id

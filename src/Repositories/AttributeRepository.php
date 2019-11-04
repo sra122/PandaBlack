@@ -24,7 +24,7 @@ class AttributeRepository implements AttributesRepositoryContract
 
     /**
      * @param array $data
-     * @return Categories
+     * @return Attributes
      */
     public function createAttribute(array $data): Attributes
     {
@@ -48,9 +48,9 @@ class AttributeRepository implements AttributesRepositoryContract
 
     /**
      * @param $id
-     * @return mixed
+     * @return array
      */
-    public function getAttributeForCategory($id)
+    public function getAttributeForCategory($id): array
     {
         $attributeData = $this->database->query(Attributes::class)->where('category_identifier', '=', $id)->get();
 
@@ -62,36 +62,28 @@ class AttributeRepository implements AttributesRepositoryContract
      * @param $id
      * @return mixed
      */
-    public function getAttribute($id)
+    public function getAttribute($id): Attributes
     {
         $attributeData = $this->database->query(Attributes::class)->where('attribute_identifier', '=', $id)->get();
 
-        if(count($attributeData) > 0) {
-            return $attributeData[0];
-        } else {
-            return false;
-        }
+        return $attributeData[0];
     }
 
 
     /**
      * @param $id
      * @param $attributeName
-     * @return mixed
+     * @return Attributes
      */
-    public function updateAttribute($id, $attributeName)
+    public function updateAttribute($id, $attributeName): Attributes
     {
         $attributeData = $this->database->query(Attributes::class)->where('attribute_identifier', '=', $id)->get();
 
-        if(count($attributeData) > 0) {
-            $attribute = $attributeData[0];
-            $attribute->name = $attributeName;
-            $this->database->save($attribute);
+        $attribute = $attributeData[0];
+        $attribute->name = $attributeName;
+        $this->database->save($attribute);
 
-            return $attribute;
-        } else {
-            return false;
-        }
+        return $attribute;
     }
 
 

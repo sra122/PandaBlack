@@ -16,9 +16,9 @@ interface AttributeValuesRepositoryContract
 
     /**
      * @param $id
-     * @return mixed
+     * @return AttributeValues
      */
-    public function getAttributeValue($id);
+    public function getAttributeValue($id): AttributeValues;
 
     /**
      * @param $id
@@ -28,10 +28,9 @@ interface AttributeValuesRepositoryContract
 
     /**
      * @param $id
-     * @param $categoryTreePath
-     * @return Attributes
+     * @return array
      */
-    public function getAttributeValueForAttributeId($id): AttributeValues;
+    public function getAttributeValueForAttributeId($id): array;
 
     /**
      * @param $id
