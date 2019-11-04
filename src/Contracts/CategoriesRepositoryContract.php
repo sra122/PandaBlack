@@ -3,7 +3,6 @@
 namespace PandaBlack\Contracts;
 
 use PandaBlack\Models\Categories;
-use Plenty\Modules\Plugin\DataBase\Contracts\Query;
 
 interface CategoriesRepositoryContract
 {
@@ -19,7 +18,6 @@ interface CategoriesRepositoryContract
      * @return array
      */
     public function getCategory($id): array;
-
 
     /**
      * @param $id

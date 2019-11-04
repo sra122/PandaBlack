@@ -9,6 +9,7 @@
 namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\SettingsHelper;
+use PandaBlack\Repositories\PropertiesRepository;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
@@ -20,6 +21,9 @@ class MappingController extends Controller
 {
     public $mappingInfo = [];
     protected $settingsHelper;
+
+    const PROPERTY = 'property';
+    const PROPERTY_VALUE = 'propertyValue';
 
     public function __construct(SettingsHelper $settingsHelper)
     {
@@ -286,5 +290,12 @@ class MappingController extends Controller
     {
         $app = pluginApp(AppController::class);
         return $app->authenticate('pandaBlack_product_errors');
+    }
+
+
+    public function getProperties()
+    {
+        $propertyRepo = pluginApp(PropertiesRepository::class);
+        return $propertyRepo->getProperties();
     }
 }

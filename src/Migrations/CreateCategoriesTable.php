@@ -8,6 +8,7 @@ class CreateCategoriesTable
     public function run(Migrate $migrate)
     {
         $migrate->createTable('PandaBlack\Models\Categories');
+        $this->saveCategories();
     }
 
 
