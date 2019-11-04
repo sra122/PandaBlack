@@ -59,14 +59,16 @@ class PropertiesRepository implements PropertiesRepositoryContract
     }
 
 
-
-    public function getProperties(): array
+    /**
+     * @return array|mixed
+     */
+    public function getProperties()
     {
         $propertyData = [];
         $propertyValueData = [];
 
         $properties = $this->database->query(Properties::class)
-            ->where('value' ,'!=', 'null')->get();
+            /*->where('value' ,'!=', 'null')*/->get();
 
         foreach($properties as $property)
         {

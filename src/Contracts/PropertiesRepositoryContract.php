@@ -20,7 +20,7 @@ interface PropertiesRepositoryContract
     public function getProperty($type, $value): array;
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getProperties(): array;
+    public function getProperties();
 }

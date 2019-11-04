@@ -21,7 +21,6 @@
     "PandaBlack\\Migrations\\CreateCategoriesTable",
     "PandaBlack\\Migrations\\CreateAttributes",
     "PandaBlack\\Migrations\\CreateAttributeValues",
-    "PandaBlack\\Migrations\\CreateProperties",
-    "PandaBlack\\Migrations\\SaveExistingProperties"
+    "PandaBlack\\Migrations\\CreateProperties"
   ]
 }

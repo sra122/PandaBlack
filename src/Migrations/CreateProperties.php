@@ -8,6 +8,7 @@ class CreateProperties
     public function run(Migrate $migrate)
     {
         $migrate->createTable('PandaBlack\Models\Properties');
+        $this->saveExistingProperties();
     }
 
 
@@ -17,7 +18,7 @@ class CreateProperties
         $propertiesRepo = pluginApp(PropertiesRepository::class);
         $properties = $settings->get(SettingsHelper::MAPPING_INFO);
 
-        foreach($properties->property as $property)
+        foreach($properties['property'] as $property)
         {
             $propertyData = [
                 'type' => 'property',
@@ -28,7 +29,7 @@ class CreateProperties
         }
 
 
-        foreach($properties->propertyValue as $propertyValue)
+        foreach($properties['propertyValue'] as $propertyValue)
         {
             $propertyValueData = [
                 'type' => 'propertyValue',
