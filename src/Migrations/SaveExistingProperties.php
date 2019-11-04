@@ -2,22 +2,15 @@
 namespace PandaBlack\Migrations;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\PropertiesRepository;
-use Plenty\Modules\Plugin\DataBase\Contracts\Migrate;
-class CreateProperties
+class SaveExistingProperties
 {
-    public function run(Migrate $migrate)
-    {
-        $migrate->createTable('PandaBlack\Models\Properties');
-    }
-
-
-    private function saveExistingProperties()
+    public function run()
     {
         $settings = pluginApp(SettingsHelper::class);
         $propertiesRepo = pluginApp(PropertiesRepository::class);
         $properties = $settings->get(SettingsHelper::MAPPING_INFO);
 
-        foreach($properties->property as $property)
+        foreach($properties['property'] as $property)
         {
             $propertyData = [
                 'type' => 'property',
@@ -28,7 +21,7 @@ class CreateProperties
         }
 
 
-        foreach($properties->propertyValue as $propertyValue)
+        foreach($properties['propertyValue'] as $propertyValue)
         {
             $propertyValueData = [
                 'type' => 'propertyValue',
