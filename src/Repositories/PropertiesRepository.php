@@ -48,6 +48,11 @@ class PropertiesRepository implements PropertiesRepositoryContract
     }
 
 
+    /**
+     * @param $type
+     * @param $value
+     * @return array
+     */
     public function getProperty($type, $value): array
     {
         $propertyData = $this->database->query(Properties::class)
