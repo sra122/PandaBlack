@@ -22,7 +22,7 @@ interface PropertiesRepositoryContract
     /**
      * @return mixed
      */
-    public function getProperties();
+    public function getProperties(): array;
 
 
     /**

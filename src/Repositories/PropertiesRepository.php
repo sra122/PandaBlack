@@ -67,13 +67,12 @@ class PropertiesRepository implements PropertiesRepositoryContract
     /**
      * @return array|mixed
      */
-    public function getProperties()
+    public function getProperties(): array
     {
         $propertyData = [];
         $propertyValueData = [];
 
-        $properties = $this->database->query(Properties::class)
-            ->where('value' ,'!=', 'null')->get();
+        $properties = $this->database->query(Properties::class)->get();
 
         foreach($properties as $property)
         {
@@ -85,8 +84,8 @@ class PropertiesRepository implements PropertiesRepositoryContract
         }
 
         $propertiesData = [
-            self::PROPERTY => $propertyData,
-            self::PROPERTY_VALUE => $propertyValueData
+            'property' => $propertyData,
+            'propertyValue' => $propertyValueData
         ];
 
         return $propertiesData;
