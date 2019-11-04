@@ -242,7 +242,7 @@ class AttributeController extends Controller
                     if(count($attributeData) > 0) {
                         foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
                         {
-                            $attributeValueData = $attributeValueRepo->getAttributeValuesForAttribute((int)$attributeValueIdentifier);
+                            $attributeValueData = $attributeValueRepo->getAttributeValue((int)$attributeValueIdentifier);
                             if(count($attributeValueData) > 0) {
                                 if($attributeValueData->name !== $attributeValue) {
                                     $attributeValueRepo->updateAttributeValue((int)$attributeValueIdentifier, $attributeValue);

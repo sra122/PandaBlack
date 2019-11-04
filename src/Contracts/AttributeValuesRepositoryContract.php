@@ -16,9 +16,9 @@ interface AttributeValuesRepositoryContract
 
     /**
      * @param $id
-     * @return AttributeValues
+     * @return array
      */
-    public function getAttributeValue($id): AttributeValues;
+    public function getAttributeValue($id): array;
 
     /**
      * @param $id

@@ -54,14 +54,14 @@ class AttributeValueRepository implements AttributeValuesRepositoryContract
 
     /**
      * @param $id
-     * @return AttributeValues
+     * @return array
      */
-    public function getAttributeValue($id): AttributeValues
+    public function getAttributeValue($id): array
     {
         $attributeValueData = $this->database->query(AttributeValues::class)
             ->where('attribute_value_identifier', '=', $id)->get();
 
-        return $attributeValueData[0];
+        return $attributeValueData;
     }
 
 
