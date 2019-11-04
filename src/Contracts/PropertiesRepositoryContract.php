@@ -23,4 +23,11 @@ interface PropertiesRepositoryContract
      * @return mixed
      */
     public function getProperties();
+
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public function getSingleProperty($id): array ;
 }

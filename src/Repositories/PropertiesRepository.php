@@ -91,4 +91,16 @@ class PropertiesRepository implements PropertiesRepositoryContract
 
         return $properties;
     }
+
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public function getSingleProperty($id): array
+    {
+        $property = $this->database->query(Properties::class)->get();
+
+        return $property;
+    }
 }
