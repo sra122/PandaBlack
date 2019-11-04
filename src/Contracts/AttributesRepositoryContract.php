@@ -22,7 +22,7 @@ interface AttributesRepositoryContract
 
     /**
      * @param $id
-     * @return mixed
+     * @return Attributes
      */
     public function getAttribute($id): Attributes;
 
