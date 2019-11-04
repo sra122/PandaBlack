@@ -2,7 +2,6 @@
 
 namespace PandaBlack\Contracts;
 
-use PandaBlack\Models\Categories;
 use PandaBlack\Models\Properties;
 
 interface PropertiesRepositoryContract
