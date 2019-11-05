@@ -127,22 +127,24 @@ class MappingController extends Controller
         $propertyRepo = pluginApp(PropertiesRepository::class);
 
         // Property
-        foreach($this->mappingInfo['property'] as $property)
+        foreach($this->mappingInfo['property'] as $key => $property)
         {
             $propertyData = [
                 'type' => self::PROPERTY,
-                'value' => $property
+                'value' => $property,
+                'key' => $key
             ];
 
             $propertyRepo->createProperty($propertyData);
         }
 
         // PropertyValue
-        foreach($this->mappingInfo['propertyValue'] as $propertyValue)
+        foreach($this->mappingInfo['propertyValue'] as $key => $propertyValue)
         {
             $propertyValueData = [
                 'type' => self::PROPERTY_VALUE,
-                'value' => $propertyValue
+                'value' => $propertyValue,
+                'key' => $key
             ];
 
             $propertyRepo->createProperty($propertyValueData);

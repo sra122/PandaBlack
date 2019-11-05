@@ -34,11 +34,14 @@ class PropertiesRepository implements PropertiesRepositoryContract
 
         $propertyData = $this->database->query(Properties::class)
             ->where('type', '=', $data['type'])
-            ->where('value', '=', $data['value'])->get();
+            ->where('value', '=', $data['value'])
+            ->where('key', '=', $data['key'])
+            ->get();
 
         if(count($propertyData) <= 0 || $propertyData === null) {
             $property->type = $data['type'];
             $property->value = $data['value'];
+            $property->key = $data['key'];
             $this->database->save($property);
 
             return $property;
@@ -51,13 +54,15 @@ class PropertiesRepository implements PropertiesRepositoryContract
     /**
      * @param $type
      * @param $value
+     * @param $key
      * @return array
      */
-    public function getProperty($type, $value): array
+    public function getProperty($type, $value, $key): array
     {
         $propertyData = $this->database->query(Properties::class)
             ->where('type', '=', $type)
             ->where('value', '=', $value)
+            ->where('key', '=', $key)
             ->get();
 
         return $propertyData;
@@ -77,9 +82,9 @@ class PropertiesRepository implements PropertiesRepositoryContract
         foreach($properties as $property)
         {
             if($property->type === self::PROPERTY) {
-                $propertyData[$property->value] = $property->value;
+                $propertyData[$property->key] = $property->value;
             } else {
-                $propertyValueData[$property->value] = $property->value;
+                $propertyValueData[$property->key] = $property->value;
             }
         }
 

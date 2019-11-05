@@ -15,9 +15,10 @@ interface PropertiesRepositoryContract
     /**
      * @param $type
      * @param $value
+     * @param $key
      * @return array
      */
-    public function getProperty($type, $value): array;
+    public function getProperty($type, $value, $key): array;
 
     /**
      * @return mixed
