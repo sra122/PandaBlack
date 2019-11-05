@@ -22,6 +22,7 @@
     "PandaBlack\\Migrations\\CreateAttributes",
     "PandaBlack\\Migrations\\CreateAttributeValues",
     "PandaBlack\\Migrations\\CreateProperties",
-    "PandaBlack\\Migrations\\CreateNotifications"
+    "PandaBlack\\Migrations\\CreateNotifications",
+    "PandaBlack\\Migrations\\DropProperties"
   ]
 }
