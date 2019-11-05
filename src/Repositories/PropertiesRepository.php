@@ -77,9 +77,9 @@ class PropertiesRepository implements PropertiesRepositoryContract
         foreach($properties as $property)
         {
             if($property->type === self::PROPERTY) {
-                array_push($propertyData, $property->value);
+                $propertyData[$property->value] = $property->value;
             } else {
-                array_push($propertyValueData, $property->value);
+                $propertyValueData[$property->value] = $property->value;
             }
         }
 
