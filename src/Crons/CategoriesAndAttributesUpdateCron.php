@@ -37,7 +37,7 @@ class CategoriesAndAttributesUpdateCron extends Cron
             if($categoryInfo['is_deleted']) {
                 $categoryRepo->deleteCategory((int)$savedCategory->category_identifier);
             } else {
-                $categoryRepo->updateCategorory((int)$savedCategory->category_identifier, $categoryInfo['name']);
+                $categoryRepo->updateCategory((int)$savedCategory->category_identifier, $categoryInfo['name']);
             }
         }
     }
