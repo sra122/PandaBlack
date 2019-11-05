@@ -32,8 +32,6 @@ class MappingController extends Controller
 
     public function mapping(Request $request)
     {
-        //$this->fetchPropertiesInfo();
-
         $mappingInfos = $request->get('mappingInformation');
         $categoryId = $request->get('categoryId');
 
@@ -149,7 +147,6 @@ class MappingController extends Controller
 
             $propertyRepo->createProperty($propertyValueData);
         }
-        //$this->settingsHelper->set(SettingsHelper::MAPPING_INFO, $this->mappingInfo);
     }
 
 
@@ -182,7 +179,7 @@ class MappingController extends Controller
 
         foreach($propertyData['names'] as $propertyName) {
             $propertyName['propertyId'] = $property->id;
-            $propertyName = $propertyNameRepository->createName($propertyName);
+            $propertyNameRepository->createName($propertyName);
         }
 
         return $property;
@@ -235,92 +232,5 @@ class MappingController extends Controller
        }
 
        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function fetchPropertiesInfo()
-    {
-        $this->mappingInfo = $this->settingsHelper->get(SettingsHelper::MAPPING_INFO);
-
-        if(!empty($this->mappingInfo)) {
-            return $this->mappingInfo;
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function fetchNotifications()
-    {
-        return $this->settingsHelper->get(SettingsHelper::NOTIFICATION);
-    }
-
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function removeNotification(Request $request)
-    {
-        $propertyName = $request->get('propertyName');
-        $notificationType = $request->get('notificationType');
-        $notifications = $this->settingsHelper->get(SettingsHelper::NOTIFICATION);
-
-        $specialNotification = ['noStockProducts', 'noAsinProducts', 'emptyAttributeProducts'];
-
-        if(in_array($notificationType, $specialNotification))
-        {
-            unset($notifications[$notificationType]);
-        } else {
-            unset($notifications[$notificationType][$propertyName]);
-        }
-
-        $this->settingsHelper->set(SettingsHelper::NOTIFICATION, $notifications);
-
-        return $notifications;
-    }
-
-
-    public function updateNotifications()
-    {
-        $notification = $this->fetchNotifications();
-
-        $adminNotification = isset($notification['admin']) ? $notification['admin'] : '';
-
-        $app = pluginApp(AppController::class);
-        $settingsHelper = pluginApp(SettingsHelper::class);
-
-        $pbNotifications = $app->authenticate('pandaBlack_notifications');
-
-        foreach($pbNotifications as $key => $pbNotification)
-        {
-            if(!isset($adminNotification[$key]) && ((time() - $pbNotification['timestamp']) < 86400)) {
-                $adminNotification[$key] = $pbNotification;
-                $adminNotification[$key]['id'] = $key;
-                if($adminNotification[$key]['type'] !== 'info') {
-                    $adminNotification[$key]['categoryName'] = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST)[$pbNotification['values']['category_id']];
-                }
-            }
-        }
-
-        $notification['admin'] = $adminNotification;
-
-        $settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
-
-        return $notification;
-    }
-
-    public function fetchProductErrors()
-    {
-        $app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_product_errors');
-    }
-
-
-    public function getProperties()
-    {
-        $propertyRepo = pluginApp(PropertiesRepository::class);
-        return $propertyRepo->getProperties();
     }
 }

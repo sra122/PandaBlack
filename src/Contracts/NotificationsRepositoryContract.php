@@ -16,4 +16,10 @@ interface NotificationsRepositoryContract
      * @return array
      */
     public function getNotifications(): array;
+
+    /**
+     * @param $id
+     * @return Notification
+     */
+    public function markAsRead($id): Notification;
 }

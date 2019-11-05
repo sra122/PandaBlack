@@ -51,10 +51,28 @@ class NotificationsRepository implements NotificationsRepositoryContract
      */
     public function getNotifications(): array
     {
-        $propertyData = $this->database->query(Notification::class)
+        $notifications = $this->database->query(Notification::class)
             ->where('read', '=', false)
             ->get();
 
-        return $propertyData;
+        return $notifications;
     }
+
+    /**
+     * @param $id
+     * @return Notification
+     */
+    public function markAsRead($id): Notification
+    {
+        $notificationData = $this->database->query(Notification::class)
+            ->where('notification_identifier', '=', $id)
+            ->get();
+
+        $notification = $notificationData[0];
+        $notification->read = true;
+        $this->database->save($notification);
+
+        return $notification;
+    }
+
 }
