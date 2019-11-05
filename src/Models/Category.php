@@ -19,7 +19,7 @@ class Category extends Model
 
     public function getTableName(): string
     {
-        return 'PandaBlack::Category';
+        return 'PandaBlack::Categories';
     }
 }
 

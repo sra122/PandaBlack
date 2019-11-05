@@ -26,7 +26,7 @@ class Property extends Model
 
     public function getTableName(): string
     {
-        return 'PandaBlack::Property';
+        return 'PandaBlack::Properties';
     }
 }
 

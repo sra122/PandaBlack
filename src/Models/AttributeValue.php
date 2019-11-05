@@ -30,6 +30,6 @@ class AttributeValue extends Model
 
     public function getTableName(): string
     {
-        return 'PandaBlack::AttributeValue';
+        return 'PandaBlack::AttributeValues';
     }
 }

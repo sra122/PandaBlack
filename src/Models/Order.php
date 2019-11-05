@@ -21,7 +21,7 @@ class Order extends Model
 
     public function getTableName(): string
     {
-        return 'PandaBlack::Order';
+        return 'PandaBlack::Orders';
     }
 }
 

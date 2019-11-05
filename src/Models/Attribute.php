@@ -26,7 +26,7 @@ class Attribute extends Model
 
     public function getTableName(): string
     {
-        return 'PandaBlack::Attribute';
+        return 'PandaBlack::Attributes';
     }
 }
 

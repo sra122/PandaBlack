@@ -31,7 +31,7 @@ class Notification extends Model
 
     public function getTableName(): string
     {
-        return 'PandaBlack::Notification';
+        return 'PandaBlack::Notifications';
     }
 }
 
