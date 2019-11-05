@@ -2,15 +2,15 @@
 
 namespace PandaBlack\Contracts;
 
-use PandaBlack\Models\Property;
+use PandaBlack\Models\Order;
 
 interface OrdersRepositoryContract
 {
     /**
      * @param array $data
-     * @return Property
+     * @return Order
      */
-    public function createOrder(array $data): Property;
+    public function createOrder(array $data): Order;
 
     /**
      * @return array
