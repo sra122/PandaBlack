@@ -3,8 +3,7 @@
 namespace PandaBlack\Repositories;
 
 use PandaBlack\Contracts\PropertiesRepositoryContract;
-use PandaBlack\Models\Attributes;
-use PandaBlack\Models\Properties;
+use PandaBlack\Models\Property;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
 
 class PropertiesRepository implements PropertiesRepositoryContract
@@ -17,7 +16,7 @@ class PropertiesRepository implements PropertiesRepositoryContract
     const PROPERTY_VALUE = 'propertyValue';
 
     /**
-     * CategoryRepository constructor.
+     * CategoriesRepository constructor.
      */
     public function __construct()
     {
@@ -26,13 +25,13 @@ class PropertiesRepository implements PropertiesRepositoryContract
 
     /**
      * @param array $data
-     * @return Properties
+     * @return Property
      */
-    public function createProperty(array $data): Properties
+    public function createProperty(array $data): Property
     {
-        $property = pluginApp(Properties::class);
+        $property = pluginApp(Property::class);
 
-        $propertyData = $this->database->query(Properties::class)
+        $propertyData = $this->database->query(Property::class)
             ->where('type', '=', $data['type'])
             ->where('value', '=', $data['value'])
             ->where('key', '=', $data['key'])
@@ -59,7 +58,7 @@ class PropertiesRepository implements PropertiesRepositoryContract
      */
     public function getProperty($type, $value, $key): array
     {
-        $propertyData = $this->database->query(Properties::class)
+        $propertyData = $this->database->query(Property::class)
             ->where('type', '=', $type)
             ->where('value', '=', $value)
             ->where('key', '=', $key)
@@ -77,7 +76,7 @@ class PropertiesRepository implements PropertiesRepositoryContract
         $propertyData = [];
         $propertyValueData = [];
 
-        $properties = $this->database->query(Properties::class)->get();
+        $properties = $this->database->query(Property::class)->get();
 
         foreach($properties as $property)
         {
@@ -103,7 +102,7 @@ class PropertiesRepository implements PropertiesRepositoryContract
      */
     public function getSingleProperty($id): array
     {
-        $property = $this->database->query(Properties::class)->get();
+        $property = $this->database->query(Property::class)->get();
 
         return $property;
     }

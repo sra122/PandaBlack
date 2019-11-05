@@ -7,7 +7,7 @@ class CreatePropertiesTable
 {
     public function run(Migrate $migrate)
     {
-        $migrate->createTable('PandaBlack\Models\Properties');
+        $migrate->createTable('PandaBlack\Models\Property');
         $this->saveExistingProperties();
     }
 

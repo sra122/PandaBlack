@@ -2,15 +2,15 @@
 
 namespace PandaBlack\Contracts;
 
-use PandaBlack\Models\Categories;
+use PandaBlack\Models\Category;
 
 interface CategoriesRepositoryContract
 {
     /**
      * @param array $data
-     * @return Categories
+     * @return Category
      */
-    public function createCategory(array $data): Categories;
+    public function createCategory(array $data): Category;
 
 
     /**
@@ -22,16 +22,16 @@ interface CategoriesRepositoryContract
     /**
      * @param $id
      * @param $categoryTreePath
-     * @return Categories
+     * @return Category
      */
-    public function updateCategory($id, $categoryTreePath): Categories;
+    public function updateCategory($id, $categoryTreePath): Category;
 
 
     /**
      * @param $id
-     * @return Categories
+     * @return Category
      */
-    public function deleteCategory($id): Categories;
+    public function deleteCategory($id): Category;
 
 
     /**

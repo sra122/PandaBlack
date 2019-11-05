@@ -2,15 +2,15 @@
 
 namespace PandaBlack\Contracts;
 
-use PandaBlack\Models\Notifications;
+use PandaBlack\Models\Notification;
 
 interface NotificationsRepositoryContract
 {
     /**
      * @param array $data
-     * @return Notifications
+     * @return Notification
      */
-    public function createNotification(array $data): Notifications;
+    public function createNotification(array $data): Notification;
 
     /**
      * @return array

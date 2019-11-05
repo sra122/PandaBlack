@@ -1,20 +1,20 @@
 <?php
 namespace PandaBlack\Migrations;
 use PandaBlack\Controllers\CategoryController;
-use PandaBlack\Repositories\CategoryRepository;
+use PandaBlack\Repositories\CategoriesRepository;
 use Plenty\Modules\Plugin\DataBase\Contracts\Migrate;
 class CreateCategoriesTable
 {
     public function run(Migrate $migrate)
     {
-        $migrate->createTable('PandaBlack\Models\Categories');
+        $migrate->createTable('PandaBlack\Models\Category');
         $this->saveCategories();
     }
 
 
     private function saveCategories()
     {
-        $categoryRepo = pluginApp(CategoryRepository::class);
+        $categoryRepo = pluginApp(CategoriesRepository::class);
         $categoryController = pluginApp(CategoryController::class);
         $categories = $categoryController->getPBCategoriesAsDropdown();
 

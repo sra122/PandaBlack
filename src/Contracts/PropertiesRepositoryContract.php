@@ -2,15 +2,15 @@
 
 namespace PandaBlack\Contracts;
 
-use PandaBlack\Models\Properties;
+use PandaBlack\Models\Property;
 
 interface PropertiesRepositoryContract
 {
     /**
      * @param array $data
-     * @return Properties
+     * @return Property
      */
-    public function createProperty(array $data): Properties;
+    public function createProperty(array $data): Property;
 
     /**
      * @param $type

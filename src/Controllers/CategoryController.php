@@ -3,7 +3,7 @@
 namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\SettingsHelper;
-use PandaBlack\Repositories\CategoryRepository;
+use PandaBlack\Repositories\CategoriesRepository;
 use Plenty\Plugin\Controller;
 
 /**
@@ -59,7 +59,7 @@ class CategoryController extends Controller
 
     public function getCategoriesList()
     {
-        $categoryRepo = pluginApp(CategoryRepository::class);
+        $categoryRepo = pluginApp(CategoriesRepository::class);
         return $categoryRepo->getCategories();
     }
 }

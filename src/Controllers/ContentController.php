@@ -231,7 +231,7 @@ class ContentController extends Controller
             }
         }
 
-        // Check the Attributes that are mapped are present in PB attributes list of the selected Category.
+        // Check the Attribute that are mapped are present in PB attributes list of the selected Category.
         if(!empty($attributeDetails)) {
             foreach($attributeDetails as $attributeName => $attributeDetail)
             {

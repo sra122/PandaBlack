@@ -2,17 +2,17 @@
 
 namespace PandaBlack\Contracts;
 
-use PandaBlack\Models\Attributes;
-use PandaBlack\Models\AttributeValues;
+use PandaBlack\Models\Attribute;
+use PandaBlack\Models\AttributeValue;
 
 interface AttributeValuesRepositoryContract
 {
 
     /**
      * @param array $data
-     * @return Attributes
+     * @return Attribute
      */
-    public function createAttributeValue(array $data): AttributeValues;
+    public function createAttributeValue(array $data): AttributeValue;
 
     /**
      * @param $id
@@ -41,15 +41,15 @@ interface AttributeValuesRepositoryContract
     /**
      * @param $id
      * @param $attributeName
-     * @return Attributes
+     * @return Attribute
      */
-    public function updateAttributeValue($id, $attributeName): AttributeValues;
+    public function updateAttributeValue($id, $attributeName): AttributeValue;
 
     /**
      * @param $id
-     * @return Attributes
+     * @return Attribute
      */
-    public function deleteAttributeValue($id): AttributeValues;
+    public function deleteAttributeValue($id): AttributeValue;
 
     /**
      * @param $attributeId

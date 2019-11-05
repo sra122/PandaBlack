@@ -5,6 +5,6 @@ class CreateAttributeValues
 {
     public function run(Migrate $migrate)
     {
-        $migrate->createTable('PandaBlack\Models\AttributeValues');
+        $migrate->createTable('PandaBlack\Models\AttributeValue');
     }
 }

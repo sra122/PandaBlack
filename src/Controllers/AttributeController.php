@@ -4,12 +4,9 @@ namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
-use PandaBlack\Repositories\AttributeRepository;
-use PandaBlack\Repositories\AttributeValueRepository;
+use PandaBlack\Repositories\AttributesRepository;
+use PandaBlack\Repositories\AttributeValuesRepository;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
-use Plenty\Modules\Item\Attribute\Models\Attribute;
-use Plenty\Modules\Item\Attribute\Models\AttributeValue;
-use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
@@ -55,8 +52,8 @@ class AttributeController extends Controller
         $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
 
-        $attributesRepo = pluginApp(AttributeRepository::class);
-        $attributeValueRepo = pluginApp(AttributeValueRepository::class);
+        $attributesRepo = pluginApp(AttributesRepository::class);
+        $attributeValueRepo = pluginApp(AttributeValuesRepository::class);
 
         $attributes = $attributesRepo->getAttributeForCategory($categoryId);
         $attributesInfo = [];
@@ -218,15 +215,15 @@ class AttributeController extends Controller
 
     public function getAttribute()
     {
-        $attributeRepo = pluginApp(AttributeRepository::class);
+        $attributeRepo = pluginApp(AttributesRepository::class);
         return $attributeRepo->getAttributeForCategory(18);
     }
 
 
     public function updateAttributes()
     {
-        $attributeRepo = pluginApp(AttributeRepository::class);
-        $attributeValueRepo = pluginApp(AttributeValueRepository::class);
+        $attributeRepo = pluginApp(AttributesRepository::class);
+        $attributeValueRepo = pluginApp(AttributeValuesRepository::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
         $categories = $attributeRepo->getUniqueCategories();
 
@@ -284,7 +281,7 @@ class AttributeController extends Controller
 
     public function getAttributes()
     {
-        $attributeRepo = pluginApp(AttributeRepository::class);
+        $attributeRepo = pluginApp(AttributesRepository::class);
 
         return $attributeRepo->getAttributeForCategory(17);
     }

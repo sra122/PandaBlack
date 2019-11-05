@@ -3,7 +3,7 @@
 namespace PandaBlack\Repositories;
 
 use PandaBlack\Contracts\NotificationsRepositoryContract;
-use PandaBlack\Models\Notifications;
+use PandaBlack\Models\Notification;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
 
 class NotificationsRepository implements NotificationsRepositoryContract
@@ -14,7 +14,7 @@ class NotificationsRepository implements NotificationsRepositoryContract
     private $database;
 
     /**
-     * CategoryRepository constructor.
+     * CategoriesRepository constructor.
      */
     public function __construct()
     {
@@ -23,13 +23,13 @@ class NotificationsRepository implements NotificationsRepositoryContract
 
     /**
      * @param array $data
-     * @return Notifications
+     * @return Notification
      */
-    public function createNotification(array $data): Notifications
+    public function createNotification(array $data): Notification
     {
-        $notification = pluginApp(Notifications::class);
+        $notification = pluginApp(Notification::class);
 
-        $notificationData = $this->database->query(Notifications::class)
+        $notificationData = $this->database->query(Notification::class)
             ->where('notification_identifier', '=', $data['notificationIdentifier'])->get();
 
         if(count($notificationData) <= 0 || $notificationData === null) {
@@ -51,7 +51,7 @@ class NotificationsRepository implements NotificationsRepositoryContract
      */
     public function getNotifications(): array
     {
-        $propertyData = $this->database->query(Notifications::class)
+        $propertyData = $this->database->query(Notification::class)
             ->where('read', '=', false)
             ->get();
 
