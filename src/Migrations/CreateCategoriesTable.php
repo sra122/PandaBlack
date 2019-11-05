@@ -20,12 +20,14 @@ class CreateCategoriesTable
 
         foreach($categories as $key => $category)
         {
-            $categoryData = [
-                'categoryId' => $key,
-                'treePath' => $category
-            ];
+            if(!$category['is_deleted']) {
+                $categoryData = [
+                    'categoryId' => $key,
+                    'treePath' => $category['name']
+                ];
 
-            $categoryRepo->createCategory($categoryData);
+                $categoryRepo->createCategory($categoryData);
+            }
         }
     }
 }

@@ -135,35 +135,4 @@ class AttributeValuesRepository implements AttributeValuesRepositoryContract
 
         return $attributeValue;
     }
-
-
-    /**
-     * @param $attributeId
-     * @return mixed|void
-     */
-    public function deleteAttributeValueForAttribute($attributeId)
-    {
-        $attributeValues = $this->database->query(AttributeValue::class)
-            ->where('attribute_identifier', '=', $attributeId)->get();
-
-        foreach($attributeValues as $attributeValue)
-        {
-            $this->database->delete($attributeValue);
-        }
-    }
-
-    /**
-     * @param $categoryId
-     * @return mixed|void
-     */
-    public function deleteAttributeValueForCategory($categoryId)
-    {
-        $attributeValues = $this->database->query(AttributeValue::class)
-            ->where('category_identifier', '=', $categoryId)->get();
-
-        foreach($attributeValues as $attributeValue)
-        {
-            $this->database->delete($attributeValue);
-        }
-    }
 }

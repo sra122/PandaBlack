@@ -3,6 +3,8 @@
 namespace PandaBlack\Repositories;
 
 use PandaBlack\Contracts\CategoriesRepositoryContract;
+use PandaBlack\Models\Attribute;
+use PandaBlack\Models\AttributeValue;
 use PandaBlack\Models\Category;
 use Plenty\Modules\Plugin\DataBase\Contracts\DataBase;
 
@@ -86,6 +88,24 @@ class CategoriesRepository implements CategoriesRepositoryContract
 
         $category = $categoryData[0];
         $this->database->delete($category);
+
+        //Attributes
+        $attributes = $this->database->query(Attribute::class)
+            ->where('category_identifier', '=', $id)->get();
+
+        foreach($attributes as $attribute)
+        {
+            $this->database->delete($attribute);
+        }
+
+        //AttributeValues
+        $attributeValues = $this->database->query(AttributeValue::class)
+            ->where('category_identifier', '=', $id)->get();
+
+        foreach($attributeValues as $attributeValue)
+        {
+            $this->database->delete($attributeValue);
+        }
 
         return $category;
     }

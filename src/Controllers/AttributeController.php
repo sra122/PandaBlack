@@ -49,9 +49,7 @@ class AttributeController extends Controller
      */
     public function getPBAttributes($categoryId)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
-
         $attributesRepo = pluginApp(AttributesRepository::class);
         $attributeValueRepo = pluginApp(AttributeValuesRepository::class);
 
@@ -61,7 +59,7 @@ class AttributeController extends Controller
             $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
             foreach($attributes as $attributeId => $attribute)
             {
-                if($attribute['required']) {
+                if($attribute['required'] && !($attribute['is_deleted'])) {
                     $attributeData = [
                         'categoryId' => (int)$categoryId,
                         'attributeId' => (int)$attributeId,
@@ -73,15 +71,17 @@ class AttributeController extends Controller
 
                     foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
                     {
-                        $attributeValueData = [
-                            'categoryId' => (int)$categoryId,
-                            'attributeId' => (int)$attributeId,
-                            'attributeValueName' => $attributeValue,
-                            'attributeValueId' => (int)$attributeValueIdentifier
-                        ];
+                        if(!($attributeValue['is_deleted'])) {
+                            $attributeValueData = [
+                                'categoryId' => (int)$categoryId,
+                                'attributeId' => (int)$attributeId,
+                                'attributeValueName' => $attributeValue['name'],
+                                'attributeValueId' => (int)$attributeValueIdentifier
+                            ];
 
-                        $attributeValueRepo->createAttributeValue($attributeValueData);
-                        $values[(int)$attributeValueIdentifier] = $attributeValue;
+                            $attributeValueRepo->createAttributeValue($attributeValueData);
+                            $values[(int)$attributeValueIdentifier] = $attributeValue;
+                        }
                     }
 
                     $attributesInfo[(int)$attributeId] = [
@@ -189,100 +189,5 @@ class AttributeController extends Controller
         natcasesort($propertyValues);
 
         return $propertyValues;
-    }
-
-
-    public function updatePBCategoriesAttributesInPM()
-    {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $pbApiHelper = pluginApp(PBApiHelper::class);
-
-        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
-
-        $categoriesController = pluginApp(CategoryController::class);
-        $categories = $categoriesController->getPBCategoriesAsDropdown();
-
-        $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $categories);
-
-        foreach($categories as $categoryId => $category)
-        {
-            if (isset($attributes[$categoryId])) {
-                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
-            }
-        }
-    }
-
-    public function getAttribute()
-    {
-        $attributeRepo = pluginApp(AttributesRepository::class);
-        return $attributeRepo->getAttributeForCategory(18);
-    }
-
-
-    public function updateAttributes()
-    {
-        $attributeRepo = pluginApp(AttributesRepository::class);
-        $attributeValueRepo = pluginApp(AttributeValuesRepository::class);
-        $pbApiHelper = pluginApp(PBApiHelper::class);
-        $categories = $attributeRepo->getUniqueCategories();
-
-        foreach($categories as $categoryId => $category)
-        {
-            $attributes = $pbApiHelper->fetchPBAttributes($category);
-
-            foreach($attributes as $attributeIdentifier => $attribute)
-            {
-                if($attribute['required']) {
-                    $attributeData = $attributeRepo->getAttribute((int)$attributeIdentifier);
-
-                    if(count($attributeData) > 0) {
-                        foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
-                        {
-                            $attributeValueData = $attributeValueRepo->getAttributeValue((int)$attributeValueIdentifier);
-                            if(count($attributeValueData) > 0) {
-                                if($attributeValueData->name !== $attributeValue) {
-                                    $attributeValueRepo->updateAttributeValue((int)$attributeValueIdentifier, $attributeValue);
-                                }
-                            } else {
-                                $attributeValueCreateData = [
-                                    'categoryId' => (int)$categoryId,
-                                    'attributeId' => (int)$attributeIdentifier,
-                                    'attributeValueName' => $attributeValue,
-                                    'attributeValueId' => (int)$attributeValueIdentifier
-                                ];
-                                $attributeValueRepo->createAttributeValue($attributeValueCreateData);
-                            }
-                        }
-                    } else {
-                        $attributeCreateData = [
-                            'categoryId' => (int)$categoryId,
-                            'attributeId' => (int)$attributeIdentifier,
-                            'attributeName' => $attribute['name']
-                        ];
-                        $attributeRepo->createAttribute($attributeCreateData);
-
-                        foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
-                        {
-                            $attributeValueCreateData = [
-                                'categoryId' => (int)$categoryId,
-                                'attributeId' => (int)$attributeIdentifier,
-                                'attributeValueName' => $attributeValue,
-                                'attributeValueId' => (int)$attributeValueIdentifier
-                            ];
-                            $attributeValueRepo->createAttributeValue($attributeValueCreateData);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    public function getAttributes()
-    {
-        $attributeRepo = pluginApp(AttributesRepository::class);
-
-        return $attributeRepo->getAttributeForCategory(17);
     }
 }

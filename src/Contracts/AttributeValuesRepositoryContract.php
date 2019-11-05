@@ -51,16 +51,4 @@ interface AttributeValuesRepositoryContract
      */
     public function deleteAttributeValue($id): AttributeValue;
 
-    /**
-     * @param $attributeId
-     * @return mixed
-     */
-    public function deleteAttributeValueForAttribute($attributeId);
-
-    /**
-     * @param $categoryId
-     * @return mixed
-     */
-    public function deleteAttributeValueForCategory($categoryId);
-
 }
