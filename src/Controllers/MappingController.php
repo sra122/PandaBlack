@@ -233,4 +233,14 @@ class MappingController extends Controller
 
        return false;
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getProperties()
+    {
+        $propertyRepo = pluginApp(PropertiesRepository::class);
+        return $propertyRepo->getProperties();
+    }
 }
