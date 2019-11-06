@@ -61,10 +61,10 @@ class NotificationController extends Controller
         }
     }
 
-    public function fetchProductErrors()
+    public function fetchProductsStatus()
     {
         $app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_product_errors');
+        return $app->authenticate('pandaBlack_products_status');
     }
 
 
