@@ -50,12 +50,14 @@ class NotificationController extends Controller
 
         foreach($notifications as $key => $notification)
         {
-            $notificationData = [
-                'notificationIdentifier' => (int)$key,
-                'message' => $notification['value']['message']
-            ];
+            if(isset($notification['values']['message'])) {
+                $notificationData = [
+                    'notificationIdentifier' => (int)$key,
+                    'message' => $notification['values']['message']
+                ];
 
-            $this->notifications->createNotification($notificationData);
+                $this->notifications->createNotification($notificationData);
+            }
         }
     }
 
