@@ -206,14 +206,7 @@ class ContentController extends Controller
             }
         }
 
-        $test = [
-            'pbMappingProperty' => $pbMapping['property'],
-            'pbMappingProperty1' => $pbMapping->property
-        ];
-
-        return $test;
-
-        /*foreach($pbMapping['property'] as $key => $mappedProperty)
+        foreach($pbMapping['property'] as $key => $mappedProperty)
         {
             foreach($propertyInfos as $id => $propertyInfo)
             {
@@ -254,7 +247,7 @@ class ContentController extends Controller
             }
         }
 
-        return $attributeDetails;*/
+        return $attributeDetails;
     }
 
 
