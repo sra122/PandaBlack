@@ -207,11 +207,8 @@ class ContentController extends Controller
         }
 
         $test = [
-            'propertyInfo' => $propertyInfos,
-            'properties' => $properties,
-            'pbMapping' => $pbMapping,
-            'pbAttributes' => $pbAttributes,
-            'propertyLists' => $propertyLists
+            'pbMappingProperty' => $pbMapping['property'],
+            'pbMappingProperty1' => $pbMapping->property
         ];
 
         return $test;
@@ -243,13 +240,10 @@ class ContentController extends Controller
                 $matched = false;
                 foreach($pbAttributes as $key => $pbAttribute)
                 {
-                    if($pbAttribute['required'])
+                    foreach($pbAttribute['values'] as $pbAttributeValue)
                     {
-                        foreach($pbAttribute['values'] as $pbAttributeValue)
-                        {
-                            if($pbAttributeValue === $attributeDetail) {
-                                $matched = true;
-                            }
+                        if($pbAttributeValue === $attributeDetail) {
+                            $matched = true;
                         }
                     }
                 }
@@ -258,9 +252,9 @@ class ContentController extends Controller
                     unset($attributeDetails[$attributeName]);
                 }
             }
-        }*/
+        }
 
-        return $attributeDetails;
+        return $attributeDetails;*/
     }
 
 
