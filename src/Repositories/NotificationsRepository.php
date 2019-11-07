@@ -69,7 +69,7 @@ class NotificationsRepository implements NotificationsRepositoryContract
             ->get();
 
         $notification = $notificationData[0];
-        $notification->read = 1;
+        $notification->read = true;
         $this->database->save($notification);
 
         return $notification;
