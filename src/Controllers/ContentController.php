@@ -2,6 +2,8 @@
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
+use PandaBlack\Repositories\AttributesRepository;
+use PandaBlack\Repositories\PropertiesRepository;
 use Plenty\Modules\Item\ItemImage\Contracts\ItemImageRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Plugin\Controller;
@@ -151,7 +153,6 @@ class ContentController extends Controller
                     $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
                     $this->variationItems[$variation['id']] = $variation['id'];
                 }
-
             }
         } while(!$resultItems->isLastPage());
     }
@@ -177,24 +178,18 @@ class ContentController extends Controller
     private function attributesInfo($properties, $categoryId)
     {
         $attributeDetails = [];
-        $pbAttributes = $this->settings->get(SettingsHelper::ATTRIBUTES)[$categoryId];
 
-        // In case, if attributes are not saved in Settings.
-        if(empty($pbAttributes)) {
-            $pbApiHelper = pluginApp(PBApiHelper::class);
-            $attributes = $this->settings->get(SettingsHelper::ATTRIBUTES);
-            $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-            if(!empty($attributes[$categoryId])) {
-                $this->settings->set(SettingsHelper::ATTRIBUTES, $attributes);
-                $pbAttributes = $attributes[$categoryId];
-            }
-        }
+        $pbPropertiesRepo = pluginApp(PropertiesRepository::class);
+        $pbMapping = json_decode($pbPropertiesRepo->getProperties(), true);
 
-        $pbMapping = $this->settings->get(SettingsHelper::MAPPING_INFO);
+        $attributeController = pluginApp(AttributeController::class);
+        $pbAttributes = $attributeController->getPBAttributes((int)$categoryId);
+
         $propertiesRepo = pluginApp(PropertyRepositoryContract::class);
         $propertyLists = $propertiesRepo->listProperties(1, 50, [], [], 0);
-        $propertyInfos = [];
 
+
+        $propertyInfos = [];
 
         foreach($propertyLists as $propertyList)
         {
@@ -211,7 +206,17 @@ class ContentController extends Controller
             }
         }
 
-        foreach($pbMapping['property'] as $key => $mappedProperty)
+        $test = [
+            'propertyInfo' => $propertyInfos,
+            'properties' => $properties,
+            'pbMapping' => $pbMapping,
+            'pbAttributes' => $pbAttributes,
+            'propertyLists' => $propertyLists
+        ];
+
+        return $test;
+
+        /*foreach($pbMapping['property'] as $key => $mappedProperty)
         {
             foreach($propertyInfos as $id => $propertyInfo)
             {
@@ -253,7 +258,7 @@ class ContentController extends Controller
                     unset($attributeDetails[$attributeName]);
                 }
             }
-        }
+        }*/
 
         return $attributeDetails;
     }
