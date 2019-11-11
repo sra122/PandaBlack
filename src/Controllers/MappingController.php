@@ -107,12 +107,6 @@ class MappingController extends Controller
                 }
             } else if(is_numeric($propertyId)) {
                 $this->mappingInfo['propertyValue'][$attributeValueName] = $mappingInfo;
-            } else if(is_bool($propertyId) && !empty($attributeName)) {
-
-                // If seller is trying to create a PropertyValue under a Property that is not Present.
-                $notification = $this->settingsHelper->get(SettingsHelper::NOTIFICATION);
-                $notification['propertyNotFound'][$attributeName] = $attributeValueName;
-                $this->settingsHelper->set(SettingsHelper::NOTIFICATION, $notification);
             }
         }
     }
