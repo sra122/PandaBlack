@@ -1,6 +1,6 @@
 # Release Notes für PANDA.BLACK
 
-## v1.0.14
+## v1.1.0
 Erweitern von Kategorien, Attributen und Berichtsabschnitten
 
 ## v1.0.13

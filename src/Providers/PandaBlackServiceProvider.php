@@ -5,7 +5,6 @@ namespace PandaBlack\Providers;
 use PandaBlack\Contracts\AttributesRepositoryContract;
 use PandaBlack\Contracts\AttributeValuesRepositoryContract;
 use PandaBlack\Contracts\CategoriesRepositoryContract;
-use PandaBlack\Controllers\CategoryController;
 use PandaBlack\Crons\CategoriesAndAttributesUpdateCron;
 use PandaBlack\Crons\OrdersCron;
 use PandaBlack\Crons\PluginVersionCron;

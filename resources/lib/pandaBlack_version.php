@@ -9,7 +9,7 @@ $res = $client->request(
             'API-AUTH-TOKEN' => SdkRestApi::getParam('token')
         ],
         'form_params' => [
-            'version' => '1.0.14'
+            'version' => '1.1.0'
         ]
     ]
 );

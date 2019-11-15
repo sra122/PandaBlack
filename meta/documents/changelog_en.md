@@ -1,6 +1,6 @@
 # Release notes for PANDA.BLACK
 
-## v1.0.14
+## v1.1.0
 Enhancing Categories, Attributes and Report Section
 
 ## v1.0.13
