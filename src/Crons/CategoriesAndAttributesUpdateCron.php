@@ -2,11 +2,8 @@
 
 namespace PandaBlack\Crons;
 
-use PandaBlack\Controllers\AppController;
-use PandaBlack\Controllers\AttributeController;
 use PandaBlack\Controllers\CategoryController;
 use PandaBlack\Helpers\PBApiHelper;
-use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\AttributesRepository;
 use PandaBlack\Repositories\AttributeValuesRepository;
 use PandaBlack\Repositories\CategoriesRepository;
@@ -14,7 +11,7 @@ use Plenty\Modules\Cron\Contracts\CronHandler as Cron;
 
 class CategoriesAndAttributesUpdateCron extends Cron
 {
-    public function __construct()
+    public function handle()
     {
         $this->updateCategories();
         $this->updateAttributes();
