@@ -7,8 +7,9 @@ use Plenty\Modules\Cron\Contracts\CronHandler as Cron;
 
 class OrdersCron extends Cron
 {
-    public function __construct(OrderController $orderController)
+    public function handle()
     {
+        $orderController = pluginApp(OrderController::class);
         $orderController->createOrder();
     }
 }

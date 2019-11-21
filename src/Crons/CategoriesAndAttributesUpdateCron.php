@@ -14,7 +14,7 @@ use Plenty\Modules\Cron\Contracts\CronHandler as Cron;
 
 class CategoriesAndAttributesUpdateCron extends Cron
 {
-    public function __construct()
+    public function handle()
     {
         $this->updateCategories();
         $this->updateAttributes();
