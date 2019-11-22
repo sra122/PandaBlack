@@ -44,6 +44,8 @@
     "related-Properties": "Eigenschaftszuordnung vorhanden",
     "admin-notification": "Wichtige Benachrichtigungen",
     "valid-category": "Gültige Kategorie",
-    "missing-images": "Fehlende Bilder"
+    "missing-images": "Fehlende Bilder",
+    "item_id": "Item Id",
+    "title": "Titel"
   }
 }

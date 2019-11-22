@@ -1,5 +1,8 @@
 # Release notes for PANDA.BLACK
 
+## v1.1.0
+Enhancing Categories, Attributes and Report Section
+
 ## v1.0.13
 Upgrading Orders and Product Status Reports
 
@@ -20,7 +23,7 @@ Adopting Properties instead of Attributes.
 
 Adaption of the documentation
 
-Enhancement of the plugin - Addittion of EAN and SKU extracation
+Enhancement of the plugin - Addition of EAN and SKU extraction
 
 ## v1.0.7
 

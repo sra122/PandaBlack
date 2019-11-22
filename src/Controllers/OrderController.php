@@ -1,6 +1,7 @@
 <?php
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\SettingsHelper;
+use PandaBlack\Repositories\OrdersRepository;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Plugin\Application;
@@ -33,30 +34,16 @@ class OrderController extends Controller
         $app = pluginApp(AppController::class);
         $orders = $app->authenticate('pandaBlack_orders');
         if(!empty($orders)) {
-            $ordersInfo = [];
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
             $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
-            $settingsHelper = pluginApp(SettingsHelper::class);
-            $ordersData = $settingsHelper->get(SettingsHelper::ORDER_DATA);
-            if($ordersData === null || !(is_array($ordersData))) {
-                $settingsHelper->set(SettingsHelper::ORDER_DATA, $ordersInfo);
-            } else {
-                $ordersInfo = $ordersData;
-            }
-            if(is_array($ordersInfo))
+
+            $ordersRepo = pluginApp(OrdersRepository::class);
+            $orderReferenceKeys = $ordersRepo->getReferenceKeys();
+
+            foreach($orders['orders'] as $order)
             {
-                if(count($ordersInfo) <= 0) {
-                    foreach($orders['orders'] as $order)
-                    {
-                        $this->saveOrder($order);
-                    }
-                } else {
-                    foreach($orders['orders'] as $order)
-                    {
-                        if(!isset($ordersInfo[$order['reference_key']])) {
-                            $this->saveOrder($order);
-                        }
-                    }
+                if(!isset($orderReferenceKeys[$order['reference_key']])) {
+                    $this->saveOrder($order);
                 }
             }
         }
@@ -167,14 +154,13 @@ class OrderController extends Controller
      */
     private function saveOrderData($referenceId, $plentyOrderId)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
+        $ordersRepo = pluginApp(OrdersRepository::class);
+
         $orderData = [
-            $referenceId => $plentyOrderId
+            'referenceKey' => $referenceId,
+            'order_id' => $plentyOrderId
         ];
-        if($settingsHelper->get(SettingsHelper::ORDER_DATA) === null) {
-            $settingsHelper->set(SettingsHelper::ORDER_DATA, $orderData);
-        } else {
-            $settingsHelper->set(SettingsHelper::ORDER_DATA, array_merge($orderData, $settingsHelper->get(SettingsHelper::ORDER_DATA)));
-        }
+
+        $ordersRepo->createOrder($orderData);
     }
 }

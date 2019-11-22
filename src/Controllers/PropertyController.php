@@ -3,6 +3,7 @@
 namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\SettingsHelper;
+use PandaBlack\Repositories\CategoriesRepository;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertySelectionRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
@@ -42,7 +43,8 @@ Class PropertyController extends Controller
                  }
              }
 
-             $categoriesList = $this->settings->get(SettingsHelper::CATEGORIES_LIST);
+             $categoriesRepo = pluginApp(CategoriesRepository::class);
+             $categoriesList = $categoriesRepo->getCategories();
 
              if(!empty($categoriesList) && in_array($pbCategoryName, $categoriesList)) {
                  if(!$pbCategoryExist) {

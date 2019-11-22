@@ -44,6 +44,8 @@
     "related-Properties": "Property Mapping Exists",
     "admin-notification": "Important News",
     "valid-category": "Valid Category",
-    "missing-images": "Missing Images"
+    "missing-images": "Missing Images",
+    "item_id": "Item Id",
+    "title": "Title"
   }
 }

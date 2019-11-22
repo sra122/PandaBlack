@@ -2,10 +2,15 @@
 
 namespace PandaBlack\Providers;
 
-use PandaBlack\Controllers\CategoryController;
+use PandaBlack\Contracts\AttributesRepositoryContract;
+use PandaBlack\Contracts\AttributeValuesRepositoryContract;
+use PandaBlack\Contracts\CategoriesRepositoryContract;
 use PandaBlack\Crons\CategoriesAndAttributesUpdateCron;
 use PandaBlack\Crons\OrdersCron;
 use PandaBlack\Crons\PluginVersionCron;
+use PandaBlack\Repositories\AttributesRepository;
+use PandaBlack\Repositories\AttributeValuesRepository;
+use PandaBlack\Repositories\CategoriesRepository;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Plugin\ServiceProvider;
@@ -20,6 +25,9 @@ class PandaBlackServiceProvider extends ServiceProvider
     public function register()
     {
         $this->getApplication()->register(PandaBlackRouteServiceProvider::class);
+        $this->getApplication()->bind(CategoriesRepositoryContract::class, CategoriesRepository::class);
+        $this->getApplication()->bind(AttributesRepositoryContract::class, AttributesRepository::class);
+        $this->getApplication()->bind(AttributeValuesRepositoryContract::class, AttributeValuesRepository::class);
     }
 
     /**

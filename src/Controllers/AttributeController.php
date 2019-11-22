@@ -4,6 +4,8 @@ namespace PandaBlack\Controllers;
 
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
+use PandaBlack\Repositories\AttributesRepository;
+use PandaBlack\Repositories\AttributeValuesRepository;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Item\Attribute\Contracts\AttributeValueRepositoryContract;
@@ -11,11 +13,11 @@ use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
 class AttributeController extends Controller
 {
     /**
-     * CreatePBAttributes Method
+     * CreatePMAttributes Method
      *
      * @param $categoryId
      */
-    public function createPBAttributes($categoryId)
+    public function createPMAttributes($categoryId)
     {
         $app = pluginApp(AppController::class);
         $attributeValueSets = $app->authenticate('pandaBlack_attributes', $categoryId);
@@ -47,21 +49,68 @@ class AttributeController extends Controller
      */
     public function getPBAttributes($categoryId)
     {
-        $settingsHelper = pluginApp(SettingsHelper::class);
         $pbApiHelper = pluginApp(PBApiHelper::class);
+        $attributesRepo = pluginApp(AttributesRepository::class);
+        $attributeValueRepo = pluginApp(AttributeValuesRepository::class);
 
-        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
-        $categories = $settingsHelper->get(SettingsHelper::CATEGORIES_LIST);
+        $attributes = $attributesRepo->getAttributeForCategory($categoryId);
+        $attributesInfo = [];
+        if(count($attributes) <= 0) {
+            $attributes = $pbApiHelper->fetchPBAttributes($categoryId);
+            foreach($attributes as $attributeId => $attribute)
+            {
+                if($attribute['required'] && !($attribute['is_deleted'])) {
+                    $attributeData = [
+                        'categoryId' => (int)$categoryId,
+                        'attributeId' => (int)$attributeId,
+                        'attributeName' => $attribute['name']
+                    ];
+                    $attributesRepo->createAttribute($attributeData);
 
-        if(isset($categories[$categoryId])) {
-            if(isset($attributes[$categoryId]) && ($attributes[$categoryId] !== null)) {
-                return $attributes[$categoryId];
-            } else {
-                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
-                return $attributes[$categoryId];
+                    $values = [];
+
+                    foreach($attribute['values'] as $attributeValueIdentifier => $attributeValue)
+                    {
+                        if(!($attributeValue['is_deleted'])) {
+                            $attributeValueData = [
+                                'categoryId' => (int)$categoryId,
+                                'attributeId' => (int)$attributeId,
+                                'attributeValueName' => $attributeValue['name'],
+                                'attributeValueId' => (int)$attributeValueIdentifier
+                            ];
+
+                            $attributeValueRepo->createAttributeValue($attributeValueData);
+                            $values[(int)$attributeValueIdentifier] = $attributeValue;
+                        }
+                    }
+
+                    $attributesInfo[(int)$attributeId] = [
+                        'categoryId' => $categoryId,
+                        'name' => $attribute['name'],
+                        'values' => $values
+                    ];
+                }
+            }
+        } else {
+            foreach($attributes as $attribute)
+            {
+                $values = [];
+                $attributeValues = $attributeValueRepo->getAttributeValuesForAttribute($attribute->attribute_identifier);
+
+                foreach($attributeValues as $attributeValue)
+                {
+                    $values[$attributeValue->attribute_value_identifier] = $attributeValue->name;
+                }
+
+                $attributesInfo[$attribute->attribute_identifier] = [
+                    'categoryId' => $categoryId,
+                    'name' => $attribute->name,
+                    'values' => $values
+                ];
             }
         }
+
+        return $attributesInfo;
     }
 
     /**
@@ -131,7 +180,7 @@ class AttributeController extends Controller
                     $propertyValue = $selectionProperty['relation']['relationValues'][0];
 
                     if(in_array($propertyValue['lang'], $lang) && !empty($propertyValue['value'])) {
-                        $propertyValues[$key++] = $propertyValue['value'] . '-' . $propertyName;
+                        $propertyValues[$key++] = $propertyValue['value'] . '§' . $propertyName;
                     }
                 }
             }
@@ -140,27 +189,5 @@ class AttributeController extends Controller
         natcasesort($propertyValues);
 
         return $propertyValues;
-    }
-
-
-    public function updatePBCategoriesAttributesInPM()
-    {
-        $settingsHelper = pluginApp(SettingsHelper::class);
-        $pbApiHelper = pluginApp(PBApiHelper::class);
-
-        $attributes = $settingsHelper->get(SettingsHelper::ATTRIBUTES);
-
-        $categoriesController = pluginApp(CategoryController::class);
-        $categories = $categoriesController->getPBCategoriesAsDropdown();
-
-        $settingsHelper->set(SettingsHelper::CATEGORIES_LIST, $categories);
-
-        foreach($categories as $categoryId => $category)
-        {
-            if (isset($attributes[$categoryId])) {
-                $attributes[$categoryId] = $pbApiHelper->fetchPBAttributes($categoryId);
-                $settingsHelper->set(SettingsHelper::ATTRIBUTES, $attributes);
-            }
-        }
     }
 }

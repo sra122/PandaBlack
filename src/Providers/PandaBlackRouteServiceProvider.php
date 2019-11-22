@@ -25,7 +25,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->get('markets/panda-black/vendor-categories', 'PandaBlack\Controllers\CategoryController@getCategoriesList');
 
             //Attribute Actions
-            $router->post('markets/panda-black/create-attribute/{id}', 'PandaBlack\Controllers\AttributeController@createPBAttributes');
+            $router->post('markets/panda-black/create-attribute/{id}', 'PandaBlack\Controllers\AttributeController@createPMAttributes');
             $router->get('markets/panda-black/vendor-attribute/{id}', 'PandaBlack\Controllers\AttributeController@getPBAttributes');
             $router->get('markets/panda-black/pm-properties', 'PandaBlack\Controllers\AttributeController@getPMProperties');
             $router->get('markets/panda-black/pm-property-values', 'PandaBlack\Controllers\AttributeController@getPMPropertyValues');
@@ -38,11 +38,12 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
 
             //mapping
             $router->post('markets/panda-black/mapping', 'PandaBlack\Controllers\MappingController@mapping');
-            $router->get('markets/panda-black/mapping-data', 'PandaBlack\Controllers\MappingController@fetchPropertiesInfo');
+            $router->get('markets/panda-black/mapping-data', 'PandaBlack\Controllers\MappingController@getProperties');
 
             //Notification
-            $router->get('markets/panda-black/product-errors', 'PandaBlack\Controllers\MappingController@fetchProductErrors');
-            $router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\MappingController@fetchNotifications');
+            $router->get('markets/panda-black/products-status', 'PandaBlack\Controllers\NotificationController@fetchProductsStatus');
+            $router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\NotificationController@fetchNotifications');
+            $router->post('markets/panda-black/mark-notification/{id}', 'PandaBlack\Controllers\NotificationController@markAsRead');
         });
     }
 }
