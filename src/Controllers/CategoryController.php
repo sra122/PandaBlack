@@ -22,9 +22,35 @@ class CategoryController extends Controller
     }
 
 
+    public function deleteAllCategories()
+    {
+        $categoryRepo = pluginApp(CategoriesRepository::class);
+        $categoryRepo->deleteAll();
+    }
+
+
     public function getCategoriesList()
     {
         $categoryRepo = pluginApp(CategoriesRepository::class);
-        return $categoryRepo->getCategories();
+        $categories = $categoryRepo->getCategories();
+
+        if(count($categories) <= 0) {
+            $pbCategories = $this->getPBCategoriesAsDropdown();
+            foreach($pbCategories as $key => $pbCategory)
+            {
+                if(!$pbCategory['is_deleted']) {
+                    $categoryData = [
+                        'categoryId' => $key,
+                        'treePath' => $pbCategory['name']
+                    ];
+
+                    $categoryRepo->createCategory($categoryData);
+                }
+            }
+
+            return $categoryRepo->getCategories();
+        } else {
+            return $categories;
+        }
     }
 }

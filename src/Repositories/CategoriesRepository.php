@@ -3,6 +3,7 @@
 namespace PandaBlack\Repositories;
 
 use PandaBlack\Contracts\CategoriesRepositoryContract;
+use PandaBlack\Controllers\CategoryController;
 use PandaBlack\Models\Attribute;
 use PandaBlack\Models\AttributeValue;
 use PandaBlack\Models\Category;
@@ -34,7 +35,7 @@ class CategoriesRepository implements CategoriesRepositoryContract
         $categoryData = $this->database->query(Category::class)
             ->where('category_identifier', '=', $data['categoryId'])->get();
 
-        if(count($categoryData) <= 0 || $categoryData === null) {
+        if (count($categoryData) <= 0 || $categoryData === null) {
             $category->category_identifier = $data['categoryId'];
             $category->tree_path = $data['treePath'];
 
@@ -54,14 +55,25 @@ class CategoriesRepository implements CategoriesRepositoryContract
      */
     public function updateCategory($id, $categoryTreePath): Category
     {
+        $categoryPlugin = pluginApp(Category::class);
+
         $categoryData = $this->database->query(Category::class)
             ->where('category_identifier', '=', $id)->get();
-        $category = $categoryData[0];
 
-        $category->tree_path = $categoryTreePath;
-        $this->database->save($category);
+        if (count($categoryData) <= 0 || $categoryData === null) {
+            $categoryPlugin->category_identifier = $id;
+            $categoryPlugin->tree_path = $categoryTreePath;
+            $this->database->save($categoryPlugin);
 
-        return $category;
+            return $categoryPlugin;
+        } else {
+            $category = $categoryData[0];
+
+            $category->tree_path = $categoryTreePath;
+            $this->database->save($category);
+
+            return $category;
+        }
     }
 
 
@@ -93,8 +105,7 @@ class CategoriesRepository implements CategoriesRepositoryContract
         $attributes = $this->database->query(Attribute::class)
             ->where('category_identifier', '=', $id)->get();
 
-        foreach($attributes as $attribute)
-        {
+        foreach ($attributes as $attribute) {
             $this->database->delete($attribute);
         }
 
@@ -102,8 +113,7 @@ class CategoriesRepository implements CategoriesRepositoryContract
         $attributeValues = $this->database->query(AttributeValue::class)
             ->where('category_identifier', '=', $id)->get();
 
-        foreach($attributeValues as $attributeValue)
-        {
+        foreach ($attributeValues as $attributeValue) {
             $this->database->delete($attributeValue);
         }
 
@@ -119,13 +129,42 @@ class CategoriesRepository implements CategoriesRepositoryContract
         $categoryTree = [];
 
         $categories = $this->database->query(Category::class)
-            ->where('id' , '!=', 'null')->get();
+            ->where('id', '!=', 'null')->get();
 
-        foreach($categories as $category)
-        {
+        foreach ($categories as $category) {
             $categoryTree[$category->category_identifier] = $category->tree_path;
         }
 
+        if(count($categoryTree) === 0) {
+            $categoryController = pluginApp(CategoryController::class);
+            $pbCategories = $categoryController->getPBCategoriesAsDropdown();
+
+            foreach($pbCategories as $key => $pbCategory)
+            {
+                if(!$pbCategory['is_deleted']) {
+                    $categoryData = [
+                        'categoryId' => $key,
+                        'treePath' => $pbCategory['name']
+                    ];
+
+                    $createdCategory = $this->createCategory($categoryData);
+                    $categoryTree[$createdCategory->category_identifier] = $createdCategory->tree_path;
+                }
+            }
+        }
+
         return $categoryTree;
+    }
+
+
+    public function deleteAll()
+    {
+        $categoryController = pluginApp(CategoryController::class);
+        $pbCategories = $categoryController->getPBCategoriesAsDropdown();
+
+        foreach($pbCategories as $key => $pbCategory)
+        {
+            $this->deleteCategory((int)$key);
+        }
     }
 }

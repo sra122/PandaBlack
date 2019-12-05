@@ -42,7 +42,8 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
 
             //Notification
             $router->get('markets/panda-black/products-status', 'PandaBlack\Controllers\NotificationController@fetchProductsStatus');
-            $router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\NotificationController@fetchNotifications');
+            //$router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\NotificationController@fetchNotifications');
+            $router->get('markets/panda-black/notifications', 'PandaBlack\Controllers\CategoryController@deleteAllCategories');
             $router->post('markets/panda-black/mark-notification/{id}', 'PandaBlack\Controllers\NotificationController@markAsRead');
         });
     }

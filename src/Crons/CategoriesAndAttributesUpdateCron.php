@@ -17,7 +17,6 @@ class CategoriesAndAttributesUpdateCron extends Cron
         $this->updateAttributes();
     }
 
-
     public function updateCategories()
     {
         $categoryController = pluginApp(CategoryController::class);
