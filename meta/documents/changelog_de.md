@@ -1,5 +1,8 @@
 # Release Notes für PANDA.BLACK
 
+## v1.1.1
+Kategorien Cron Update
+
 ## v1.1.0
 Erweitern von Kategorien, Attributen und Berichtsabschnitten
 

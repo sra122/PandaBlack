@@ -155,18 +155,4 @@ class CategoriesRepository implements CategoriesRepositoryContract
 
         return $categoryTree;
     }
-
-
-    public function deleteAll()
-    {
-        $categoryController = pluginApp(CategoryController::class);
-        $pbCategories = $categoryController->getPBCategoriesAsDropdown();
-
-        foreach($pbCategories as $key => $pbCategory)
-        {
-            $this->deleteCategory((int)$key);
-        }
-
-        return true;
-    }
 }

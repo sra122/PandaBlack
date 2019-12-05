@@ -22,13 +22,6 @@ class CategoryController extends Controller
     }
 
 
-    public function deleteAllCategories()
-    {
-        $categoryRepo = pluginApp(CategoriesRepository::class);
-        return $categoryRepo->deleteAll();
-    }
-
-
     public function getCategoriesList()
     {
         $categoryRepo = pluginApp(CategoriesRepository::class);
