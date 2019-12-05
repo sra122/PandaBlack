@@ -166,5 +166,7 @@ class CategoriesRepository implements CategoriesRepositoryContract
         {
             $this->deleteCategory((int)$key);
         }
+
+        return true;
     }
 }
