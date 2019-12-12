@@ -10,6 +10,6 @@ class ItemExportCron extends Cron
     public function handle()
     {
         $contentController = pluginApp(ContentController::class);
-        $contentController->sendProductDetails(24);
+        $contentController->sendProductDetails(1);
     }
 }

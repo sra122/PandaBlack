@@ -268,7 +268,7 @@ class ContentController extends Controller
      * @param int $hours
      * @return array
      */
-    public function sendProductDetails($hours = 24)
+    public function sendProductDetails($hours = 1)
     {
         $app = pluginApp(AppController::class);
         $productDetails = $this->productDetails($hours);
