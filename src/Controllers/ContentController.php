@@ -3,6 +3,7 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\AttributesRepository;
+use PandaBlack\Repositories\CategoriesRepository;
 use PandaBlack\Repositories\PropertiesRepository;
 use Plenty\Modules\Item\ItemImage\Contracts\ItemImageRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
@@ -292,7 +293,8 @@ class ContentController extends Controller
         foreach($properties as $property)
         {
             if($property['propertyId'] == (int)$categoryPropertyId) {
-                $categoriesList = $this->settings->get(SettingsHelper::CATEGORIES_LIST);
+                $categoriesRepo = pluginApp(CategoriesRepository::class);
+                $categoriesList = $categoriesRepo->getCategories();
                 $propertyRepo = pluginApp(PropertyRepositoryContract::class);
                 $propertyLists = $propertyRepo->listProperties(1, 50, [], [], 0);
                 foreach($propertyLists as $propertyList)

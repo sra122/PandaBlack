@@ -1,4 +1,7 @@
 # Release notes for PANDA.BLACK
+## v1.1.2
+Products Extraction Update
+
 ## v1.1.1
 Categories Cron Update
 
