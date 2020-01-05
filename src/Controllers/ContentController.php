@@ -335,4 +335,10 @@ class ContentController extends Controller
 
         return $this->settings->get(SettingsHelper::CATEGORIES_AS_PROPERTIES);
     }
+
+
+    public function testCategoryList()
+    {
+        return $this->settings->get(SettingsHelper::CATEGORIES_LIST);
+    }
 }
