@@ -2,7 +2,7 @@
   "name"              : "PandaBlack",
   "namespace"         : "PandaBlack",
   "type"              : "general",
-  "version"           : "1.1.2",
+  "version"           : "1.1.3",
   "pluginIcon"        : "icon_plugin_md.png",
   "description"       : "PANDA.BLACK - sell to China",
   "author"            : "PANDA.BLACK GmbH",
@@ -22,6 +22,7 @@
     "PandaBlack\\Migrations\\CreateAttributes",
     "PandaBlack\\Migrations\\CreateAttributeValues",
     "PandaBlack\\Migrations\\CreateNotifications",
-    "PandaBlack\\Migrations\\CreatePropertiesTable"
+    "PandaBlack\\Migrations\\CreatePropertiesTable",
+    "PandaBlack\\Migrations\\CreateOrders"
   ]
 }

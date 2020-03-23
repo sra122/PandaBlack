@@ -1,4 +1,7 @@
 # Release Notes für PANDA.BLACK
+## v1.1.3
+Aktualisierung der Auftragserstellung
+
 ## v1.1.2
 Produktextraktions-Update
 
