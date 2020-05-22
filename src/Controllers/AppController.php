@@ -5,6 +5,7 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Plugin\Controller;
+
 class AppController extends Controller
 {
     /** @var SettingsHelper */
@@ -23,22 +24,20 @@ class AppController extends Controller
         if ($token !== null) {
             if ($token['expires_in'] > time()) {
                 $response = $libCall->call(
-                    'PandaBlack::'. $apiCall,
+                    'PandaBlack::' . $apiCall,
                     [
                         'token' => $token['token'],
                         'category_id' => $params,
-                        'product_details' => $productDetails,
-                        'order_details' => $orderDetails
+                        'product_details' => $productDetails
                     ]
                 );
-            } else if($token['refresh_token_expires_in'] > time()) {
+            } else if ($token['refresh_token_expires_in'] > time()) {
                 $response = $libCall->call(
                     'PandaBlack::pandaBlack_categories',
                     [
                         'token' => $token['refresh_token'],
                         'category_id' => $params,
-                        'product_details' => $productDetails,
-                        'order_details' => $orderDetails
+                        'product_details' => $productDetails
                     ]
                 );
             }
@@ -78,6 +77,31 @@ class AppController extends Controller
                     );
                 }
             }
+            if (\is_array($response) && isset($response['Response'])) {
+                return $response['Response'];
+            }
+        }
+    }
+
+    /**
+     * @param $methodName
+     * @param $methodValue
+     * @return mixed
+     */
+    public function logInfo($methodName, $methodValue)
+    {
+        $libCall = pluginApp(LibraryCallContract::class);
+        $token = $this->Settings->get('pbToken');
+
+        if ($token !== null && $token['expires_in'] > time()) {
+            $response = $libCall->call(
+                'PandaBlack::pandaBlack_log',
+                [
+                    'token' => $token['token'],
+                    'method_name' => $methodName,
+                    'method_value' => $methodValue
+                ]
+            );
             if (\is_array($response) && isset($response['Response'])) {
                 return $response['Response'];
             }

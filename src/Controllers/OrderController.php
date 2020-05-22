@@ -2,12 +2,14 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\OrdersRepository;
 use Plenty\Modules\Account\Address\Models\AddressRelationType;
 use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
+use Plenty\Modules\Order\Models\Order;
 use Plenty\Plugin\Application;
 use Plenty\Plugin\Controller;
 
@@ -23,6 +25,8 @@ class OrderController extends Controller
     protected $ContactRepository;
     /** @var SettingsHelper */
     protected $Settings;
+    /** @var AppController */
+    protected $App;
     protected $plentyId;
 
     /**
@@ -50,13 +54,13 @@ class OrderController extends Controller
      */
     public function createOrder()
     {
-        $app = pluginApp(AppController::class);
-        $orders = $app->authenticate('pandaBlack_orders');
+        $this->App = pluginApp(AppController::class);
+        $orders = $this->App->authenticate('pandaBlack_orders');
         if (!empty($orders)) {
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
             $this->ContactAddressRepository = pluginApp(ContactAddressRepositoryContract::class);
             $this->ContactRepository = pluginApp(ContactRepositoryContract::class);
-
+            /** @var OrdersRepository $ordersRepo */
             $ordersRepo = pluginApp(OrdersRepository::class);
             $orderReferenceKeys = $ordersRepo->getReferenceKeys();
 
@@ -73,13 +77,13 @@ class OrderController extends Controller
      */
     private function saveOrder($order)
     {
-        $contactId = $this->getContact($order['contactDetails']);
+        $contactId = $this->getContact($order['contact_details']);
         $data = [
-            'typeId' => 1, // sales order
-            'methodOfPaymentId' => 1,
-            'shippingProfileId' => 1,
-            'paymentStatus' => 1,
-            'statusId' => 5,
+            'typeId' => $order['type_id'], // sales order
+            'methodOfPaymentId' => $order['method_of_payment_id'],
+            'shippingProfileId' => $order['shipping_profile_id'],
+            'paymentStatus' => $order['payment_status'],
+            'statusId' => $order['status_id'],
             'plentyId' => $this->plentyId,
             'addressRelations' => [
                 [
@@ -104,7 +108,7 @@ class OrderController extends Controller
                         'isSystemCurrency' => true,
                         'isNet' => true,
                         'exchangeRate' => 1,
-                        'currency' => 'EUR',
+                        'currency' => $productDetails['currency'],
                         'priceOriginalGross' => $productDetails['price']
                     ]
                 ]
@@ -112,7 +116,12 @@ class OrderController extends Controller
         }
         $data['orderItems'] = $orderItems;
         $orderData = $this->OrderRepository->createOrder($data);
-        $this->saveOrderData($order['reference_key'], $orderData->id);
+        if($orderData instanceof Order) {
+            $this->App->logInfo(PBApiHelper::ORDER_CREATED, $orderData);
+            $this->saveOrderData($order['reference_key'], $orderData->id);
+        } else {
+            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $orderData);
+        }
     }
 
     /**
@@ -120,17 +129,15 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
-        $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails->email);
-
+        $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
         if ($contactId === null) {
             $contactData = [
-                'email' => $contactDetails->email,
-                'firstName' => $contactDetails->first_name,
-                'lastName' => $contactDetails->last_name,
+                'email' => $contactDetails['email'],
+                'firstName' => $contactDetails['first_name'],
+                'lastName' => $contactDetails['last_name'],
                 'referrerId' => $this->Settings->get('orderReferrerId'),
                 'plentyId' => $this->plentyId
             ];
-
             return $this->ContactRepository->createContact($contactData)->id;
         }
         return $contactId;

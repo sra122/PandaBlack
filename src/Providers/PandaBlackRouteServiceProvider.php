@@ -46,7 +46,7 @@ class PandaBlackRouteServiceProvider extends RouteServiceProvider
             $router->post('markets/panda-black/mark-notification/{id}', 'PandaBlack\Controllers\NotificationController@markAsRead');
 
             //Order
-            $router->post('markets/panda-black/order-details/{reference_key}', 'PandaBlack\Controllers\OrderController@orderDetails');
+            $router->post('markets/panda-black/logs', 'PandaBlack\Controllers\AppController@logInfo');
         });
     }
 }
