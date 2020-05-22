@@ -62,4 +62,20 @@ class OrdersRepository implements OrdersRepositoryContract
 
         return $referenceKeys;
     }
+
+    /**
+     * @param $referenceKey
+     * @return mixed|null
+     */
+    public function getOrderInfoWithReferenceKey($referenceKey)
+    {
+        $order = $this->database->query(Order::class)
+            ->where('reference_key', '=', $referenceKey)->get();
+
+        if(count($order) <= 0) {
+            return null;
+        } else {
+            return $order[0];
+        }
+    }
 }
