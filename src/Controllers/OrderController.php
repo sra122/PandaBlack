@@ -95,6 +95,13 @@ class OrderController extends Controller
                     'typeId' => self::DELIVERY_ADDRESS,
                     'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
                 ]
+            ],
+            'relations' => [
+                [
+                    'referenceType' => 'contact',
+                    'referenceId'   => $contactId,
+                    'relation'      => 'receiver',
+                ]
             ]
         ];
         $orderItems = [];
