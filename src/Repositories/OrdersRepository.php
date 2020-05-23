@@ -57,7 +57,7 @@ class OrdersRepository implements OrdersRepositoryContract
 
         foreach($orders as $order)
         {
-            $referenceKeys[$order->reference_key] = $order->reference_key;
+            $referenceKeys[$order->reference_key] = $order->order_id;
         }
 
         return $referenceKeys;

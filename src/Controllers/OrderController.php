@@ -11,6 +11,7 @@ use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Account\Contact\Models\ContactType;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
+use Plenty\Modules\Order\Models\OrderItemType;
 use Plenty\Plugin\Application;
 use Plenty\Plugin\Controller;
 
@@ -68,6 +69,12 @@ class OrderController extends Controller
             foreach ($orders['orders'] as $order) {
                 if (!isset($orderReferenceKeys[$order['reference_key']])) {
                     $this->saveOrder($order);
+                } else {
+                    $orderInfo = [
+                        'external_identifier' => $orderReferenceKeys[$order['reference_key']],
+                        'order_reference' => $order['reference_key']
+                    ];
+                    $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
                 }
             }
         }
@@ -107,7 +114,7 @@ class OrderController extends Controller
         $orderItems = [];
         foreach ($order['products'] as $productDetails) {
             $orderItems[] = [
-                'typeId' => 1,
+                'typeId' => OrderItemType::TYPE_VARIATION,
                 'itemVariationId' => $productDetails['itemVariationId'],
                 'quantity' => $productDetails['quantity'],
                 'orderItemName' => $productDetails['productTitle'],
@@ -122,12 +129,22 @@ class OrderController extends Controller
                 ]
             ];
         }
+
+        // Shipping
+        if(isset($order['shipping'])) {
+            $orderItems[] = $this->createShippingCharges($order['shipping']);
+        }
+
         $data['orderItems'] = $orderItems;
         $orderData = $this->OrderRepository->createOrder($data);
 
         try {
             $this->saveOrderData($order['reference_key'], $orderData->id);
-            $this->App->logInfo(PBApiHelper::ORDER_CREATED, $orderData);
+            $orderInfo = [
+                'external_identifier' => $orderData->id,
+                'order_reference' => $order['reference_key']
+            ];
+            $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
         } catch (\Exception $e) {
             $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getMessage());
         }
@@ -203,6 +220,28 @@ class OrderController extends Controller
             $this->App->logInfo('createDeliveryAddress', $e->getMessage());
         }
 
+    }
+
+    /**
+     * @param $shippingData
+     * @return array
+     */
+    private function createShippingCharges($shippingData)
+    {
+       return [
+           'typeId'          => OrderItemType::TYPE_SHIPPING_COSTS,
+           'itemVariationId' => 0,
+           'quantity'        => 1,
+           'orderItemName'   => 'Shipping Costs',
+          // 'countryVatId'    => $countryVat->id,
+          // 'vatField'        => $minVatField ? $minVatField : 0,
+           'amounts'         => [
+               [
+                   'priceOriginalGross' => $shippingData['shipping_price'],
+                   'currency'           => $shippingData['currency'],
+               ],
+           ],
+       ];
     }
 
     /**
