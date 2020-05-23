@@ -99,7 +99,7 @@ class AppController extends Controller
                 [
                     'token' => $token['token'],
                     'method_name' => $methodName,
-                    'method_value' => $methodValue
+                    'method_info' => $methodValue
                 ]
             );
             if (\is_array($response) && isset($response['Response'])) {
