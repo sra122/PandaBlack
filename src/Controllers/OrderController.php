@@ -8,6 +8,7 @@ use PandaBlack\Repositories\OrdersRepository;
 use Plenty\Modules\Account\Address\Models\AddressRelationType;
 use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
+use Plenty\Modules\Account\Contact\Models\ContactType;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Plugin\Application;
@@ -116,11 +117,12 @@ class OrderController extends Controller
         }
         $data['orderItems'] = $orderItems;
         $orderData = $this->OrderRepository->createOrder($data);
-        if($orderData instanceof Order) {
-            $this->App->logInfo(PBApiHelper::ORDER_CREATED, $orderData);
+
+        try {
             $this->saveOrderData($order['reference_key'], $orderData->id);
-        } else {
-            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $orderData);
+            $this->App->logInfo(PBApiHelper::ORDER_CREATED, $orderData);
+        } catch (\Exception $e) {
+            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getMessage());
         }
     }
 
@@ -136,9 +138,14 @@ class OrderController extends Controller
                 'firstName' => $contactDetails['first_name'],
                 'lastName' => $contactDetails['last_name'],
                 'referrerId' => $this->Settings->get('orderReferrerId'),
-                'plentyId' => $this->plentyId
+                'plentyId' => $this->plentyId,
+                'typeId' => ContactType::TYPE_CUSTOMER
             ];
-            return $this->ContactRepository->createContact($contactData)->id;
+            try {
+                return $this->ContactRepository->createContact($contactData)->id;
+            } catch (\Exception $e) {
+                $this->App->logInfo('createContact', $e->getMessage());
+            }
         }
         return $contactId;
     }
@@ -158,7 +165,12 @@ class OrderController extends Controller
             'town' => $orderBillingAddress['city'],
             'countryId' => $orderBillingAddress['country_id']
         ];
-        return $this->ContactAddressRepository->createAddress($billingAddress, $contactId, AddressRelationType::BILLING_ADDRESS)->id;
+        try {
+            return $this->ContactAddressRepository->createAddress($billingAddress, $contactId, AddressRelationType::BILLING_ADDRESS)->id;
+        } catch (\Exception $e) {
+            $this->App->logInfo('createBillingAddress', $e->getMessage());
+        }
+
     }
 
     /**
@@ -178,7 +190,12 @@ class OrderController extends Controller
             'town' => $orderDeliveryAddress['city'],
             'countryId' => $orderDeliveryAddress['country_id']
         ];
-        return $this->ContactAddressRepository->createAddress($deliveryAddress, $contactId, AddressRelationType::DELIVERY_ADDRESS)->id;
+        try {
+            return $this->ContactAddressRepository->createAddress($deliveryAddress, $contactId, AddressRelationType::DELIVERY_ADDRESS)->id;
+        } catch (\Exception $e) {
+            $this->App->logInfo('createDeliveryAddress', $e->getMessage());
+        }
+
     }
 
     /**
