@@ -136,9 +136,9 @@ class OrderController extends Controller
         }
 
         $data['orderItems'] = $orderItems;
-        $orderData = $this->OrderRepository->createOrder($data);
 
         try {
+            $orderData = $this->OrderRepository->createOrder($data);
             $this->saveOrderData($order['reference_key'], $orderData->id);
             $orderInfo = [
                 'external_identifier' => $orderData->id,
