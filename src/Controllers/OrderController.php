@@ -146,7 +146,7 @@ class OrderController extends Controller
             ];
             $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
         } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e);
+            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getTraceAsString());
         }
     }
 
