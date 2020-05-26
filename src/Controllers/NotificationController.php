@@ -52,6 +52,7 @@ class NotificationController extends Controller
             'lastName' => 'Test Last Name',
             'referrerId' => 13,
             'plentyId' => 38447,
+            'externalId' => 'Pb-contact-1',
             'typeId' => ContactType::TYPE_CUSTOMER
         ];
         $contactRepository->createContact($data);
