@@ -11,6 +11,7 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\NotificationsRepository;
 use PandaBlack\Repositories\PropertiesRepository;
+use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyNameRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRelationRepositoryContract;
 use Plenty\Modules\Property\Contracts\PropertyRepositoryContract;
@@ -33,7 +34,9 @@ class NotificationController extends Controller
     public function fetchNotifications()
     {
         $this->createNotification();
-        return $this->notifications->getNotifications();
+        /** @var ContactRepositoryContract $contactRepository */
+        $contactRepository = pluginApp(ContactRepositoryContract::class);
+        return $contactRepository->getContactList();
     }
 
 
