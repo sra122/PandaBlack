@@ -2,7 +2,7 @@
 
 namespace PandaBlack\Controllers;
 
-use PandaBlack\Helper\PaymentHelper;
+use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\OrdersRepository;

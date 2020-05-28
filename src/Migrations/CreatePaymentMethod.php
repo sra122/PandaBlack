@@ -2,7 +2,7 @@
 
 namespace PandaBlack\Migrations;
 
-use PandaBlack\Helper\PaymentHelper;
+use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 
