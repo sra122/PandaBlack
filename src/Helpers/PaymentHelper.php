@@ -2,7 +2,6 @@
 
 namespace PandaBlack\Helpers;
 
-use PandaBlack\Helpers\SettingsHelper;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 
 /**
@@ -16,6 +15,7 @@ class PaymentHelper
      * @var PaymentMethodRepositoryContract
      */
     private $paymentMethodRepository;
+
     /**
      * PrePaymentHelper constructor.
      *
@@ -33,8 +33,7 @@ class PaymentHelper
     {
         $paymentMethods = $this->paymentMethodRepository->allForPlugin(SettingsHelper::PLUGIN_NAME);
 
-        foreach($paymentMethods as $paymentMethod)
-        {
+        foreach ($paymentMethods as $paymentMethod) {
             return $paymentMethod->id;
         }
 

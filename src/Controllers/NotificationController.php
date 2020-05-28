@@ -8,6 +8,7 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Repositories\NotificationsRepository;
 use PandaBlack\Repositories\PropertiesRepository;
 use Plenty\Plugin\Controller;
@@ -26,8 +27,16 @@ class NotificationController extends Controller
      */
     public function fetchNotifications()
     {
+        $this->fetchPaymentMethod();
         $this->createNotification();
         return $this->notifications->getNotifications();
+    }
+
+    private function fetchPaymentMethod()
+    {
+        /** @var PaymentHelper $paymentHelper */
+        $paymentHelper = pluginApp(PaymentHelper::class);
+        return $paymentHelper->getPaymentMethodId();
     }
 
     public function createNotification()
