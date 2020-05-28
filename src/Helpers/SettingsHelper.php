@@ -18,6 +18,8 @@ class SettingsHelper
     const ORDER_REFERRER = 'orderReferrerId';
     const PB_KATEGORIE_PROPERTY = 'PandaBlack Kategorie';
     const ORDER_DATA = 'Order_data';
+    const CONTACT_ID = 'pb_contact_id';
+    const PLUGIN_NAME = 'PandaBlack';
 
 
     /** @var SettingsRepositoryContract */

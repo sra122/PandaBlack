@@ -17,11 +17,14 @@ class ContentController extends Controller
 {
     /** @var SettingsHelper */
     protected $settings;
+    /** @var AppController $app */
+    protected $app;
     public $exportData = [];
     public $variationItems = [];
     public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->settings = $SettingsHelper;
+        $this->app = pluginApp(AppController::class);
     }
 
     /**
@@ -30,137 +33,141 @@ class ContentController extends Controller
      */
     private function productsExtraction($filterVariation = null, $hours = 1)
     {
-        $marketId = $this->settings->get('orderReferrerId');
+        try {
+            $marketId = $this->settings->get('orderReferrerId');
 
-        if(empty($marketId)) {
-            $this->settings->getReferrerId();
-        }
+            if(empty($marketId)) {
+                $this->settings->getReferrerId();
+            }
 
-        $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
-        $itemRepository->setSearchParams([
-            'with' => [
-                'item' => null,
-                'lang' => 'de',
-                'properties' => true,
-                'variationSalesPrices' => true,
-                'variationCategories' => true,
-                'variationClients' => true,
-                'variationAttributeValues' => true,
-                'variationSkus' => true,
-                'variationMarkets' => true,
-                'variationSuppliers' => true,
-                'variationWarehouses' => true,
-                'variationDefaultCategory' => true,
-                'variationBarcodes' => true,
-                'variationProperties' => true,
-                'unit' => true,
-                'variationStock' => [
-                    'params' => [
-                        'type' => 'virtual'
+            $itemRepository = pluginApp(VariationSearchRepositoryContract::class);
+            $itemRepository->setSearchParams([
+                'with' => [
+                    'item' => null,
+                    'lang' => 'de',
+                    'properties' => true,
+                    'variationSalesPrices' => true,
+                    'variationCategories' => true,
+                    'variationClients' => true,
+                    'variationAttributeValues' => true,
+                    'variationSkus' => true,
+                    'variationMarkets' => true,
+                    'variationSuppliers' => true,
+                    'variationWarehouses' => true,
+                    'variationDefaultCategory' => true,
+                    'variationBarcodes' => true,
+                    'variationProperties' => true,
+                    'unit' => true,
+                    'variationStock' => [
+                        'params' => [
+                            'type' => 'virtual'
+                        ],
+                        'fields' => [
+                            'stockNet'
+                        ]
                     ],
-                    'fields' => [
-                        'stockNet'
-                    ]
-                ],
-                'stock' => true,
-                'images' => true,
-            ]
-        ]);
+                    'stock' => true,
+                    'images' => true,
+                ]
+            ]);
 
-        $itemRepository->setFilters([
-            'referrerId' => (int)$this->settings->get(SettingsHelper::ORDER_REFERRER),
-            $filterVariation => time()-(3600*$hours)
-        ]);
+            $itemRepository->setFilters([
+                'referrerId' => (int)$this->settings->get(SettingsHelper::ORDER_REFERRER),
+                $filterVariation => time()-(3600*$hours)
+            ]);
 
-        $resultItems = $itemRepository->search();
+            $resultItems = $itemRepository->search();
 
-        $variationCount = 0;
+            $variationCount = 0;
 
-        do {
-            if($variationCount <= 5000) {
-                $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
-                $variationStock = pluginApp(VariationStockRepositoryContract::class);
-                $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
-                foreach($resultItems->getResult()  as $variation)
-                {
-                    $variationCount++;
-                    if(!isset($this->variationItems[$variation['id']])) {
-                        $stockData = $variationStock->listStockByWarehouse($variation['id']);
-                        $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
-                        //ASIN
-                        $asin = null;
-                        try {
-                            $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
-                            foreach($identNumbers as $identNumber)
-                            {
-                                if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
-                                    $asin = $identNumber['value'];
-                                }
-                            }
-                        } catch (\Exception $e) {
+            do {
+                if($variationCount <= 5000) {
+                    $manufacturerRepository = pluginApp(ManufacturerRepositoryContract::class);
+                    $variationStock = pluginApp(VariationStockRepositoryContract::class);
+                    $variationMarketIdentNumber = pluginApp(VariationMarketIdentNumberRepositoryContract::class);
+                    foreach($resultItems->getResult()  as $variation)
+                    {
+                        $variationCount++;
+                        if(!isset($this->variationItems[$variation['id']])) {
+                            $stockData = $variationStock->listStockByWarehouse($variation['id']);
+                            $manufacturer = $manufacturerRepository->findById($variation['item']['manufacturerId'], ['*'])->toArray();
+                            //ASIN
                             $asin = null;
-                        }
+                            try {
+                                $identNumbers = $variationMarketIdentNumber->findByVariationId($variation['id']);
+                                foreach($identNumbers as $identNumber)
+                                {
+                                    if($identNumber['type'] === 'ASIN' && $identNumber['variationId'] === $variation['id']) {
+                                        $asin = $identNumber['value'];
+                                    }
+                                }
+                            } catch (\Exception $e) {
+                                $asin = null;
+                            }
 
-                        //Images
-                        $images = pluginApp(ItemImageRepositoryContract::class);
-                        $imageDetails = $images->findByItemId($variation['itemId']);
-                        $imageUrls = [];
-                        foreach($imageDetails as $imageDetail) {
-                            array_push($imageUrls, $imageDetail['url']);
-                        }
+                            //Images
+                            $images = pluginApp(ItemImageRepositoryContract::class);
+                            $imageDetails = $images->findByItemId($variation['itemId']);
+                            $imageUrls = [];
+                            foreach($imageDetails as $imageDetail) {
+                                array_push($imageUrls, $imageDetail['url']);
+                            }
 
-                        //SKU
-                        $sku = null;
-                        if(count($variation['variationSkus']) > 0) {
-                            foreach($variation['variationSkus'] as $skuInformation)
-                            {
-                                if($skuInformation['marketId'] === $this->settings->get(SettingsHelper::ORDER_REFERRER)) {
-                                    $sku = $skuInformation['sku'];
+                            //SKU
+                            $sku = null;
+                            if(count($variation['variationSkus']) > 0) {
+                                foreach($variation['variationSkus'] as $skuInformation)
+                                {
+                                    if($skuInformation['marketId'] === $this->settings->get(SettingsHelper::ORDER_REFERRER)) {
+                                        $sku = $skuInformation['sku'];
+                                    }
                                 }
                             }
-                        }
 
-                        //EAN
-                        $ean = [];
-                        if(count($variation['variationBarcodes']) > 0) {
-                            foreach($variation['variationBarcodes'] as $variationBarcode)
-                            {
-                                array_push($ean, $variationBarcode->code);
+                            //EAN
+                            $ean = [];
+                            if(count($variation['variationBarcodes']) > 0) {
+                                foreach($variation['variationBarcodes'] as $variationBarcode)
+                                {
+                                    array_push($ean, $variationBarcode->code);
+                                }
                             }
+                            $textArray = $variation['item']->texts;
+                            $variation['texts'] = $textArray->toArray();
+                            $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
+                            $this->exportData[$variation['id']] = array(
+                                'parent_product_id' => $variation['mainVariationId'],
+                                'product_id' => $variation['id'],
+                                'item_id' => $variation['itemId'],
+                                'name' => $variation['item']['texts'][0]['name1'],
+                                'price' => $variation['variationSalesPrices'][0]['price'],
+                                'currency' => 'Euro',
+                                'category' => $categoryId,
+                                'short_description' => $variation['item']['texts'][0]['description'],
+                                'images' => $imageUrls,
+                                'image_url' => $imageUrls[0],
+                                'color' => '',
+                                'size' => '',
+                                'content_supplier' => $manufacturer['name'],
+                                'product_type' => '',
+                                'quantity' => $stockData[0]['netStock'],
+                                'store_name' => '',
+                                'status' => $variation['isActive'],
+                                'brand' => $manufacturer['name'],
+                                'last_update_at' => $variation['relatedUpdatedAt'],
+                                'asin' => $asin,
+                                'sku' => (string)$variation['id'],
+                                'ean' => (count($ean) > 0) ? implode(',', $ean) : null
+                            );
+                            $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
+                            $this->variationItems[$variation['id']] = $variation['id'];
                         }
-                        $textArray = $variation['item']->texts;
-                        $variation['texts'] = $textArray->toArray();
-                        $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
-                        $this->exportData[$variation['id']] = array(
-                            'parent_product_id' => $variation['mainVariationId'],
-                            'product_id' => $variation['id'],
-                            'item_id' => $variation['itemId'],
-                            'name' => $variation['item']['texts'][0]['name1'],
-                            'price' => $variation['variationSalesPrices'][0]['price'],
-                            'currency' => 'Euro',
-                            'category' => $categoryId,
-                            'short_description' => $variation['item']['texts'][0]['description'],
-                            'images' => $imageUrls,
-                            'image_url' => $imageUrls[0],
-                            'color' => '',
-                            'size' => '',
-                            'content_supplier' => $manufacturer['name'],
-                            'product_type' => '',
-                            'quantity' => $stockData[0]['netStock'],
-                            'store_name' => '',
-                            'status' => $variation['isActive'],
-                            'brand' => $manufacturer['name'],
-                            'last_update_at' => $variation['relatedUpdatedAt'],
-                            'asin' => $asin,
-                            'sku' => (string)$variation['id'],
-                            'ean' => (count($ean) > 0) ? implode(',', $ean) : null
-                        );
-                        $this->exportData[$variation['id']]['attributes'] = $this->attributesInfo($variation['properties'], $categoryId);
-                        $this->variationItems[$variation['id']] = $variation['id'];
                     }
                 }
-            }
-        } while(!$resultItems->isLastPage());
+            } while(!$resultItems->isLastPage());
+        } catch (\Exception $e) {
+            $this->app->logInfo(PBApiHelper::PRODUCT_EXPORT, $e->getMessage());
+        }
     }
 
     /**

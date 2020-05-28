@@ -23,6 +23,7 @@
     "PandaBlack\\Migrations\\CreateAttributeValues",
     "PandaBlack\\Migrations\\CreateNotifications",
     "PandaBlack\\Migrations\\CreatePropertiesTable",
-    "PandaBlack\\Migrations\\CreateOrders"
+    "PandaBlack\\Migrations\\CreateOrders",
+    "PandaBlack\\Migrations\\CreatePaymentMethod"
   ]
 }
