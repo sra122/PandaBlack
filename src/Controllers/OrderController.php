@@ -98,6 +98,7 @@ class OrderController extends Controller
             'paymentStatus' => $order['payment_status'],
             'statusId' => $order['status_id'],
             'plentyId' => $this->plentyId,
+            'referrerId' => $this->Settings->get('orderReferrerId'),
             'addressRelations' => [
                 [
                     'typeId' => self::BILLING_ADDRESS,
