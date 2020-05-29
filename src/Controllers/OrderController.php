@@ -2,6 +2,7 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\OrdersRepository;
@@ -12,6 +13,7 @@ use Plenty\Modules\Account\Contact\Models\ContactType;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItemType;
+use Plenty\Modules\Order\Property\Models\OrderPropertyType;
 use Plenty\Plugin\Application;
 use Plenty\Plugin\Controller;
 
@@ -29,15 +31,18 @@ class OrderController extends Controller
     protected $Settings;
     /** @var AppController */
     protected $App;
+    protected $PaymentHelper;
     protected $plentyId;
 
     /**
      * OrderController constructor.
      * @param SettingsHelper $SettingsHelper
+     * @param PaymentHelper $PaymentHelper
      */
-    public function __construct(SettingsHelper $SettingsHelper)
+    public function __construct(SettingsHelper $SettingsHelper, PaymentHelper $PaymentHelper)
     {
         $this->Settings = $SettingsHelper;
+        $this->PaymentHelper = $PaymentHelper;
         $this->plentyId = $this->getPlentyPluginInfo();
     }
 
@@ -108,6 +113,12 @@ class OrderController extends Controller
                     'referenceType' => 'contact',
                     'referenceId'   => $contactId,
                     'relation'      => 'receiver',
+                ]
+            ],
+            'properties' => [
+                [
+                    'typeId' => OrderPropertyType::PAYMENT_METHOD,
+                    'value'  => (string)$this->PaymentHelper->getPaymentMethodId(),
                 ]
             ]
         ];
