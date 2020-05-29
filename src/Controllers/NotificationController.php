@@ -28,12 +28,12 @@ class NotificationController extends Controller
      */
     public function fetchNotifications()
     {
-        $this->fetchPaymentMethod();
+        //$this->fetchPaymentMethod();
         $this->createNotification();
-        return $this->notifications->getNotifications();
+        return $this->fetchPaymentMethod();
     }
 
-    private function fetchPaymentMethod()
+    public function fetchPaymentMethod()
     {
         /** @var PaymentMethodRepositoryContract $paymentMethod */
         $paymentMethod = pluginApp(PaymentMethodRepositoryContract::class);
