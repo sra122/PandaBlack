@@ -174,14 +174,7 @@ class OrderController extends Controller
                 'lastName' => $contactDetails['last_name'],
                 'referrerId' => $this->Settings->get('orderReferrerId'),
                 'plentyId' => $this->plentyId,
-                'typeId' => ContactType::TYPE_CUSTOMER,
-                'options' => [
-                    [
-                        'typeId' => 2,
-                        'subTypeId' => 4,
-                        'value' => $contactDetails['email']
-                    ]
-                ]
+                'typeId' => ContactType::TYPE_CUSTOMER
             ];
             try {
                 return $this->ContactRepository->createContact($contactData)->id;
