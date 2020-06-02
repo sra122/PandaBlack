@@ -42,6 +42,7 @@ class OrderController extends Controller
     public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->Settings = $SettingsHelper;
+        $this->PaymentHelper = pluginApp(PaymentHelper::class);
         $this->plentyId = $this->getPlentyPluginInfo();
     }
 
