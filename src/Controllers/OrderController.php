@@ -2,6 +2,10 @@
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\OrdersRepository;
+use Plenty\Modules\Account\Address\Models\AddressRelationType;
+use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
+use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
+use Plenty\Modules\Account\Contact\Models\ContactType;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Plugin\Application;
@@ -10,12 +14,16 @@ class OrderController extends Controller
 {
     /** @var OrderRepositoryContract */
     protected $OrderRepository;
-    /** @var AddressRepositoryContract */
-    protected $AddressRepository;
+    /** @var ContactAddressRepositoryContract */
+    protected $ContactAddressRepository;
     const BILLING_ADDRESS = 1;
     const DELIVERY_ADDRESS = 2;
     /** @var SettingsHelper */
     protected $Settings;
+    /** @var ContactRepositoryContract */
+    protected $ContactRepository;
+    /** @var AppController */
+    protected $App;
     protected $plentyId;
 
     /**
@@ -31,12 +39,12 @@ class OrderController extends Controller
 
     public function createOrder()
     {
-        $app = pluginApp(AppController::class);
-        $orders = $app->authenticate('pandaBlack_orders');
+        $this->App = pluginApp(AppController::class);
+        $orders = $this->App->authenticate('pandaBlack_orders');
         if(!empty($orders)) {
             $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
-            $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
-
+            $this->ContactRepository = pluginApp(ContactRepositoryContract::class);
+            $this->ContactAddressRepository = pluginApp(ContactAddressRepositoryContract::class);
             $ordersRepo = pluginApp(OrdersRepository::class);
             $orderReferenceKeys = $ordersRepo->getReferenceKeys();
 
@@ -50,13 +58,13 @@ class OrderController extends Controller
     }
 
 
-
     /**
      * @param $referenceKey
      * @param $orderDeliveryAddress
+     * @param $contactId
      * @return mixed
      */
-    private function createDeliveryAddress($referenceKey, $orderDeliveryAddress)
+    private function createDeliveryAddress($referenceKey, $orderDeliveryAddress, $contactId)
     {
         $deliveryAddress = [
             'gender' => $orderDeliveryAddress['gender'],
@@ -67,15 +75,16 @@ class OrderController extends Controller
             'town' => $orderDeliveryAddress['city'],
             'countryId' => $orderDeliveryAddress['country_id']
         ];
-        return $this->AddressRepository->createAddress($deliveryAddress)->id;
+        return $this->ContactAddressRepository->createAddress($deliveryAddress, $contactId, AddressRelationType::DELIVERY_ADDRESS)->id;
     }
 
 
     /**
      * @param $orderBillingAddress
+     * @param $contactId
      * @return mixed
      */
-    private function createBillingAddress($orderBillingAddress)
+    private function createBillingAddress($orderBillingAddress, $contactId)
     {
         $billingAddress = [
             'gender' => $orderBillingAddress['gender'],
@@ -85,7 +94,7 @@ class OrderController extends Controller
             'town' => $orderBillingAddress['city'],
             'countryId' => $orderBillingAddress['country_id']
         ];
-        return $this->AddressRepository->createAddress($billingAddress)->id;
+        return $this->ContactAddressRepository->createAddress($billingAddress, $contactId, AddressRelationType::BILLING_ADDRESS)->id;
     }
 
 
@@ -94,21 +103,20 @@ class OrderController extends Controller
      */
     private function saveOrder($order)
     {
+        $contactId = $this->getContact($order['contact_details']);
         $data = [
             'typeId' => 1, // sales order
-            'methodOfPaymentId' => 1,
-            'shippingProfileId' => 1,
-            'paymentStatus' => 1,
-            'statusId' => 3,
+            'statusId' => $order['status_id'],
             'plentyId' => $this->plentyId,
+            'referrerId' => $this->Settings->get('orderReferrerId'),
             'addressRelations' => [
                 [
                     'typeId' => self::BILLING_ADDRESS,
-                    'addressId' => $this->createBillingAddress($order['billing_address'])
+                    'addressId' => $this->createBillingAddress($order['billing_address'], $contactId)
                 ],
                 [
                     'typeId' => self::DELIVERY_ADDRESS,
-                    'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'])
+                    'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
                 ]
             ]
         ];
@@ -135,6 +143,32 @@ class OrderController extends Controller
         $orderData = $this->OrderRepository->createOrder($data);
         $this->saveOrderData($order['reference_key'], $orderData->id);
     }
+
+    /**
+     * @param $contactDetails
+     * @return mixed
+     */
+    private function getContact($contactDetails)
+    {
+        $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
+        if ($contactId === null) {
+            $contactData = [
+                'email' => $contactDetails['email'],
+                'firstName' => $contactDetails['first_name'],
+                'lastName' => $contactDetails['last_name'],
+                'referrerId' => $this->Settings->get('orderReferrerId'),
+                'plentyId' => $this->plentyId,
+                'typeId' => ContactType::TYPE_CUSTOMER
+            ];
+            try {
+                return $this->ContactRepository->createContact($contactData)->id;
+            } catch (\Exception $e) {
+                $this->App->logInfo('createContact', $e->getMessage());
+            }
+        }
+        return $contactId;
+    }
+
 
     /**
      * @return int
