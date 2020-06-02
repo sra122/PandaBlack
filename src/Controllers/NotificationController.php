@@ -8,12 +8,9 @@
 
 namespace PandaBlack\Controllers;
 
-use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Repositories\NotificationsRepository;
 use PandaBlack\Repositories\PropertiesRepository;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
-use Plenty\Modules\Order\Models\OrderType;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\Controller;
 
 class NotificationController extends Controller
@@ -21,11 +18,14 @@ class NotificationController extends Controller
     private $notifications;
     /** @var ContactRepositoryContract */
     protected $ContactRepository;
+    /** @var OrderController */
+    protected $OrderController;
 
     public function __construct(NotificationsRepository $notifications)
     {
         $this->notifications = $notifications;
         $this->ContactRepository = pluginApp(ContactRepositoryContract::class);
+        $this->OrderController = pluginApp(OrderController::class);
     }
 
     /**
@@ -33,19 +33,16 @@ class NotificationController extends Controller
      */
     public function fetchNotifications()
     {
-        $this->createNotification();
-        $this->fetchContactDetails();
-        return $this->notifications->getNotifications();
+        //$this->createNotification();
+        //$this->fetchContactDetails();
+        //$this->OrderController->createOrder();
+        return $this->OrderController->createOrder();
     }
 
 
     public function fetchContactDetails()
     {
-        try {
-            return $this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', 2, 4);
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
+        return $this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', 2, 4);
         //return $this->ContactRepository->getContactIdByEmail('pandablack@i-ways.net');
     }
 
