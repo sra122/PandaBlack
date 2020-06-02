@@ -12,6 +12,7 @@ use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Repositories\NotificationsRepository;
 use PandaBlack\Repositories\PropertiesRepository;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
+use Plenty\Modules\Order\Models\OrderType;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\Controller;
 
@@ -37,9 +38,11 @@ class NotificationController extends Controller
         return $this->notifications->getNotifications();
     }
 
+
     public function fetchContactDetails()
     {
-        return $this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', (int)2, (int)4);
+        //$this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', 2, 4);
+        return $this->ContactRepository->getContactIdByEmail('pandablack@i-ways.net');
     }
 
     public function createNotification()
