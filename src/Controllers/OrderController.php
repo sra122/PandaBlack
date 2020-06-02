@@ -158,7 +158,7 @@ class OrderController extends Controller
             ];
             $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
         } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getMessage());
+            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getTraceAsString());
         }
     }
 
@@ -170,6 +170,7 @@ class OrderController extends Controller
         $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
         if ($contactId === null) {
             $contactData = [
+                'email' => $contactDetails['email'],
                 'firstName' => $contactDetails['first_name'],
                 'lastName' => $contactDetails['last_name'],
                 'referrerId' => $this->Settings->get('orderReferrerId'),
