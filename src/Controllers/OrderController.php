@@ -167,11 +167,7 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
-        $contactId = $this->ContactRepository->getContactByOptions([
-            'typeId' => 2,
-            'subTypeId' => 4,
-            'value' => $contactDetails['email']
-        ]);
+        $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], (int)2, (int)4)->id;
         if ($contactId === null) {
             $contactData = [
                 'firstName' => $contactDetails['first_name'],
