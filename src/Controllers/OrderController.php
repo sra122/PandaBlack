@@ -124,13 +124,13 @@ class OrderController extends Controller
                     'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
                 ]
             ],
-            /*'relations' => [
+            'relations' => [
                 [
                     'referenceType' => 'contact',
                     'referenceId'   => $contactId,
                     'relation'      => 'receiver',
                 ]
-            ],
+            ],/*
             'properties' => [
                 [
                     'typeId' => OrderPropertyType::PAYMENT_METHOD,
