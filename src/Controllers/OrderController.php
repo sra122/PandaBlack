@@ -176,29 +176,40 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
-        $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
-        if ($contactId === null) {
-            $contactData = [
-                'firstName' => $contactDetails['first_name'],
-                'lastName' => $contactDetails['last_name'],
-                'referrerId' => $this->Settings->get('orderReferrerId'),
-                'plentyId' => $this->plentyId,
-                'typeId' => ContactType::TYPE_CUSTOMER,
-                'options' => [
-                    [
-                        'typeId' => 2,
-                        'subTypeId' => 4,
-                        'value' => $contactDetails['email']
-                    ]
-                ]
-            ];
-            try {
-                return $this->ContactRepository->createContact($contactData)->id;
-            } catch (\Exception $e) {
-                $this->App->logInfo(PBApiHelper::CREATE_CONTACT, $e->getMessage());
+        try {
+            if (isset($contactDetails['createNewContact']) && $contactDetails['createNewContact']) {
+                $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
+            } else {
+                $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
             }
+
+            if ($contactId === null) {
+                $contactData = [
+                    'email' => $contactDetails['email'],
+                    'firstName' => $contactDetails['first_name'],
+                    'lastName' => $contactDetails['last_name'],
+                    'referrerId' => $this->Settings->get('orderReferrerId'),
+                    'plentyId' => $this->plentyId,
+                    'typeId' => ContactType::TYPE_CUSTOMER,
+                    'options' => [
+                        [
+                            'typeId' => 2,
+                            'subTypeId' => 4,
+                            'value' => $contactDetails['email']
+                        ]
+                    ]
+                ];
+                try {
+                    return $this->ContactRepository->createContact($contactData)->id;
+                } catch (\Exception $e) {
+                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, $e->getMessage());
+                }
+            }
+            return $contactId;
+        } catch (\Exception $e) {
+            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, $e->getMessage());
         }
-        return $contactId;
+
     }
 
 
