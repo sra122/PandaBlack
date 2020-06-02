@@ -41,8 +41,12 @@ class NotificationController extends Controller
 
     public function fetchContactDetails()
     {
-        //$this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', 2, 4);
-        return $this->ContactRepository->getContactIdByEmail('pandablack@i-ways.net');
+        try {
+            return $this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', 2, 4);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+        //return $this->ContactRepository->getContactIdByEmail('pandablack@i-ways.net');
     }
 
     public function createNotification()
