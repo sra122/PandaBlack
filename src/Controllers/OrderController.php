@@ -167,15 +167,25 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
-        $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
+        $contactId = $this->ContactRepository->getContactByOptions([
+            'typeId' => 2,
+            'subTypeId' => 4,
+            'value' => $contactDetails['email']
+        ]);
         if ($contactId === null) {
             $contactData = [
-                'email' => $contactDetails['email'],
                 'firstName' => $contactDetails['first_name'],
                 'lastName' => $contactDetails['last_name'],
                 'referrerId' => $this->Settings->get('orderReferrerId'),
                 'plentyId' => $this->plentyId,
-                'typeId' => ContactType::TYPE_CUSTOMER
+                'typeId' => ContactType::TYPE_CUSTOMER,
+                'options' => [
+                    [
+                        'typeId' => 2,
+                        'subTypeId' => 4,
+                        'value' => $contactDetails['email']
+                    ]
+                ]
             ];
             try {
                 return $this->ContactRepository->createContact($contactData)->id;
