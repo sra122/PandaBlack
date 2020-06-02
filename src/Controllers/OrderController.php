@@ -1,11 +1,13 @@
 <?php
 namespace PandaBlack\Controllers;
+use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\OrdersRepository;
 use Plenty\Modules\Account\Address\Models\AddressRelationType;
 use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Account\Contact\Models\ContactType;
+use Plenty\Modules\Order\Property\Models\OrderPropertyType;
 use Plenty\Plugin\Controller;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Plugin\Application;
@@ -24,6 +26,8 @@ class OrderController extends Controller
     protected $ContactRepository;
     /** @var AppController */
     protected $App;
+    /** @var PaymentHelper */
+    protected $PaymentHelper;
     protected $plentyId;
 
     /**
@@ -33,6 +37,7 @@ class OrderController extends Controller
     public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->Settings = $SettingsHelper;
+        $this->PaymentHelper = pluginApp(PaymentHelper::class);
         $this->plentyId = $this->getPlentyPluginInfo();
     }
 
@@ -105,7 +110,7 @@ class OrderController extends Controller
     {
         $contactId = $this->getContact($order['contact_details']);
         $data = [
-            'typeId' => 1, // sales order
+            'typeId' => $order['type_id'],
             'statusId' => $order['status_id'],
             'plentyId' => $this->plentyId,
             'referrerId' => $this->Settings->get('orderReferrerId'),
@@ -117,6 +122,19 @@ class OrderController extends Controller
                 [
                     'typeId' => self::DELIVERY_ADDRESS,
                     'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
+                ]
+            ],
+            'relations' => [
+                [
+                    'referenceType' => 'contact',
+                    'referenceId'   => $contactId,
+                    'relation'      => 'receiver',
+                ]
+            ],
+            'properties' => [
+                [
+                    'typeId' => OrderPropertyType::PAYMENT_METHOD,
+                    'value'  => (string)$this->PaymentHelper->getPaymentMethodId(),
                 ]
             ]
         ];
