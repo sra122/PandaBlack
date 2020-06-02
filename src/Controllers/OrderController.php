@@ -93,7 +93,7 @@ class OrderController extends Controller
         $contactId = $this->getContact($order['contact_details']);
         $data = [
             'typeId' => $order['type_id'], // sales order
-            'statusId' => $order['status_id'],
+            'statusId' => 5,
             'plentyId' => $this->plentyId,
             'addressRelations' => [
                 [
