@@ -93,6 +93,9 @@ class OrderController extends Controller
         $contactId = $this->getContact($order['contact_details']);
         $data = [
             'typeId' => $order['type_id'], // sales order
+            'methodOfPaymentId' => $order['method_of_payment_id'],
+            'shippingProfileId' => $order['shipping_profile_id'],
+            'paymentStatus' => $order['payment_status'],
             'statusId' => 5,
             'plentyId' => $this->plentyId,
             'addressRelations' => [
@@ -154,7 +157,7 @@ class OrderController extends Controller
             ];
             $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
         } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getMessage());
+            $this->App->logInfo(PBApiHelper::ORDER_ERROR, json_encode($data, true));
         }
     }
 
