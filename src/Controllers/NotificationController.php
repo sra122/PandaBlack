@@ -11,16 +11,20 @@ namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Repositories\NotificationsRepository;
 use PandaBlack\Repositories\PropertiesRepository;
+use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\Controller;
 
 class NotificationController extends Controller
 {
     private $notifications;
+    /** @var ContactRepositoryContract */
+    protected $ContactRepository;
 
     public function __construct(NotificationsRepository $notifications)
     {
         $this->notifications = $notifications;
+        $this->ContactRepository = pluginApp(ContactRepositoryContract::class);
     }
 
     /**
@@ -29,7 +33,12 @@ class NotificationController extends Controller
     public function fetchNotifications()
     {
         $this->createNotification();
-        return $this->notifications->getNotifications();
+        return $this->fetchContactDetails();
+    }
+
+    public function fetchContactDetails()
+    {
+        return $this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', (int)2, (int)4);
     }
 
     public function createNotification()
