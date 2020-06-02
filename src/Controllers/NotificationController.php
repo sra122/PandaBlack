@@ -33,7 +33,8 @@ class NotificationController extends Controller
     public function fetchNotifications()
     {
         $this->createNotification();
-        return $this->fetchContactDetails();
+        $this->fetchContactDetails();
+        return $this->notifications->getNotifications();
     }
 
     public function fetchContactDetails()
