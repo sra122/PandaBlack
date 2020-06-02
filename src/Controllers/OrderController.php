@@ -131,12 +131,12 @@ class OrderController extends Controller
                     'relation'      => 'receiver',
                 ]
             ],
-            'properties' => [
+            /*'properties' => [
                 [
                     'typeId' => OrderPropertyType::PAYMENT_METHOD,
                     'value'  => (string)$this->PaymentHelper->getPaymentMethodId(),
                 ]
-            ]
+            ]*/
         ];
         $orderItems = [];
         foreach($order['products'] as $productDetails)
