@@ -1,38 +1,21 @@
 <?php
-
 namespace PandaBlack\Controllers;
-
-use PandaBlack\Helpers\PaymentHelper;
-use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\OrdersRepository;
-use Plenty\Modules\Account\Address\Models\AddressRelationType;
-use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
-use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
-use Plenty\Modules\Account\Contact\Models\ContactType;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
-use Plenty\Modules\Order\Models\Order;
-use Plenty\Modules\Order\Models\OrderItemType;
-use Plenty\Modules\Order\Property\Models\OrderPropertyType;
-use Plenty\Plugin\Application;
 use Plenty\Plugin\Controller;
-
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
+use Plenty\Plugin\Application;
+use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 class OrderController extends Controller
 {
-    const BILLING_ADDRESS = 1;
-    const DELIVERY_ADDRESS = 2;
     /** @var OrderRepositoryContract */
     protected $OrderRepository;
-    /** @var ContactAddressRepositoryContract */
-    protected $ContactAddressRepository;
-    /** @var ContactRepositoryContract */
-    protected $ContactRepository;
+    /** @var AddressRepositoryContract */
+    protected $AddressRepository;
+    const BILLING_ADDRESS = 1;
+    const DELIVERY_ADDRESS = 2;
     /** @var SettingsHelper */
     protected $Settings;
-    /** @var AppController */
-    protected $App;
-    /** @var PaymentHelper */
-    protected $PaymentHelper;
     protected $plentyId;
 
     /**
@@ -42,8 +25,115 @@ class OrderController extends Controller
     public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->Settings = $SettingsHelper;
-        $this->PaymentHelper = pluginApp(PaymentHelper::class);
         $this->plentyId = $this->getPlentyPluginInfo();
+    }
+
+
+    public function createOrder()
+    {
+        $app = pluginApp(AppController::class);
+        $orders = $app->authenticate('pandaBlack_orders');
+        if(!empty($orders)) {
+            $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
+            $this->AddressRepository = pluginApp(AddressRepositoryContract::class);
+
+            $ordersRepo = pluginApp(OrdersRepository::class);
+            $orderReferenceKeys = $ordersRepo->getReferenceKeys();
+
+            foreach($orders['orders'] as $order)
+            {
+                if(!isset($orderReferenceKeys[$order['reference_key']])) {
+                    $this->saveOrder($order);
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * @param $referenceKey
+     * @param $orderDeliveryAddress
+     * @return mixed
+     */
+    private function createDeliveryAddress($referenceKey, $orderDeliveryAddress)
+    {
+        $deliveryAddress = [
+            'gender' => $orderDeliveryAddress['gender'],
+            'name1' => $orderDeliveryAddress['name'],
+            'address1' => $orderDeliveryAddress['address'],
+            'address2' => 'Ref Id ' . $referenceKey,
+            'postalCode' => (string)$orderDeliveryAddress['postal_code'],
+            'town' => $orderDeliveryAddress['city'],
+            'countryId' => $orderDeliveryAddress['country_id']
+        ];
+        return $this->AddressRepository->createAddress($deliveryAddress)->id;
+    }
+
+
+    /**
+     * @param $orderBillingAddress
+     * @return mixed
+     */
+    private function createBillingAddress($orderBillingAddress)
+    {
+        $billingAddress = [
+            'gender' => $orderBillingAddress['gender'],
+            'name1' => $orderBillingAddress['name'],
+            'address1' => $orderBillingAddress['address'],
+            'postalCode' => (string)$orderBillingAddress['postal_code'],
+            'town' => $orderBillingAddress['city'],
+            'countryId' => $orderBillingAddress['country_id']
+        ];
+        return $this->AddressRepository->createAddress($billingAddress)->id;
+    }
+
+
+    /**
+     * @param $order
+     */
+    private function saveOrder($order)
+    {
+        $data = [
+            'typeId' => 1, // sales order
+            'methodOfPaymentId' => 1,
+            'shippingProfileId' => 1,
+            'paymentStatus' => 1,
+            'statusId' => 3,
+            'plentyId' => $this->plentyId,
+            'addressRelations' => [
+                [
+                    'typeId' => self::BILLING_ADDRESS,
+                    'addressId' => $this->createBillingAddress($order['billing_address'])
+                ],
+                [
+                    'typeId' => self::DELIVERY_ADDRESS,
+                    'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'])
+                ]
+            ]
+        ];
+        $orderItems = [];
+        foreach($order['products'] as $productDetails)
+        {
+            $orderItems[] = [
+                'typeId' => 1,
+                'itemVariationId' => $productDetails['itemVariationId'],
+                'quantity' => $productDetails['quantity'],
+                'orderItemName' => $productDetails['productTitle'],
+                'amounts' => [
+                    0 => [
+                        'isSystemCurrency' => true,
+                        'isNet' => true,
+                        'exchangeRate' => 1,
+                        'currency' => 'EUR',
+                        'priceOriginalGross' => $productDetails['price']
+                    ]
+                ]
+            ];
+        }
+        $data['orderItems'] = $orderItems;
+        $orderData = $this->OrderRepository->createOrder($data);
+        $this->saveOrderData($order['reference_key'], $orderData->id);
     }
 
     /**
@@ -56,204 +146,7 @@ class OrderController extends Controller
         return $plentyId->getPlentyId();
     }
 
-    /**
-     * Create Order
-     */
-    public function createOrder()
-    {
-        $this->App = pluginApp(AppController::class);
-        $orders = $this->App->authenticate('pandaBlack_orders');
-        if (!empty($orders)) {
-            $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
-            $this->ContactAddressRepository = pluginApp(ContactAddressRepositoryContract::class);
-            $this->ContactRepository = pluginApp(ContactRepositoryContract::class);
-            /** @var OrdersRepository $ordersRepo */
-            $ordersRepo = pluginApp(OrdersRepository::class);
-            $orderReferenceKeys = $ordersRepo->getReferenceKeys();
 
-            foreach ($orders['orders'] as $order) {
-                if (!isset($orderReferenceKeys[$order['reference_key']])) {
-                    $this->saveOrder($order);
-                } else {
-                    $orderInfo = [
-                        'external_identifier' => $orderReferenceKeys[$order['reference_key']],
-                        'order_reference' => $order['reference_key']
-                    ];
-                    $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param $order
-     */
-    private function saveOrder($order)
-    {
-        $contactId = $this->getContact($order['contact_details']);
-        $data = [
-            'typeId' => $order['type_id'], // sales order
-            'methodOfPaymentId' => $order['method_of_payment_id'],
-            'shippingProfileId' => $order['shipping_profile_id'],
-            'paymentStatus' => $order['payment_status'],
-            'statusId' => 5,
-            'plentyId' => $this->plentyId,
-            'addressRelations' => [
-                [
-                    'typeId' => self::BILLING_ADDRESS,
-                    'addressId' => $this->createBillingAddress($order['billing_address'], $contactId)
-                ],
-                [
-                    'typeId' => self::DELIVERY_ADDRESS,
-                    'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
-                ]
-            ],
-            'relations' => [
-                [
-                    'referenceType' => 'contact',
-                    'referenceId'   => $contactId,
-                    'relation'      => 'receiver',
-                ]
-            ],
-            'properties' => [
-                [
-                    'typeId' => OrderPropertyType::PAYMENT_METHOD,
-                    'value'  => (string)$this->PaymentHelper->getPaymentMethodId(),
-                ]
-            ]
-        ];
-        $orderItems = [];
-        foreach ($order['products'] as $productDetails) {
-            $orderItems[] = [
-                'typeId' => OrderItemType::TYPE_VARIATION,
-                'itemVariationId' => $productDetails['itemVariationId'],
-                'quantity' => $productDetails['quantity'],
-                'orderItemName' => $productDetails['productTitle'],
-                'amounts' => [
-                    0 => [
-                        'isSystemCurrency' => true,
-                        'isNet' => true,
-                        'exchangeRate' => 1,
-                        'currency' => $productDetails['currency'],
-                        'priceOriginalGross' => $productDetails['price']
-                    ]
-                ]
-            ];
-        }
-
-        // Shipping
-        if(isset($order['shipping'])) {
-            $orderItems[] = $this->createShippingCharges($order['shipping']);
-        }
-
-        $data['orderItems'] = $orderItems;
-
-        try {
-            $orderData = $this->OrderRepository->createOrder($data);
-            $this->saveOrderData($order['reference_key'], $orderData->id);
-            $orderInfo = [
-                'external_identifier' => $orderData->id,
-                'order_reference' => $order['reference_key']
-            ];
-            $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
-        } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::ORDER_ERROR, json_encode($data, true));
-        }
-    }
-
-    /**
-     * @param $contactDetails
-     */
-    private function getContact($contactDetails)
-    {
-        $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
-        if ($contactId === null) {
-            $contactData = [
-                'email' => $contactDetails['email'],
-                'firstName' => $contactDetails['first_name'],
-                'lastName' => $contactDetails['last_name'],
-                'referrerId' => $this->Settings->get('orderReferrerId'),
-                'plentyId' => $this->plentyId,
-                'typeId' => ContactType::TYPE_CUSTOMER
-            ];
-            try {
-                return $this->ContactRepository->createContact($contactData)->id;
-            } catch (\Exception $e) {
-                $this->App->logInfo('createContact', $e->getMessage());
-            }
-        }
-        return $contactId;
-    }
-
-    /**
-     * @param $orderBillingAddress
-     * @param $contactId
-     * @return mixed
-     */
-    private function createBillingAddress($orderBillingAddress, $contactId)
-    {
-        $billingAddress = [
-            'gender' => $orderBillingAddress['gender'],
-            'name1' => $orderBillingAddress['name'],
-            'address1' => $orderBillingAddress['address'],
-            'postalCode' => (string)$orderBillingAddress['postal_code'],
-            'town' => $orderBillingAddress['city'],
-            'countryId' => $orderBillingAddress['country_id']
-        ];
-        try {
-            return $this->ContactAddressRepository->createAddress($billingAddress, $contactId, AddressRelationType::BILLING_ADDRESS)->id;
-        } catch (\Exception $e) {
-            $this->App->logInfo('createBillingAddress', $e->getMessage());
-        }
-
-    }
-
-    /**
-     * @param $referenceKey
-     * @param $orderDeliveryAddress
-     * @param $contactId
-     * @return mixed
-     */
-    private function createDeliveryAddress($referenceKey, $orderDeliveryAddress, $contactId)
-    {
-        $deliveryAddress = [
-            'gender' => $orderDeliveryAddress['gender'],
-            'name1' => $orderDeliveryAddress['name'],
-            'address1' => $orderDeliveryAddress['address'],
-            'address2' => 'Ref Id ' . $referenceKey,
-            'postalCode' => (string)$orderDeliveryAddress['postal_code'],
-            'town' => $orderDeliveryAddress['city'],
-            'countryId' => $orderDeliveryAddress['country_id']
-        ];
-        try {
-            return $this->ContactAddressRepository->createAddress($deliveryAddress, $contactId, AddressRelationType::DELIVERY_ADDRESS)->id;
-        } catch (\Exception $e) {
-            $this->App->logInfo('createDeliveryAddress', $e->getMessage());
-        }
-
-    }
-
-    /**
-     * @param $shippingData
-     * @return array
-     */
-    private function createShippingCharges($shippingData)
-    {
-        return [
-            'typeId'          => OrderItemType::TYPE_SHIPPING_COSTS,
-            'itemVariationId' => 0,
-            'quantity'        => 1,
-            'orderItemName'   => 'Shipping Costs',
-            // 'countryVatId'    => $countryVat->id,
-            // 'vatField'        => $minVatField ? $minVatField : 0,
-            'amounts'         => [
-                [
-                    'priceOriginalGross' => $shippingData['shipping_price'],
-                    'currency'           => $shippingData['currency'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * @param $referenceId
@@ -261,7 +154,6 @@ class OrderController extends Controller
      */
     private function saveOrderData($referenceId, $plentyOrderId)
     {
-        /** @var OrdersRepository $ordersRepo */
         $ordersRepo = pluginApp(OrdersRepository::class);
 
         $orderData = [
@@ -270,22 +162,5 @@ class OrderController extends Controller
         ];
 
         $ordersRepo->createOrder($orderData);
-    }
-
-    /**
-     * @param $referenceId
-     * @return \Plenty\Modules\Order\Models\Order|null
-     */
-    public function orderDetails($referenceId)
-    {
-        /** @var OrdersRepository $ordersRepo */
-        $ordersRepo = pluginApp(OrdersRepository::class);
-        $orderInfo = $ordersRepo->getOrderInfoWithReferenceKey($referenceId);
-
-        if ($orderInfo !== null) {
-            $this->OrderRepository = pluginApp(OrderRepositoryContract::class);
-            return $this->OrderRepository->findOrderById($orderInfo['order_id']);
-        }
-        return null;
     }
 }
