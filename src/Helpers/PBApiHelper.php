@@ -6,7 +6,7 @@ use PandaBlack\Controllers\AppController;
 
 class PBApiHelper extends SettingsHelper
 {
-    const ORDER_CREATE = 'orderCreate';
+    const  ORDER_CREATE = 'orderCreate';
     const ORDER_ERROR = 'orderError';
     const PRODUCT_EXTRACTION_ERROR = 'productExtractionError';
     const REFERRER_ID_ERROR = 'referrerIdentifierError';
