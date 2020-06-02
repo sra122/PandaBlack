@@ -31,18 +31,17 @@ class OrderController extends Controller
     protected $Settings;
     /** @var AppController */
     protected $App;
+    /** @var PaymentHelper */
     protected $PaymentHelper;
     protected $plentyId;
 
     /**
      * OrderController constructor.
      * @param SettingsHelper $SettingsHelper
-     * @param PaymentHelper $PaymentHelper
      */
-    public function __construct(SettingsHelper $SettingsHelper, PaymentHelper $PaymentHelper)
+    public function __construct(SettingsHelper $SettingsHelper)
     {
         $this->Settings = $SettingsHelper;
-        $this->PaymentHelper = $PaymentHelper;
         $this->plentyId = $this->getPlentyPluginInfo();
     }
 
@@ -98,7 +97,6 @@ class OrderController extends Controller
             'paymentStatus' => $order['payment_status'],
             'statusId' => $order['status_id'],
             'plentyId' => $this->plentyId,
-            'referrerId' => $this->Settings->get('orderReferrerId'),
             'addressRelations' => [
                 [
                     'typeId' => self::BILLING_ADDRESS,
