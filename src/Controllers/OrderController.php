@@ -124,7 +124,7 @@ class OrderController extends Controller
                     'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
                 ]
             ],
-            'relations' => [
+            /*'relations' => [
                 [
                     'referenceType' => 'contact',
                     'referenceId'   => $contactId,
@@ -136,7 +136,7 @@ class OrderController extends Controller
                     'typeId' => OrderPropertyType::PAYMENT_METHOD,
                     'value'  => (string)$this->PaymentHelper->getPaymentMethodId(),
                 ]
-            ]
+            ]*/
         ];
         $orderItems = [];
         foreach($order['products'] as $productDetails)
