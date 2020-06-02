@@ -11,6 +11,8 @@ class PBApiHelper extends SettingsHelper
     const PRODUCT_EXTRACTION_ERROR = 'productExtractionError';
     const REFERRER_ID_ERROR = 'referrerIdentifierError';
     const PRODUCT_EXPORT = 'product_export';
+    const CREATE_CONTACT = 'createContact';
+    const CONTACT_CREATION_ERROR = 'contactCreationError';
 
     /**
      * @param $categoryId

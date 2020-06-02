@@ -1,6 +1,7 @@
 <?php
 namespace PandaBlack\Controllers;
 use PandaBlack\Helpers\PaymentHelper;
+use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\OrdersRepository;
 use Plenty\Modules\Account\Address\Models\AddressRelationType;
@@ -109,57 +110,64 @@ class OrderController extends Controller
     private function saveOrder($order)
     {
         $contactId = $this->getContact($order['contact_details']);
-        $data = [
-            'typeId' => $order['type_id'],
-            'statusId' => $order['status_id'],
-            'plentyId' => $this->plentyId,
-            'referrerId' => $this->Settings->get('orderReferrerId'),
-            'addressRelations' => [
-                [
-                    'typeId' => self::BILLING_ADDRESS,
-                    'addressId' => $this->createBillingAddress($order['billing_address'], $contactId)
+        if ($contactId !== null) {
+            $data = [
+                'typeId' => $order['type_id'],
+                'statusId' => $order['status_id'],
+                'plentyId' => $this->plentyId,
+                'referrerId' => $this->Settings->get('orderReferrerId'),
+                'addressRelations' => [
+                    [
+                        'typeId' => self::BILLING_ADDRESS,
+                        'addressId' => $this->createBillingAddress($order['billing_address'], $contactId)
+                    ],
+                    [
+                        'typeId' => self::DELIVERY_ADDRESS,
+                        'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
+                    ]
                 ],
-                [
-                    'typeId' => self::DELIVERY_ADDRESS,
-                    'addressId' => $this->createDeliveryAddress($order['reference_key'], $order['delivery_address'], $contactId)
-                ]
-            ],
-            'relations' => [
-                [
-                    'referenceType' => 'contact',
-                    'referenceId'   => $contactId,
-                    'relation'      => 'receiver',
-                ]
-            ],
-            /*'properties' => [
-                [
-                    'typeId' => OrderPropertyType::PAYMENT_METHOD,
-                    'value'  => (string)$this->PaymentHelper->getPaymentMethodId(),
-                ]
-            ]*/
-        ];
-        $orderItems = [];
-        foreach($order['products'] as $productDetails)
-        {
-            $orderItems[] = [
-                'typeId' => 1,
-                'itemVariationId' => $productDetails['itemVariationId'],
-                'quantity' => $productDetails['quantity'],
-                'orderItemName' => $productDetails['productTitle'],
-                'amounts' => [
-                    0 => [
-                        'isSystemCurrency' => true,
-                        'isNet' => true,
-                        'exchangeRate' => 1,
-                        'currency' => 'EUR',
-                        'priceOriginalGross' => $productDetails['price']
+                'relations' => [
+                    [
+                        'referenceType' => 'contact',
+                        'referenceId'   => $contactId,
+                        'relation'      => 'receiver',
                     ]
                 ]
             ];
+            $orderItems = [];
+            foreach($order['products'] as $productDetails)
+            {
+                $orderItems[] = [
+                    'typeId' => 1,
+                    'itemVariationId' => $productDetails['itemVariationId'],
+                    'quantity' => $productDetails['quantity'],
+                    'orderItemName' => $productDetails['productTitle'],
+                    'amounts' => [
+                        0 => [
+                            'isSystemCurrency' => true,
+                            'isNet' => true,
+                            'exchangeRate' => 1,
+                            'currency' => 'EUR',
+                            'priceOriginalGross' => $productDetails['price']
+                        ]
+                    ]
+                ];
+            }
+            $data['orderItems'] = $orderItems;
+            try {
+                $orderData = $this->OrderRepository->createOrder($data);
+                $this->saveOrderData($order['reference_key'], $orderData->id);
+                $orderInfo = [
+                    'external_identifier' => $orderData->id,
+                    'order_reference' => $order['reference_key']
+                ];
+                $this->App->logInfo(PBApiHelper::ORDER_CREATE, $orderInfo);
+            } catch (\Exception $e) {
+                $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getMessage());
+            }
+        } else {
+            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, $contactId);
         }
-        $data['orderItems'] = $orderItems;
-        $orderData = $this->OrderRepository->createOrder($data);
-        $this->saveOrderData($order['reference_key'], $orderData->id);
     }
 
     /**
@@ -168,20 +176,26 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
-        $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
+        $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
         if ($contactId === null) {
             $contactData = [
-                'email' => $contactDetails['email'],
                 'firstName' => $contactDetails['first_name'],
                 'lastName' => $contactDetails['last_name'],
                 'referrerId' => $this->Settings->get('orderReferrerId'),
                 'plentyId' => $this->plentyId,
-                'typeId' => ContactType::TYPE_CUSTOMER
+                'typeId' => ContactType::TYPE_CUSTOMER,
+                'options' => [
+                    [
+                        'typeId' => 2,
+                        'subTypeId' => 4,
+                        'value' => $contactDetails['email']
+                    ]
+                ]
             ];
             try {
                 return $this->ContactRepository->createContact($contactData)->id;
             } catch (\Exception $e) {
-                $this->App->logInfo('createContact', $e->getMessage());
+                $this->App->logInfo(PBApiHelper::CREATE_CONTACT, $e->getMessage());
             }
         }
         return $contactId;
