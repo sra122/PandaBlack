@@ -144,7 +144,12 @@ class OrderController extends Controller
     private function getContact($contactDetails)
     {
         try {
-            $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
+            try {
+                $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
+            } catch (\Exception $e) {
+                $this->App->logInfo('Contact ID Error', json_encode($e, JSON_PRETTY_PRINT));
+            }
+
             if ($contactId === null) {
                 $contactData = [
                     'email' => $contactDetails['email'],
