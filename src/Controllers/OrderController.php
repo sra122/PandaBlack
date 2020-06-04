@@ -164,12 +164,12 @@ class OrderController extends Controller
                 try {
                     return $this->ContactRepository->createContact($contactData)->id;
                 } catch (\Exception $e) {
-                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, json_encode($e, JSON_PRETTY_PRINT));
+                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, $e->getMessage());
                 }
             }
             return $contactId;
         } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, json_encode($e, JSON_PRETTY_PRINT));
+            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, $e->getMessage());
         }
     }
 
