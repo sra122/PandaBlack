@@ -144,8 +144,7 @@ class OrderController extends Controller
     private function getContact($contactDetails)
     {
         try {
-            $contactId = $this->ContactRepository->getContactIdByEmail($contactDetails['email']);
-
+            $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
             if ($contactId === null) {
                 $contactData = [
                     'email' => $contactDetails['email'],
@@ -153,19 +152,25 @@ class OrderController extends Controller
                     'lastName' => $contactDetails['last_name'],
                     'referrerId' => $this->Settings->get('orderReferrerId'),
                     'plentyId' => $this->plentyId,
-                    'typeId' => ContactType::TYPE_CUSTOMER
+                    'typeId' => ContactType::TYPE_CUSTOMER,
+                    'options' => [
+                        [
+                            'typeId' => 2,
+                            'subTypeId' => 4,
+                            'value' => $contactDetails['email']
+                        ]
+                    ]
                 ];
                 try {
                     return $this->ContactRepository->createContact($contactData)->id;
                 } catch (\Exception $e) {
-                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, $e->getMessage());
+                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, json_encode($e, true));
                 }
             }
             return $contactId;
         } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, $e->getMessage());
+            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, json_encode($e, true));
         }
-
     }
 
     /**
