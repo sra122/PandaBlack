@@ -133,7 +133,7 @@ class OrderController extends Controller
                 $this->App->logInfo(PBApiHelper::ORDER_ERROR, $e->getMessage());
             }
         } else {
-            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, $contactId);
+            $this->App->logInfo('Null response', $contactId);
         }
     }
 
@@ -164,12 +164,12 @@ class OrderController extends Controller
                 try {
                     return $this->ContactRepository->createContact($contactData)->id;
                 } catch (\Exception $e) {
-                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, json_encode($e, true));
+                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, $e->getMessage());
                 }
             }
             return $contactId;
         } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, json_encode($e, true));
+            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, $e->getTrace());
         }
     }
 
