@@ -145,6 +145,7 @@ class OrderController extends Controller
     {
         try {
             $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
+            $this->App->logInfo('Testing the Contact', json_encode($contactId, true));
             if ($contactId === null) {
                 $contactData = [
                     'email' => $contactDetails['email'],
