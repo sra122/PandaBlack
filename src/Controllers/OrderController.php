@@ -145,7 +145,6 @@ class OrderController extends Controller
     {
         try {
             $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
-            $this->App->logInfo('Testing the Contact', json_encode($contactId, true));
             if ($contactId === null) {
                 $contactData = [
                     'email' => $contactDetails['email'],
@@ -165,12 +164,12 @@ class OrderController extends Controller
                 try {
                     return $this->ContactRepository->createContact($contactData)->id;
                 } catch (\Exception $e) {
-                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, $e->getTraceAsString());
+                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, json_encode($e, JSON_PRETTY_PRINT));
                 }
             }
             return $contactId;
         } catch (\Exception $e) {
-            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, $e->getTraceAsString());
+            $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, json_encode($e, JSON_PRETTY_PRINT));
         }
     }
 
