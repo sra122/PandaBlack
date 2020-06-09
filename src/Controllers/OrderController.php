@@ -162,6 +162,7 @@ class OrderController extends Controller
                         [
                             'typeId' => 2,
                             'subTypeId' => 4,
+                            'priority' => 0,
                             'value' => $contactDetails['email']
                         ]
                     ]
