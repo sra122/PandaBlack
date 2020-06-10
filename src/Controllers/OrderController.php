@@ -53,6 +53,9 @@ class OrderController extends Controller
         return $plentyId->getPlentyId();
     }
 
+    /**
+     * Create Order
+     */
     public function createOrder()
     {
         $this->App = pluginApp(AppController::class);
@@ -144,12 +147,7 @@ class OrderController extends Controller
     private function getContact($contactDetails)
     {
         try {
-            try {
-                $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
-            } catch (\Exception $e) {
-                $this->App->logInfo('Contact ID Error', json_encode($e, JSON_PRETTY_PRINT));
-            }
-
+            $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
             if ($contactId === null) {
                 $contactData = [
                     'email' => $contactDetails['email'],

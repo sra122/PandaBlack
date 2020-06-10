@@ -1,4 +1,7 @@
 # Release Notes für PANDA.BLACK
+## v1.1.4
+Kundenerstellung für Bestellungen und Protokolldaten
+
 ## v1.1.3
 Aktualisierung der Auftragserstellung
 

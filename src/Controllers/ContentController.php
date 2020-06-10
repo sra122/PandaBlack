@@ -73,7 +73,7 @@ class ContentController extends Controller
 
             $itemRepository->setFilters([
                 'referrerId' => (int)$this->settings->get(SettingsHelper::ORDER_REFERRER),
-                $filterVariation => time()-(3600*$hours)
+                $filterVariation => time()-(3600 * $hours)
             ]);
 
             $resultItems = $itemRepository->search();

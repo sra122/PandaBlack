@@ -33,19 +33,13 @@ class NotificationController extends Controller
      */
     public function fetchNotifications()
     {
-        //$this->createNotification();
-        //$this->fetchContactDetails();
-        //$this->OrderController->createOrder();
-        return $this->OrderController->createOrder();
+        $this->createNotification();
+        return $this->notifications->getNotifications();
     }
 
-
-    public function fetchContactDetails()
-    {
-        return $this->ContactRepository->getContactByOptionValue('pandablack@i-ways.net', 2, 4);
-        //return $this->ContactRepository->getContactIdByEmail('pandablack@i-ways.net');
-    }
-
+    /**
+     * Create Notification
+     */
     public function createNotification()
     {
         $app = pluginApp(AppController::class);
@@ -63,18 +57,26 @@ class NotificationController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     */
     public function markAsRead($id)
     {
         $this->notifications->markAsRead($id);
     }
 
+    /**
+     * @return mixed
+     */
     public function fetchProductsStatus()
     {
         $app = pluginApp(AppController::class);
         return $app->authenticate('pandaBlack_products_status');
     }
 
-
+    /**
+     * @return mixed
+     */
     public function getProperties()
     {
         $propertyRepo = pluginApp(PropertiesRepository::class);
