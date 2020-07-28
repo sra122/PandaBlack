@@ -1,4 +1,7 @@
 # Release notes for PANDA.BLACK
+## v1.1.5
+Generating Sku for variation
+
 ## v1.1.4
 Customer Creation for Orders and Logging data
 

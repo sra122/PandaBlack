@@ -10,6 +10,7 @@ use Plenty\Modules\Account\Address\Models\AddressRelationType;
 use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Account\Contact\Models\ContactType;
+use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Plugin\Application;
 use Plenty\Plugin\Controller;
@@ -31,6 +32,8 @@ class OrderController extends Controller
     /** @var PaymentHelper */
     protected $PaymentHelper;
     protected $plentyId;
+    /** @var VariationSkuRepositoryContract */
+    protected $variationSkuRepository;
 
     /**
      * OrderController constructor.
@@ -40,6 +43,8 @@ class OrderController extends Controller
     {
         $this->Settings = $SettingsHelper;
         $this->PaymentHelper = pluginApp(PaymentHelper::class);
+        $this->variationSkuRepository = pluginApp(VariationSkuRepositoryContract::class);
+
         $this->plentyId = $this->getPlentyPluginInfo();
     }
 
@@ -109,7 +114,7 @@ class OrderController extends Controller
             foreach ($order['products'] as $productDetails) {
                 $orderItems[] = [
                     'typeId' => 1,
-                    'itemVariationId' => $productDetails['itemVariationId'],
+                    'itemVariationId' => $this->getItemVariationId($productDetails),
                     'quantity' => $productDetails['quantity'],
                     'orderItemName' => $productDetails['productTitle'],
                     'amounts' => [
@@ -229,5 +234,20 @@ class OrderController extends Controller
         ];
 
         $ordersRepo->createOrder($orderData);
+    }
+
+
+    private function getItemVariationId($productDetails)
+    {
+        $results = $this->variationSkuRepository->search(['marketId' => $this->Settings->get('orderReferrerId'), 'variationSku' => $productDetails['sku']]);
+
+        foreach ($results as $result)
+        {
+            if (isset($result->variationId)) {
+                return $result->variationId;
+            }
+        }
+
+        return $productDetails['itemVariationId'];
     }
 }

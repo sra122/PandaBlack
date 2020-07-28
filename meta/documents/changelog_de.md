@@ -1,4 +1,7 @@
 # Release Notes für PANDA.BLACK
+## v1.1.5
+Sku für Variation generieren
+
 ## v1.1.4
 Kundenerstellung für Bestellungen und Protokolldaten
 
