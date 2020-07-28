@@ -70,11 +70,8 @@ class NotificationController extends Controller
      */
     public function fetchProductsStatus()
     {
-        $contentController = pluginApp(ContentController::class);
-        return $contentController->sendProductDetails(1);
-
-        /*$app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_products_status');*/
+        $app = pluginApp(AppController::class);
+        return $app->authenticate('pandaBlack_products_status');
     }
 
     /**
