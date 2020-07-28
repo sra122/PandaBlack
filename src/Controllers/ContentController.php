@@ -157,10 +157,7 @@ class ContentController extends Controller
                             if ($sku === null) {
                                 /** @var VariationSkuRepositoryContract $variationSkuGeneratorContract */
                                 $variationSkuGeneratorContract = pluginApp(VariationSkuRepositoryContract::class);
-                                $skuGeneration = $variationSkuGeneratorContract->generateSku($variation['id'], $marketId, 0);
-                                if ($skuGeneration instanceof VariationSku) {
-                                    $sku = $skuGeneration->sku;
-                                }
+                                $sku = $variationSkuGeneratorContract->generateSku($variation['id'], $marketId, 0);
                             }
 
                             //EAN
@@ -175,7 +172,7 @@ class ContentController extends Controller
                             $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
                             $this->exportData[$variation['id']] = array(
                                 'parent_product_id' => $variation['mainVariationId'],
-                                'product_id' => $skuGeneration,
+                                'product_id' => (string)$sku,
                                 'item_id' => $variation['itemId'],
                                 'name' => $variation['item']['texts'][0]['name1'],
                                 'price' => $variation['variationSalesPrices'][0]['price'],
