@@ -175,7 +175,7 @@ class ContentController extends Controller
                             $categoryId = $this->categoryIdFromSettingsRepo($variation['properties']);
                             $this->exportData[$variation['id']] = array(
                                 'parent_product_id' => $variation['mainVariationId'],
-                                'product_id' => $sku,
+                                'product_id' => $skuGeneration,
                                 'item_id' => $variation['itemId'],
                                 'name' => $variation['item']['texts'][0]['name1'],
                                 'price' => $variation['variationSalesPrices'][0]['price'],
