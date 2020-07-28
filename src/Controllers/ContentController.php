@@ -157,7 +157,7 @@ class ContentController extends Controller
                             if ($sku === null) {
                                 /** @var VariationSkuRepositoryContract $variationSkuGeneratorContract */
                                 $variationSkuGeneratorContract = pluginApp(VariationSkuRepositoryContract::class);
-                                $skuGeneration = $variationSkuGeneratorContract->generateSku($variation['id'], $marketId, 0, $variation['id']);
+                                $skuGeneration = $variationSkuGeneratorContract->generateSku($variation['id'], $marketId, 0);
                                 if ($skuGeneration instanceof VariationSku) {
                                     $sku = $skuGeneration->sku;
                                 }
