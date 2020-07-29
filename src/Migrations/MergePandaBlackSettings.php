@@ -21,19 +21,21 @@ class MergePandaBlackSettings
 
         $settings = [];
 
-        foreach ($properties as $key => $property) {
-            if ($key === 0) {
-                $settings = $property->settings;
-            } else {
-                $settings = array_merge($settings, $property->settings);
+        if (count($properties) > 0) {
+            foreach ($properties as $key => $property) {
+                if ($key === 0) {
+                    $settings = $property->settings;
+                } else {
+                    $settings = array_merge($settings, $property->settings);
+                }
             }
-        }
 
-        foreach ($properties as $key => $property) {
-            if ($key === 0) {
-                $settingsRepositoryContract->update($settings, $property->id);
-            } else {
-                $settingsRepositoryContract->delete($property->id);
+            foreach ($properties as $key => $property) {
+                if ($key === 0) {
+                    $settingsRepositoryContract->update($settings, $property->id);
+                } else {
+                    $settingsRepositoryContract->delete($property->id);
+                }
             }
         }
     }
