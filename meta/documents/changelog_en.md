@@ -1,4 +1,7 @@
 # Release notes for PANDA.BLACK
+## v1.1.6
+Changes in Migration
+
 ## v1.1.5
 Generating Sku for variation
 
