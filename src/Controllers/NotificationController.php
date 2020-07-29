@@ -72,24 +72,8 @@ class NotificationController extends Controller
      */
     public function fetchProductsStatus()
     {
-        /** @var SettingsHelper $settings */
-        $settings = pluginApp(SettingsHelper::class);
-        /** @var VariationSkuRepositoryContract $variationSkuRepository */
-        $variationSkuRepository = pluginApp(VariationSkuRepositoryContract::class);
-        $results = $variationSkuRepository->search(['marketId' => $settings->get('orderReferrerId'), 'sku' => '1032']);
-        foreach ($results as $result) {
-            if (isset($result->variationId) && isset($result->sku) && $result->sku == '1032') {
-                return $result->variationId;
-            }
-        }
-
-        return false;
-        /*$app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_products_status');*/
-
-
-        /*$app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_products_status');*/
+        $app = pluginApp(AppController::class);
+        return $app->authenticate('pandaBlack_products_status');
     }
 
     /**

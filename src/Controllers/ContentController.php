@@ -157,6 +157,7 @@ class ContentController extends Controller
                             if ($sku === null) {
                                 /** @var VariationSkuRepositoryContract $variationSkuGeneratorContract */
                                 $variationSkuGeneratorContract = pluginApp(VariationSkuRepositoryContract::class);
+                                //AccountId is set as 0, as PandaBlack currently has only one account
                                 $sku = $variationSkuGeneratorContract->generateSku($variation['id'], $marketId, 0);
                             }
 
