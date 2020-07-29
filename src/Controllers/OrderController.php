@@ -243,7 +243,7 @@ class OrderController extends Controller
 
         foreach ($results as $result)
         {
-            if (isset($result->variationId)) {
+            if (isset($result->variationId) && isset($result->sku) && $result->sku == $productDetails['sku']) {
                 return $result->variationId;
             }
         }

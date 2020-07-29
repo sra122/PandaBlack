@@ -76,7 +76,7 @@ class NotificationController extends Controller
         $settings = pluginApp(SettingsHelper::class);
         /** @var VariationSkuRepositoryContract $variationSkuRepository */
         $variationSkuRepository = pluginApp(VariationSkuRepositoryContract::class);
-        return  $variationSkuRepository->search(['marketId' => $settings->get('orderReferrerId'), 'variationSku' => '1032']);
+        return  $variationSkuRepository->search(['marketId' => $settings->get('orderReferrerId'), 'sku' => '1032']);
         /*$app = pluginApp(AppController::class);
         return $app->authenticate('pandaBlack_products_status');*/
     }
