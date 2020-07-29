@@ -18,27 +18,30 @@ class CreatePropertiesTable
         $propertiesRepo = pluginApp(PropertiesRepository::class);
         $properties = $settings->get(SettingsHelper::MAPPING_INFO);
 
-        foreach($properties['property'] as $key => $property)
-        {
-            $propertyData = [
-                'type' => 'property',
-                'value' => $property,
-                'key' => $key
-            ];
+        if (isset($properties['property']) && count($properties['property']) > 0) {
+            foreach($properties['property'] as $key => $property)
+            {
+                $propertyData = [
+                    'type' => 'property',
+                    'value' => $property,
+                    'key' => $key
+                ];
 
-            $propertiesRepo->createProperty($propertyData);
+                $propertiesRepo->createProperty($propertyData);
+            }
         }
 
+        if (isset($properties['propertyValue']) && count($properties['propertyValue']) > 0) {
+            foreach($properties['propertyValue'] as $key => $propertyValue)
+            {
+                $propertyValueData = [
+                    'type' => 'propertyValue',
+                    'value' => $propertyValue,
+                    'key' => $key
+                ];
 
-        foreach($properties['propertyValue'] as $key => $propertyValue)
-        {
-            $propertyValueData = [
-                'type' => 'propertyValue',
-                'value' => $propertyValue,
-                'key' => $key
-            ];
-
-            $propertiesRepo->createProperty($propertyValueData);
+                $propertiesRepo->createProperty($propertyValueData);
+            }
         }
     }
 }
