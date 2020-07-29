@@ -8,9 +8,11 @@
 
 namespace PandaBlack\Controllers;
 
+use PandaBlack\Helpers\SettingsHelper;
 use PandaBlack\Repositories\NotificationsRepository;
 use PandaBlack\Repositories\PropertiesRepository;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
+use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
 use Plenty\Plugin\Controller;
 
 class NotificationController extends Controller
@@ -70,8 +72,13 @@ class NotificationController extends Controller
      */
     public function fetchProductsStatus()
     {
-        $app = pluginApp(AppController::class);
-        return $app->authenticate('pandaBlack_products_status');
+        /** @var SettingsHelper $settings */
+        $settings = pluginApp(SettingsHelper::class);
+        /** @var VariationSkuRepositoryContract $variationSkuRepository */
+        $variationSkuRepository = pluginApp(VariationSkuRepositoryContract::class);
+        return  $variationSkuRepository->search(['marketId' => $settings->get('orderReferrerId'), 'variationSku' => '1032']);
+        /*$app = pluginApp(AppController::class);
+        return $app->authenticate('pandaBlack_products_status');*/
     }
 
     /**
