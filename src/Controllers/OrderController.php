@@ -239,7 +239,7 @@ class OrderController extends Controller
 
     private function getItemVariationId($productDetails)
     {
-        $results = $this->variationSkuRepository->search(['marketId' => $this->Settings->get('orderReferrerId'), 'variationSku' => $productDetails['sku']]);
+        $results = $this->variationSkuRepository->search(['marketId' => $this->Settings->get('orderReferrerId'), 'sku' => $productDetails['sku']]);
 
         foreach ($results as $result)
         {
