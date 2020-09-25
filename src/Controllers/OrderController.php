@@ -2,6 +2,7 @@
 
 namespace PandaBlack\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PandaBlack\Helpers\PaymentHelper;
 use PandaBlack\Helpers\PBApiHelper;
 use PandaBlack\Helpers\SettingsHelper;
@@ -9,6 +10,7 @@ use PandaBlack\Repositories\OrdersRepository;
 use Plenty\Modules\Account\Address\Models\AddressRelationType;
 use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
+use Plenty\Modules\Account\Contact\Contracts\InternalContactPaymentRepositoryContract;
 use Plenty\Modules\Account\Contact\Models\ContactType;
 use Plenty\Modules\Item\VariationSku\Contracts\VariationSkuRepositoryContract;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
@@ -151,7 +153,38 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
+        $contactRepository = Plenty::get(InternalContactPaymentRepositoryContract::class);
+        $contactId = null;
+
         try {
+            $contactId = $contactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
+            return $contactId;
+        } catch (ModelNotFoundException $e) {
+            if ($contactId === null) {
+                $contactData = [
+                    'email' => $contactDetails['email'],
+                    'firstName' => $contactDetails['first_name'],
+                    'lastName' => $contactDetails['last_name'],
+                    'referrerId' => $this->Settings->get('orderReferrerId'),
+                    'plentyId' => $this->plentyId,
+                    'typeId' => ContactType::TYPE_CUSTOMER,
+                    'options' => [
+                        [
+                            'typeId' => 2,
+                            'subTypeId' => 4,
+                            'priority' => 0,
+                            'value' => $contactDetails['email']
+                        ]
+                    ]
+                ];
+                try {
+                    return $contactRepository->createContact($contactData)->id;
+                } catch (\Exception $e) {
+                    $this->App->logInfo(PBApiHelper::CREATE_CONTACT, json_encode($e, JSON_PRETTY_PRINT));
+                }
+            }
+        }
+        /*try {
             $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
             if ($contactId === null) {
                 $contactData = [
@@ -179,7 +212,7 @@ class OrderController extends Controller
             return $contactId;
         } catch (\Exception $e) {
             $this->App->logInfo(PBApiHelper::CONTACT_CREATION_ERROR, json_encode($e, JSON_PRETTY_PRINT));
-        }
+        }*/
     }
 
     /**
