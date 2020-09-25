@@ -153,7 +153,7 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
-        $contactRepository = Plenty::get(InternalContactPaymentRepositoryContract::class);
+        $contactRepository = PluginApp(InternalContactPaymentRepositoryContract::class);
         $contactId = null;
 
         try {
