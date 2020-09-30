@@ -153,11 +153,9 @@ class OrderController extends Controller
      */
     private function getContact($contactDetails)
     {
-        $contactRepository = PluginApp(InternalContactPaymentRepositoryContract::class);
         $contactId = null;
-
         try {
-            $contactId = $contactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
+            $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
             return $contactId;
         } catch (ModelNotFoundException $e) {
             if ($contactId === null) {
@@ -178,7 +176,7 @@ class OrderController extends Controller
                     ]
                 ];
                 try {
-                    return $contactRepository->createContact($contactData)->id;
+                    return $this->ContactAddressRepository->createContact($contactData)->id;
                 } catch (\Exception $e) {
                     $this->App->logInfo(PBApiHelper::CREATE_CONTACT, json_encode($e, JSON_PRETTY_PRINT));
                 }
