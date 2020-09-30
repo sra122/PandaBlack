@@ -176,7 +176,7 @@ class OrderController extends Controller
                     ]
                 ];
                 try {
-                    return $this->ContactAddressRepository->createContact($contactData)->id;
+                    return $this->ContactRepository->createContact($contactData)->id;
                 } catch (\Exception $e) {
                     $this->App->logInfo(PBApiHelper::CREATE_CONTACT, json_encode($e, JSON_PRETTY_PRINT));
                 }
