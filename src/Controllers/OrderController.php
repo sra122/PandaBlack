@@ -158,8 +158,7 @@ class OrderController extends Controller
             $contactId = $this->ContactRepository->getContactByOptionValue($contactDetails['email'], 2, 4)->id;
             return $contactId;
         } catch (\Exception $e) {
-            $model = Contact::class;
-            if ($e->getModel() == $model && $contactId === null) {
+            if ($contactId === null) {
                 $contactData = [
                     'email' => $contactDetails['email'],
                     'firstName' => $contactDetails['first_name'],
