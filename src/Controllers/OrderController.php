@@ -239,6 +239,7 @@ class OrderController extends Controller
 
     private function getItemVariationId($productDetails)
     {
+        $productNotFound = -2;
         $results = $this->variationSkuRepository->search(['marketId' => $this->Settings->get('orderReferrerId'), 'sku' => $productDetails['sku']]);
 
         foreach ($results as $result)
@@ -248,6 +249,6 @@ class OrderController extends Controller
             }
         }
 
-        return $productDetails['itemVariationId'];
+        return $productNotFound;
     }
 }
